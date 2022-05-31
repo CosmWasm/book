@@ -1,0 +1,13 @@
+[book]
+authors = ["Bartłomiej Kuras"]
+language = "en"
+multilingual = false
+src = "src"
+title = "CosmWasm book"
+description = "Guide to building CosmWasm smart contracts"
+
+[rust]
+edition = "2021"
+
+[output.html.playground]
+runnable = false
