@@ -5,6 +5,13 @@ one, you can find installation instructions on [Rust website](https://www.rust-l
 
 I assume you are working with a stable Rust channel in this book.
 
+Additionally, you will need the Wasm rust compiler backend installed to build Wasm binaries.
+To install it, run:
+
+```
+rustup target add wasm32-unknown-unknown
+```
+
 Optionally if you want to try out your contracts on a testnet, you will need a
 [wasmd](https://github.com/CosmWasm/wasmd) binary. We would focus on testing
 contracts with Rust unit testing utility throughout the book, so it is not required
