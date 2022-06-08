@@ -17,7 +17,7 @@ For start, we will go with three basic entry points:
 
 Go to your `src/lib.rs` file, and start with an `instantiate` entry point:
 
-```rust
+```rust,noplayground
 use cosmwasm_std::{
     entry_point, Binary, Deps, DepsMut, Empty, Env, MessageInfo, Response, StdResult,
 };
