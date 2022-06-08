@@ -7,7 +7,7 @@ we don't have yet, but we will work on that soon).
 However, to upload the contract to the blockchain, we need to create a wasm binary. We can do
 it by passing an additional argument to the build command:
 
-```rust
+```
 cargo build --target wasm32-unknown-unknown --release
 ```
 
@@ -17,8 +17,9 @@ which is a fancy name for Wasm target.
 
 Additionally, I passed the `--release` argument to the command - it is not required, but in
 most cases, debug information is not very useful while running on-chain. It is crucial to reduce
-the uploaded binary size for gas cost minimization. It is worth knowing that there is a CosmWasm
-Rust Optimizer tool that takes care of building even smaller binaries. For the production, all
+the uploaded binary size for gas cost minimization. It is worth knowing that there is a [CosmWasm
+Rust Optimizer](https://github.com/CosmWasm/rust-optimizer) tool that takes care of building even
+smaller binaries. For the production, all
 the contracts should be compiled using this tool, but for learning purposes, it is not an essential
 thing to do.
 

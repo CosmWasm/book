@@ -26,6 +26,10 @@ $ cd ./wasmd
 $ make install
 ```
 
+Also, to be able to upload Rust Wasm Contracts to the blockchain, you will need to install
+[docker](https://www.docker.com/). It will be required to run CosmWasm Rust Optimizer to minimize your
+contract sizes - without that, more complex contracts might exceed a size limit.
+
 ## Verifying the installation
 
 To make sure you are ready to build your smart contracts, you need to make sure you can build examples.
