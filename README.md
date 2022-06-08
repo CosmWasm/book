@@ -24,4 +24,4 @@ and build the book from this directory:
 mdbook build
 ```
 
-For more info about using mdbook read its own [https://rust-lang.github.io/mdBook/index.html](book).
+For more info about using mdbook read its own [book](https://rust-lang.github.io/mdBook/index.html).
