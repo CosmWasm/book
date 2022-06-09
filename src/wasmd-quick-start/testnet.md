@@ -54,7 +54,7 @@ set -x NODE $RPC
 set -x TXFLAG --node $RPC --chain-id $CHAIN_ID --gas-prices 0.05umlg --gas-adjustment 1.3 --gas auto -b block
 ```
 
-Now source the file to our environment (for fish use `malaga.fish` in place of `malaga.env`:
+Now source the file to our environment (for fish use `malaga.fish` in place of `malaga.env`):
 ```sh
 $ source ./malaga.env
 ```

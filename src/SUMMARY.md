@@ -16,6 +16,9 @@
     - [Create a Rust project](basics/rust-project.md)
     - [Entry points](basics/entry-points.md)
     - [Building the contract](basics/building-contract.md)
+    - [Creating a query](basics/query.md)
+    - [Testing a query](basics/query-testing.md)
+    - [Introducing multitest](basics/multitest-intro.md)
 
 ---
 

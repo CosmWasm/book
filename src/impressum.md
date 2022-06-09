@@ -15,7 +15,7 @@ Simon Warta
 
 ## Contact
 
-[hello@confio.gmbh](hello@confio.gmbh)
+[hello@confio.gmbh](mailto:hello@confio.gmbh)
 
 ## Commercial Register
 

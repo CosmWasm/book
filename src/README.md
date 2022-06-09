@@ -23,3 +23,9 @@ be interested in checking one of the following:
 - [cw-storage-plus](https://crates.io/crates/cw-storage-plus)
 - [cw-multi-test](https://crates.io/crates/cw-multi-test)
 - [sylvia framework](https://crates.io/crates/sylvia)
+
+## Contributing to the book
+
+The book is maintained on [Github](https://github.com/CosmWasm/book) and auto deployed from there.
+Please create an [issue](https://github.com/CosmWasm/book/issues) or pull request if you find
+any mistakes, bugs, or ambiguities.
