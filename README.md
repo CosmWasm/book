@@ -4,7 +4,7 @@ The book about writing Smart Contracts for CosmWasm using Rust
 
 ## About
 
-This repo contains source code for The CosmWasm Book.
+This repo contains source code for [The CosmWasm Book](https://cosmwasm.github.io/book/).
 
 ## Building
 
