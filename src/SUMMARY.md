@@ -19,6 +19,7 @@
     - [Creating a query](basics/query.md)
     - [Testing a query](basics/query-testing.md)
     - [Introducing multitest](basics/multitest-intro.md)
+    - [Contract state](basics/state.md)
 
 ---
 

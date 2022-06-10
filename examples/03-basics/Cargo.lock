@@ -66,9 +66,7 @@ dependencies = [
  "cosmwasm-std",
  "cw-multi-test",
  "cw-storage-plus",
- "schemars",
  "serde",
- "thiserror",
 ]
 
 [[package]]
