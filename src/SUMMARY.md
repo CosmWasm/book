@@ -20,6 +20,7 @@
     - [Testing a query](basics/query-testing.md)
     - [Introducing multitest](basics/multitest-intro.md)
     - [Contract state](basics/state.md)
+    - [Execution messages](basics/execute.md)
 
 ---
 

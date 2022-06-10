@@ -67,6 +67,7 @@ dependencies = [
  "cw-multi-test",
  "cw-storage-plus",
  "serde",
+ "thiserror",
 ]
 
 [[package]]
