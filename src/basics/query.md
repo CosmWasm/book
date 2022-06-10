@@ -1,8 +1,29 @@
 # Creating a query
 
 We have already created a simple contract reacting to an empty instantiate message. Unfortunately, it
-is not very useful. Let's make it a bit reactive. We will start with adding a single query message to
-it. Go to your `src/lib.rs` file, and add a new query entry point:
+is not very useful. Let's make it a bit reactive.
+
+First, we need to add [`serde`](https://crates.io/crates/serde) crate to our dependencies. It would help us with the serialization and
+deserialization of query messages. Update the `Cargo.toml`:
+
+```toml
+[package]
+name = "contract"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+cosmwasm-std = { version = "1.0.0-beta8", features = ["staking"] }
+serde = { version = "1.0.103", default-features = false, features = ["derive"] }
+
+[dev-dependencies]
+cw-multi-test = "0.13.4"
+```
+
+Now go to your `src/lib.rs` file, and add a new query entry point:
 
 ```rust,noplayground
 use cosmwasm_std::{
@@ -42,8 +63,7 @@ not to overload you with code, I will always only show lines that changed in the
 We first need a structure we will return from our query. We always want to return something
 which is serializable. We are just deriving the
 [`Serialize`](https://docs.serde.rs/serde/trait.Serialize.html) and
-[`Deserialize`](https://docs.serde.rs/serde/trait.Deserialize.html) traits from
-[`serde`](https://crates.io/crates/serde) crate.
+[`Deserialize`](https://docs.serde.rs/serde/trait.Deserialize.html) traits from `serde` crate.
 
 Then we need to implement our entry point. It is very similar to the `instantiate` one. The
 first significant difference is a type of `deps` argument. For `instantiate`, it was a `DepMut`,

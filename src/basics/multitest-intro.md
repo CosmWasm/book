@@ -21,10 +21,7 @@ crate-type = ["cdylib"]
 
 [dependencies]
 cosmwasm-std = { version = "1.0.0-beta8", features = ["staking"] }
-cw-storage-plus =  "0.13.2"
-schemars = "0.8.1"
 serde = { version = "1.0.103", default-features = false, features = ["derive"] }
-thiserror = "1.0.23"
 
 [dev-dependencies]
 cw-multi-test = "0.13.4"
@@ -156,5 +153,5 @@ assumes that we would like to deserialize them to some response type, so it take
 provide us with nice Api.
 
 Now it's time to rerun the test. It should still pass, but now we nicely abstracted the testing contract as a whole,
-not some internal functions. The next thing we should probably cover is making the contract a bit more interesting
+not some internal functions. The next thing we should probably cover is making the contract more interesting
 by adding some state.
