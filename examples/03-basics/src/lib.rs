@@ -2,12 +2,12 @@ use cosmwasm_std::{entry_point, Binary, Deps, DepsMut, Env, MessageInfo, Respons
 use error::ContractError;
 use msg::{ExecuteMsg, InstantiateMsg, QueryMsg};
 
-mod contract;
-mod error;
-mod msg;
-mod state;
+pub mod contract;
+pub mod error;
+pub mod msg;
+pub mod state;
 
-#[entry_point]
+#[cfg_attr(not(feature = "library"), entry_point)]
 pub fn instantiate(
     deps: DepsMut,
     env: Env,
@@ -17,7 +17,7 @@ pub fn instantiate(
     contract::instantiate(deps, env, info, msg)
 }
 
-#[entry_point]
+#[cfg_attr(not(feature = "library"), entry_point)]
 pub fn execute(
     deps: DepsMut,
     env: Env,
@@ -27,7 +27,7 @@ pub fn execute(
     contract::execute(deps, env, info, msg)
 }
 
-#[entry_point]
+#[cfg_attr(not(feature = "library"), entry_point)]
 pub fn query(deps: Deps, env: Env, msg: QueryMsg) -> StdResult<Binary> {
     contract::query(deps, env, msg)
 }
