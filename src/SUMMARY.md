@@ -21,6 +21,17 @@
     - [Introducing multitest](basics/multitest-intro.md)
     - [Contract state](basics/state.md)
     - [Execution messages](basics/execute.md)
+    - [Events, attributes and data](basics/events.md)
+    - [Dealing with funds](basics/funds.md)
+    - [Good practices](basics/good-practices.md)
+    - [Floating point types](basics/fp-types.md)
+- [The Actor Model](actor-model.md)
+    - [The idea](actor-model/idea.md)
+    - [Actors in the blockchain](actor-model/actors-in-blockchain.md)
+    - [Contract as an actor](actor-model/contract-as-actor.md)
+
+- [Cross contract communication]()
+- [Inter-blockchain communication]()
 
 ---
 
