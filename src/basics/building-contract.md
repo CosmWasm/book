@@ -8,7 +8,7 @@ However, to upload the contract to the blockchain, we need to create a wasm bina
 it by passing an additional argument to the build command:
 
 ```
-cargo build --target wasm32-unknown-unknown --release
+$ cargo build --target wasm32-unknown-unknown --release
 ```
 
 The `--target` argument tells cargo to perform cross-compilation for a given target instead of
@@ -40,3 +40,15 @@ wasm-debug = "build --target wasm32-unknown-unknown"
 Now, building your Wasm binary is as easy as executing `cargo wasm`. We also added the additional
 `wasm-debug` command for rare cases when we want to build the wasm binary, including debug information.
 
+## Checking contract validity
+
+When the contract is built, the last step is to ensure it is a valid CosmWasm contract is to call
+`check_contract` on it:
+
+```
+$ cargo wasm
+...
+$ check_contract ./target/wasm32-unknown-unknown/release/contract.wasm
+Supported features: {"iterator", "staking", "stargate"}
+contract checks passed.
+```
