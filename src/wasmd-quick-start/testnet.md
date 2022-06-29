@@ -14,7 +14,6 @@ export WASMD_VERSION="v0.27.0"
 export CONFIG_DIR=".wasmd"
 export BINARY="wasmd"
 
-export COSMJS_VERSION="v0.28.1"
 export GENESIS_URL="https://raw.githubusercontent.com/CosmWasm/testnets/master/malaga-420/config/genesis.json"
 
 export RPC="https://rpc.malaga-420.cosmwasm.com:443"
@@ -40,7 +39,6 @@ set -x WASMD_VERSION v0.27.0
 set -x CONFIG_DIR .wasmd
 set -x BINARY wasmd
 
-set -x COSMJS_VERSION v0.28.1
 set -x GENESIS_URL https://raw.githubusercontent.com/CosmWasm/testnets/master/malaga-420/config/genesis.json
 
 set -x RPC https://rpc.malaga-420.cosmwasm.com:443
