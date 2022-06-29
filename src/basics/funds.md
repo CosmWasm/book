@@ -376,7 +376,35 @@ pub fn instantiate(
 ```
 
 What also needs some corrections are tests - instantiate messages have a new field. I leave it to you as an exercise.
-Now we have everything we need to implement donating funds to admins:
+Now we have everything we need to implement donating funds to admins. First, a minor update to the `Cargo.toml` - we
+will use an additional utility crate:
+
+```toml
+[package]
+name = "contract"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+library = []
+
+[dependencies]
+cosmwasm-std = { version = "1.0.0-beta8", features = ["staking"] }
+serde = { version = "1.0.103", default-features = false, features = ["derive"] }
+cw-storage-plus = "0.13.4"
+thiserror = "1"
+schemars = "0.8.1"
+cw-utils = "0.13"
+
+[dev-dependencies]
+cw-multi-test = "0.13.4"
+cosmwasm-schema = { version = "1.0.0" }
+```
+
+Then we can implement the donate handler:
 
 ```rust,noplayground
 # use crate::error::ContractError;
@@ -478,12 +506,9 @@ mod exec {
         let denom = DONATION_DENOM.load(deps.storage)?;
         let admins = ADMINS.load(deps.storage)?;
 
-        let donation = info
-            .funds
-            .into_iter()
-            .find(|coin| coin.denom == denom)
-            .map(|coin| coin.amount.u128())
-            .unwrap_or_default();
+        let donation = cw_utils::may_pay(&info, &denom)
+            .map_err(|err| StdError::generic_err(err.to_string()))?
+            .u128();
 
         let donation_per_admin = donation / (admins.len() as u128);
 
@@ -734,6 +759,8 @@ Before sending tokens to admins, we have to calculate the amount of dotation per
 is always rounding down. As a consequence, it is possible that not all tokens sent as a donation would end up with no admins accounts. Any leftover would be left on our contract account forever. There are plenty of ways of dealing with this issue - figuring out one
 of them would be a great exercise.
 
+Note that for `may_pay` call, I had to perform a manual error conversion. It is not the best way to handle this case, but it will work now. In the future, we will figure out better error handling.
+
 Now it's time to check if the funds are distributed correctly. The way for that is to write a test.
 
 ```rust,noplayground
@@ -835,12 +862,9 @@ Now it's time to check if the funds are distributed correctly. The way for that 
 #         let denom = DONATION_DENOM.load(deps.storage)?;
 #         let admins = ADMINS.load(deps.storage)?;
 # 
-#         let donation = info
-#             .funds
-#             .into_iter()
-#             .find(|coin| coin.denom == denom)
-#             .map(|coin| coin.amount.u128())
-#             .unwrap_or_default();
+#         let donation = cw_utils::may_pay(&info, &denom)
+#             .map_err(|err| StdError::generic_err(err.to_string()))?
+#             .u128();
 # 
 #         let donation_per_admin = donation / (admins.len() as u128);
 # 

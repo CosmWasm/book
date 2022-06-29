@@ -47,6 +47,8 @@ pub fn execute(
 }
 
 mod exec {
+    use cosmwasm_std::StdError;
+
     use super::*;
 
     pub fn add_members(
@@ -96,12 +98,9 @@ mod exec {
         let denom = DONATION_DENOM.load(deps.storage)?;
         let admins = ADMINS.load(deps.storage)?;
 
-        let donation = info
-            .funds
-            .into_iter()
-            .find(|coin| coin.denom == denom)
-            .map(|coin| coin.amount.u128())
-            .unwrap_or_default();
+        let donation = cw_utils::may_pay(&info, &denom)
+            .map_err(|err| StdError::generic_err(err.to_string()))?
+            .u128();
 
         let donation_per_admin = donation / (admins.len() as u128);
 
