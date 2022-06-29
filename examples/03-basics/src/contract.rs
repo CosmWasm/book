@@ -42,13 +42,11 @@ pub fn execute(
     match msg {
         AddMembers { admins } => exec::add_members(deps, info, admins),
         Leave {} => exec::leave(deps, info).map_err(Into::into),
-        Donate {} => exec::donate(deps, info).map_err(Into::into),
+        Donate {} => exec::donate(deps, info),
     }
 }
 
 mod exec {
-    use cosmwasm_std::StdError;
-
     use super::*;
 
     pub fn add_members(
@@ -94,13 +92,11 @@ mod exec {
         Ok(Response::new())
     }
 
-    pub fn donate(deps: DepsMut, info: MessageInfo) -> StdResult<Response> {
+    pub fn donate(deps: DepsMut, info: MessageInfo) -> Result<Response, ContractError> {
         let denom = DONATION_DENOM.load(deps.storage)?;
         let admins = ADMINS.load(deps.storage)?;
 
-        let donation = cw_utils::may_pay(&info, &denom)
-            .map_err(|err| StdError::generic_err(err.to_string()))?
-            .u128();
+        let donation = cw_utils::must_pay(&info, &denom)?.u128();
 
         let donation_per_admin = donation / (admins.len() as u128);
 

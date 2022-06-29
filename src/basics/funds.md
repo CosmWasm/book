@@ -452,7 +452,7 @@ pub fn execute(
     match msg {
         AddMembers { admins } => exec::add_members(deps, info, admins),
         Leave {} => exec::leave(deps, info).map_err(Into::into),
-        Donate {} => exec::donate(deps, info).map_err(Into::into),
+        Donate {} => exec::donate(deps, info),
     }
 }
 
@@ -502,13 +502,11 @@ mod exec {
 #         Ok(Response::new())
 #     }
 # 
-    pub fn donate(deps: DepsMut, info: MessageInfo) -> StdResult<Response> {
+    pub fn donate(deps: DepsMut, info: MessageInfo) -> Result<Response, ContractError> {
         let denom = DONATION_DENOM.load(deps.storage)?;
         let admins = ADMINS.load(deps.storage)?;
 
-        let donation = cw_utils::may_pay(&info, &denom)
-            .map_err(|err| StdError::generic_err(err.to_string()))?
-            .u128();
+        let donation = cw_utils::must_pay(&info, &denom)?.u128();
 
         let donation_per_admin = donation / (admins.len() as u128);
 
@@ -759,7 +757,25 @@ Before sending tokens to admins, we have to calculate the amount of dotation per
 is always rounding down. As a consequence, it is possible that not all tokens sent as a donation would end up with no admins accounts. Any leftover would be left on our contract account forever. There are plenty of ways of dealing with this issue - figuring out one
 of them would be a great exercise.
 
-Note that for `may_pay` call, I had to perform a manual error conversion. It is not the best way to handle this case, but it will work now. In the future, we will figure out better error handling.
+Last missing part is updating the `ContractError` - the `must_pay` call returns a `cw_utils::PaymentError` which we can't convert to our error type yet:
+
+```rust,noplayground
+use cosmwasm_std::{Addr, StdError};
+use cw_utils::PaymentError;
+use thiserror::Error;
+
+#[derive(Error, Debug, PartialEq)]
+pub enum ContractError {
+    #[error("{0}")]
+    StdError(#[from] StdError),
+    #[error("{sender} is not contract admin")]
+    Unauthorized { sender: Addr },
+    #[error("Payment error: {0}")]
+    Payment(#[from] PaymentError),
+}
+```
+
+As you can see, to handle incoming funds, I used the utility function - I encourage you to take a look at [its implementation](https://docs.rs/cw-utils/0.13.4/src/cw_utils/payment.rs.html#32-39) - this would give you a good understanding of how incomming funds are structured in `MessageInfo`.
 
 Now it's time to check if the funds are distributed correctly. The way for that is to write a test.
 
@@ -808,7 +824,7 @@ Now it's time to check if the funds are distributed correctly. The way for that 
 #     match msg {
 #         AddMembers { admins } => exec::add_members(deps, info, admins),
 #         Leave {} => exec::leave(deps, info).map_err(Into::into),
-#         Donate {} => exec::donate(deps, info).map_err(Into::into),
+#         Donate {} => exec::donate(deps, info),
 #     }
 # }
 # 
@@ -858,11 +874,11 @@ Now it's time to check if the funds are distributed correctly. The way for that 
 #         Ok(Response::new())
 #     }
 # 
-#     pub fn donate(deps: DepsMut, info: MessageInfo) -> StdResult<Response> {
+#     pub fn donate(deps: DepsMut, info: MessageInfo) -> Result<Response, ContractError> {
 #         let denom = DONATION_DENOM.load(deps.storage)?;
 #         let admins = ADMINS.load(deps.storage)?;
 # 
-#         let donation = cw_utils::may_pay(&info, &denom)
+#         let donation = cw_utils::must_pay(&info, &denom)
 #             .map_err(|err| StdError::generic_err(err.to_string()))?
 #             .u128();
 # 
