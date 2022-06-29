@@ -22,6 +22,7 @@ be interested in checking one of the following:
 - [cosmwasm-std](https://crates.io/crates/cosmwasm-std)
 - [cw-storage-plus](https://crates.io/crates/cw-storage-plus)
 - [cw-multi-test](https://crates.io/crates/cw-multi-test)
+- [cw-utils](https://crates.io/crates/cw-utils)
 - [sylvia framework](https://crates.io/crates/sylvia)
 
 ## Contributing to the book
