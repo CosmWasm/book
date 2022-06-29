@@ -30,6 +30,23 @@ Also, to be able to upload Rust Wasm Contracts to the blockchain, you will need 
 [docker](https://www.docker.com/). It will be required to run CosmWasm Rust Optimizer to minimize your
 contract sizes - without that, more complex contracts might exceed a size limit.
 
+## Check contract utility
+
+An additional helpful tool for building smart contracts is the `check_contract` utility.
+It allows checking if the wasm binary is a proper smart contract ready to upload to the
+blockchain. You can install it using cargo:
+
+```
+$ cargo install --features iterator --example check_contract -- cosmwasm-vm
+```
+
+If the installation succeeds, you should be able to execute the utility from your command line.
+
+```
+$ check_contract --version
+Contract checking 0.1.0
+```
+
 ## Verifying the installation
 
 To make sure you are ready to build your smart contracts, you need to make sure you can build examples.
@@ -39,10 +56,28 @@ its folder:
 ```
 $ git clone git@github.com:CosmWasm/cw-plus.git
 $ cd ./cw-plus
-$ cargo test
+cw-plus $ cargo test
 ```
 
 You should see that everything in the repository gets compiled, and all tests pass. 
 
 `cw-plus` is a great place to find example contracts - look for them in `contracts` directory. The
 repository is maintained by CosmWasm creators, so contracts in there should follow good practices.
+
+To verify the `check_contract` utility, first, you need to build a smart contract. Go to some contract
+directory, for example `contracts/cw1-whitelist`, and call `cargo wasm`:
+
+```
+cw-plus $ cd contracts/cw1-whitelist
+cw-plus/contracts/cw1-whitelist $ cargo wasm
+```
+
+You should be able to find your find output binary in the `target/wasm32-unknown-unknown/release/`
+of the root repo directory - not in the contract directory itself! Now you can check if contract
+validation passes:
+
+```
+cw-plus $ check_contract /target/wasm32-unknown-unknown/release/cw1_whitelist.wasm
+Supported features: {"stargate", "iterator", "staking"}
+contract checks passed.
+```
