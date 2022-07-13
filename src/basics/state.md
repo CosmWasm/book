@@ -207,7 +207,7 @@ That is why the [`addr_validate`](https://docs.rs/cosmwasm-std/1.0.0/cosmwasm_st
 function exits - to check this precondition.
 
 Having data to store, we use the [`save`](https://docs.rs/cw-storage-plus/0.13.4/cw_storage_plus/struct.Item.html#method.save)
-function to write it into the contract state. Note that the first argument of `safe` is
+function to write it into the contract state. Note that the first argument of `save` is
 [`&mut Storage`](https://docs.rs/cosmwasm-std/1.0.0/cosmwasm_std/trait.Storage.html), which is actual blockchain
 storage. As emphasized, the `Item` object stores nothing and is just an accessor. It determines how to store the data
 in the storage given to it. The second argument is the serializable data to be stored.
