@@ -1,0 +1,288 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Interaction with testnet - CosmWasm book</title>
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Guide to building CosmWasm smart contracts">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">Getting started</li><li class="chapter-item expanded "><a href="../setting-up-env.html"><strong aria-hidden="true">1.</strong> Setting up the environment</a></li><li class="chapter-item expanded "><a href="../wasmd-quick-start.html"><strong aria-hidden="true">2.</strong> Quick start with wasmd</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../wasmd-quick-start/testnet.html"><strong aria-hidden="true">2.1.</strong> Testnet setup</a></li><li class="chapter-item expanded "><a href="../wasmd-quick-start/preparing-account.html"><strong aria-hidden="true">2.2.</strong> Preparing account</a></li><li class="chapter-item expanded "><a href="../wasmd-quick-start/testned-interaction.html" class="active"><strong aria-hidden="true">2.3.</strong> Interaction with testnet</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Smart contracts</li><li class="chapter-item expanded "><a href="../basics.html"><strong aria-hidden="true">3.</strong> Basics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../basics/rust-project.html"><strong aria-hidden="true">3.1.</strong> Create a Rust project</a></li><li class="chapter-item expanded "><a href="../basics/entry-points.html"><strong aria-hidden="true">3.2.</strong> Entry points</a></li><li class="chapter-item expanded "><a href="../basics/building-contract.html"><strong aria-hidden="true">3.3.</strong> Building the contract</a></li><li class="chapter-item expanded "><a href="../basics/query.html"><strong aria-hidden="true">3.4.</strong> Creating a query</a></li><li class="chapter-item expanded "><a href="../basics/query-testing.html"><strong aria-hidden="true">3.5.</strong> Testing a query</a></li><li class="chapter-item expanded "><a href="../basics/multitest-intro.html"><strong aria-hidden="true">3.6.</strong> Introducing multitest</a></li><li class="chapter-item expanded "><a href="../basics/state.html"><strong aria-hidden="true">3.7.</strong> Contract state</a></li><li class="chapter-item expanded "><a href="../basics/execute.html"><strong aria-hidden="true">3.8.</strong> Execution messages</a></li><li class="chapter-item expanded "><a href="../basics/events.html"><strong aria-hidden="true">3.9.</strong> Events, attributes and data</a></li><li class="chapter-item expanded "><a href="../basics/funds.html"><strong aria-hidden="true">3.10.</strong> Dealing with funds</a></li><li class="chapter-item expanded "><a href="../basics/good-practices.html"><strong aria-hidden="true">3.11.</strong> Good practices</a></li><li class="chapter-item expanded "><a href="../basics/fp-types.html"><strong aria-hidden="true">3.12.</strong> Floating point types</a></li></ol></li><li class="chapter-item expanded "><a href="../actor-model.html"><strong aria-hidden="true">4.</strong> The Actor Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../actor-model/idea.html"><strong aria-hidden="true">4.1.</strong> The idea</a></li><li class="chapter-item expanded "><a href="../actor-model/actors-in-blockchain.html"><strong aria-hidden="true">4.2.</strong> Actors in the blockchain</a></li><li class="chapter-item expanded "><a href="../actor-model/contract-as-actor.html"><strong aria-hidden="true">4.3.</strong> Contract as an actor</a></li></ol></li><li class="chapter-item expanded "><a href="../cross-contract.html"><strong aria-hidden="true">5.</strong> Cross contract communication</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cross-contract/design.html"><strong aria-hidden="true">5.1.</strong> Design</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> Inter-blockchain communication</div></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../impressum.html">Legal Information</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">CosmWasm book</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="interaction-with-testnet"><a class="header" href="#interaction-with-testnet">Interaction with testnet</a></h1>
+<p>Blockchain interaction is performed using the <a href="https://github.com/CosmWasm/wasmd">wasmd</a> command-line tool.
+To start working with the testnet, we need to upload some smart contract code. For now, we would use an
+example <code>cw4-group</code> from <code>cw-plus</code> repository. Start with cloning it:</p>
+<pre><code>$ git clone git@github.com:CosmWasm/cw-plus.git
+</code></pre>
+<p>Now go to cloned repo and run Rust optimizer on it:</p>
+<pre><code>$ docker run --rm -v &quot;$(pwd)&quot;:/code \
+  --mount type=volume,source=&quot;$(basename &quot;$(pwd)&quot;)_cache&quot;,target=/code/target \
+  --mount type=volume,source=registry_cache,target=/usr/local/cargo/registry \
+  cosmwasm/workspace-optimizer:0.12.6
+</code></pre>
+<p>After a couple of minutes - it can take some for the first time - you should have an <code>artifact</code> directory in
+your repo, and there should be a <code>cw4-group.wasm</code> file being the contract we want to upload. To do so, run -
+note that <code>wallet</code> is name of your key you created in last chapter:</p>
+<pre><code>$ wasmd tx wasm store ./artifacts/cw4_group.wasm --from wallet $TXFLAG -y
+
+...
+logs:
+- events:
+  - attributes:
+    - key: action
+      value: /cosmwasm.wasm.v1.MsgStoreCode
+    - key: module
+      value: wasm
+    - key: sender
+      value: wasm1wukxp2kldxae36rgjz28umqtq792twtxdfe6ux
+    type: message
+  - attributes:
+    - key: code_id
+      value: &quot;12&quot;
+    type: store_code
+...
+</code></pre>
+<p>As a result of execution, you should get a pretty long output with information about what happened. Most of this
+is an ancient cipher (aka base64) with execution metadata, but what we are looking for is the <code>logs</code> section.
+There should be an event called <code>store_code,</code> with a single attribute <code>code_id</code> - its <code>value</code> field is the code id
+of our uploaded contract - 12 in my case.. </p>
+<p>Now, when we have our code uploaded, we can go forward and instantiate a contract to create its new instance:</p>
+<pre><code>$ wasmd tx wasm instantiate 12 \
+  '{ &quot;admin&quot;: &quot;wasm1wukxp2kldxae36rgjz28umqtq792twtxdfe6ux&quot;, &quot;members&quot;: [] }' \
+  --from wallet --label &quot;Group&quot; --no-admin $TXFLAG -y
+
+...
+logs:
+- events:
+  - attributes:
+    - key: _contract_address
+      value: wasm18yn206ypuxay79gjqv6msvd9t2y49w4fz8q7fyenx5aggj0ua37q3h7kwz
+    - key: code_id
+      value: &quot;12&quot;
+    type: instantiate
+  - attributes:
+    - key: action
+      value: /cosmwasm.wasm.v1.MsgInstantiateContract
+    - key: module
+      value: wasm
+    - key: sender
+      value: wasm1wukxp2kldxae36rgjz28umqtq792twtxdfe6ux
+    type: message
+...
+
+</code></pre>
+<p>In this command, the <code>12</code> is the code id - the result of uploading the code. After that, a JSON is an instantiation
+message - I will talk about this later. Just think about it as a message with fields required to create a new contract.
+Every contract has its instantiation message format. For <code>cw4-group</code> there are two fields: <code>admin</code> is an address that
+would be eligible to execute messages on this contract. It is crucial to set it to your address, as we will want to
+learn how to execute contracts. <code>members</code> is an array of addresses that are initial members of the group. We leave it
+empty for now, but you can put any addresses you want there. Here, I put one hint about messages inline into the command
+line, but I often put messages to be sent to the file and embed them via <code>$(cat msg.json)</code>. It is fish syntax, but every
+shell provides a syntax for this.</p>
+<p>Then after the message, there are a couple of additional flags you need to add. The <code>--from wallet</code> is the same as before -
+the name of the key you created earlier. <code>--label &quot;Group&quot;</code> is just an arbitrary name for your contract. An important one
+is a <code>--no-admin</code> flag - keep in mind that it is a different &quot;admin&quot; that we set in the instantiation message. This flag
+is relevant only for contract migrations, but we won't cover them right now, so leave this flag as it is.</p>
+<p>Now, look at the result of the execution. It is very similar to before - much data about the execution process. And again,
+we need to take a closer look into the <code>logs</code> section of the response. This time we are looking at event with type
+<code>instantiate</code>, and the <code>_contract_address</code> attribute - its value is newly created contract address -
+<code>wasm1wukxp2kldxae36rgjz28umqtq792twtxdfe6ux</code> in an example.</p>
+<p>Now let's go forward with querying our contract:</p>
+<pre><code>$ wasmd query wasm contract-state smart \
+  wasm18yn206ypuxay79gjqv6msvd9t2y49w4fz8q7fyenx5aggj0ua37q3h7kwz \
+  '{ &quot;list_members&quot;: {} }'
+
+data:
+  members: []
+</code></pre>
+<p>Remember to change the address (right after <code>smart</code>) with the address of your contract. After that there is another message -
+this time the query message - which is send to contract. This query should return a list of group members. And in fact it
+does - reponse is a single <code>data</code> object with single field - empty members list. That was easy, now let's try the lat thing:
+the execution:</p>
+<pre><code>$ wasmd tx wasm execute \
+  wasm18yn206ypuxay79gjqv6msvd9t2y49w4fz8q7fyenx5aggj0ua37q3h7kwz \
+  '{ &quot;update_members&quot;: { &quot;add&quot;: [{ &quot;addr&quot;: &quot;wasm1wukxp2kldxae36rgjz28umqtq792twtxdfe6ux&quot;, &quot;weight&quot;: 1 }], &quot;remove&quot;: [] } }' \
+  --from wallet $TXFLAG
+</code></pre>
+<p>As you can see execution is very similar to instantiation. The only differences are, that instantiation is called just once,
+and execution needs contract address. It is fair to say, that instantiation is particular case for first execution which
+returns the contrat address. Just like before we can see that we got some log output - you can analyze it to see that
+something probably happened. But to ensure that there is an effect on blockchain, the best way would be to query it once again:</p>
+<pre><code>$ wasmd query wasm contract-state smart \
+  wasm18yn206ypuxay79gjqv6msvd9t2y49w4fz8q7fyenx5aggj0ua37q3h7kwz \
+  '{ &quot;list_members&quot;: {} }'
+
+data:
+  members:
+  - addr: wasm1wukxp2kldxae36rgjz28umqtq792twtxdfe6ux
+    weight: 1
+</code></pre>
+<p>For now, it is everything to know about <code>wasmd</code> basics to be able to play with your simple contracts. We would focus on testing them
+locally, but if you want to check in real life, you have some basics for that. We will take a bit closer look at <code>wasmd</code> later when
+we would talk about the architecture of the actor model defining communication between smart contracts.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../wasmd-quick-start/preparing-account.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="../basics.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../wasmd-quick-start/preparing-account.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="../basics.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+    </body>
+</html>
