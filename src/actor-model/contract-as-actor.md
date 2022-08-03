@@ -12,7 +12,7 @@ visualize how to handle architecture in the actor model.
 ## The state
 
 As before we would start with the state. Previously we were working with
-the `tg4-group` contract, so let's start by looking at its code. Go to
+the `cw4-group` contract, so let's start by looking at its code. Go to
 `cw-plus/contracts/cw4-group/src`. The folder structure should look like
 this:
 
@@ -159,7 +159,7 @@ exactly what to call.
 
 So let's start with the first line. Every entry point is attributed with
 `#[cfg_attr(not(feature = "library"), entry_point)]`. It may look a bit
-scary, but it is just a conditional equivalent of `#[entry_point]` - the
+scary, but it is just a conditional equivalent of `#[entry_point]` -
 the attribute would be there if and only if the "library" feature is not set.
 We do this, to be able to use our contracts as dependencies for other
 contract - the final binary can contain only one copy of each entry point,
@@ -183,7 +183,7 @@ additional arguments provided by blockchain:
   The difference is, that `DepsMut` allows updating state, while `Deps`
   allows only to look at it.
 * `Env` object delivers information about the blockchain state in the
-  moment of execution - its height, the timestamp of executionm and information
+  moment of execution - its height, the timestamp of execution and information
   about the executing contract itself.
 * `MessageInfo` object is information about the contract call - it
   contains the address which sends the message, and the funds send with the
