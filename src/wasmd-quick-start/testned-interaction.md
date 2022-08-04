@@ -22,7 +22,7 @@ your repo, and there should be a `cw4-group.wasm` file being the contract we wan
 note that `wallet` is name of your key you created in last chapter:
 
 ```
-$ wasmd tx wasm store ./artifacts/cw4_group.wasm --from wallet $TXFLAG -y
+$ wasmd tx wasm store ./artifacts/cw4_group.wasm --from wallet $TXFLAG -y -b block
 
 ...
 logs:

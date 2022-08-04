@@ -71,12 +71,14 @@ Then go to `cw4-group` contract and build it:
 
 ```bash
 $ cd cw-plus/contracts/cw4-group
-$ cargo wasm
+$ docker run --rm -v "$(pwd)":/code \
+  --mount type=volume,source="$(basename "$(pwd)")_cache",target=/code/target \
+  --mount type=volume,source=registry_cache,target=/usr/local/cargo/registry \
+  cosmwasm/workspace-optimizer:0.12.6
 ```
 
 Your final binary should be located in the
-`cw-plus/target/wasm32-unknown-unknown/release` folder (`cw-plus` being where you
-cloned your repository).
+`cw-plus/artifacts` folder (`cw-plus` being where you cloned your repository).
 
 ## Contract code
 
@@ -84,7 +86,7 @@ When the contract binary is built, the first interaction with CosmWasm is upload
 it to the blockchain (assuming you have your wasm binary in the working directory):
 
 ```bash
-$ wasmd tx wasm store ./cw4-group.wasm --from wallet $TXFLAG -y
+$ wasmd tx wasm store ./cw4-group.wasm --from wallet $TXFLAG -y -b block
 ```
 
 As a result of such an operation you would get json output like this:
