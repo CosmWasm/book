@@ -22,6 +22,8 @@ become an admin.
 
 It is not the most convoluted voting process, but it would be enough for our purposes.
 
+## Voting process
+
 To achieve this goal, we would create two smart contracts. First, one would be reused contract from the
 [Basics](../basics.md) chapter - it would be an `admin` contract. Additionally, we would add a `voting` contract.
 It would be responsible for managing a single voting process. It would be instantiated by an `admin` contract
@@ -34,7 +36,8 @@ class admin {
     votings: Map<Addr, Addr>
 
     propose_admin(candidate: Addr)
-    add_admin(candidate: Addr)
+    add_admin()
+    leave()
     donate()
 
     admins_list() -> Vec<Addr>
@@ -54,7 +57,7 @@ admin o- voting: manages
 @enduml
 ```
 
-Additionally, here is adding an admin flowchart - assuming there are 5 admins on the contract already, but 2 of them did nothing:
+Here is adding an admin flowchart - assuming there are 5 admins on the contract already, but 2 of them did nothing:
 
 ```plantuml
 @startuml
@@ -73,7 +76,7 @@ votes -> admin: query join_time { admin: "admin2" }
 admin -> votes: resp join_time_resp { joined: ... }
 votes --> votes --: add vote
 
-admin3 -> votes ++: exec accept()
+admin3 -> votes ++: exec accept {}
 votes -> admin: query join_time { admin: "admin3" }
 admin -> votes: resp join_time_resp { joined: ... }
 votes --> votes: add vote
@@ -84,6 +87,8 @@ votes -> admin --: add_admin { addr: new_admin }
 ```
 
 I already put some hints about contracts implementation, but I will not go into them yet.
+
+## Messages forwarding
 
 There is one other thing we want to add - some way to give admins work. The `admin` contract would behave like
 a proxy to call another contract. That means that some other external contract would just set our `admin` instance
@@ -97,7 +102,8 @@ class admin {
     votings: Map<Addr, Addr>
 
     propose_admin(candidate: Addr)
-    add_admin(candidate: Addr)
+    add_admin()
+    leave()
     donate()
     execute(contract: Addr, message: Binary)
 

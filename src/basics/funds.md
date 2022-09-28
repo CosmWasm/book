@@ -1,23 +1,30 @@
 # Dealing with funds
 
-When you hear smart contracts, you think blockchain. When you hear blockchain, you often think of cryptocurrencies.
-It is not the same, but crypto assets, or as we often call them: tokens, are very closely connected to the blockchain.
-CosmWasm has a notion of a native token. Native tokens are assets that are managed by the blockchain core instead of
-smart contracts. Often such assets have some special meaning, like being used for paying
-[gas fees](https://docs.cosmos.network/master/basics/gas-fees.html) or [staking](https://en.wikipedia.org/wiki/Proof_of_stake)
-for consensus algorithm, but can be just arbitrary assets.
+When you hear smart contracts, you think blockchain. When you hear blockchain,
+you often think of cryptocurrencies. It is not the same, but crypto assets, or
+as we often call them: tokens, are very closely connected to the blockchain.
+CosmWasm has a notion of a native token. Native tokens are assets managed by
+the blockchain core instead of smart contracts. Often such assets have some
+special meaning, like being used for paying [gas
+fees](https://docs.cosmos.network/master/basics/gas-fees.html) or
+[staking](https://en.wikipedia.org/wiki/Proof_of_stake) for consensus
+algorithm, but can be just arbitrary assets.
 
-Native tokens are assigned to their owners but can be transferred by their nature. Everything had an address in the blockchain
-is eligible to have its native tokens. As a consequence - tokens can be assigned to smart contracts! Every message sent to
-the smart contract can have some funds sent with it. In this chapter, we will take advantage of that and create a way to
-reward hard work performed by admins. We will create a new message - `Donate` which will be used by anyone to donate some
-funds to admins, divided equally.
+Native tokens are assigned to their owners but can be transferred by their
+nature. Everything had an address in the blockchain is eligible to have its
+native tokens. As a consequence - tokens can be assigned to smart contracts!
+Every message sent to the smart contract can have some funds sent with it. In
+this chapter, we will take advantage of that and create a way to reward hard
+work performed by admins. We will create a new message - `Donate`, which will be
+used by anyone to donate some funds to admins, divided equally.
 
 ## Preparing messages
 
-Traditionally we need to prepare our messages. We need to create a new `ExecuteMsg` variant, but we will also modify the `Instantiate`
-message a bit - we need to have some way of defining the name of a native token we would use for donations. It would be possible to
-allow users to send any tokens they want, but we want to simplify things for now.
+Traditionally we need to prepare our messages. We need to create a new
+`ExecuteMsg` variant, but we will also modify the `Instantiate` message a bit -
+we need to have some way of defining the name of a native token we would use
+for donations. It would be possible to allow users to send any tokens they
+want, but we want to simplify things for now.
 
 ```rust,noplayground
 # use cosmwasm_std::Addr;
@@ -751,13 +758,24 @@ mod exec {
 # }
 ```
 
-Sending the funds to another contract is performed by adding bank messages to the response. The blockchain would expect
-any message which is returned in contract response as a part of an execution. This design is related to an actor model implemented by CosmWasm. The whole actor model will be described in detail later. For now, you can assume this is a way to handle token transfers.
-Before sending tokens to admins, we have to calculate the amount of dotation per admin. It is done by searching funds for an entry describing our donation token and dividing the number of tokens sent by the number of admins. Note that because the integral division
-is always rounding down. As a consequence, it is possible that not all tokens sent as a donation would end up with no admins accounts. Any leftover would be left on our contract account forever. There are plenty of ways of dealing with this issue - figuring out one
-of them would be a great exercise.
+Sending the funds to another contract is performed by adding bank messages to
+the response. The blockchain would expect any message which is returned in
+contract response as a part of an execution. This design is related to an actor
+model implemented by CosmWasm. The whole actor model will be described in
+detail later. For now, you can assume this is a way to handle token transfers.
+Before sending tokens to admins, we have to calculate the amount of dotation
+per admin. It is done by searching funds for an entry describing our donation
+token and dividing the number of tokens sent by the number of admins. Note that
+because the integral division is always rounding down.
 
-Last missing part is updating the `ContractError` - the `must_pay` call returns a `cw_utils::PaymentError` which we can't convert to our error type yet:
+As a consequence, it is possible that not all tokens sent as a donation would
+end up with no admins accounts. Any leftover would be left on our contract
+account forever. There are plenty of ways of dealing with this issue - figuring
+out one of them would be a great exercise.
+
+The last missing part is updating the `ContractError` - the `must_pay` call
+returns a `cw_utils::PaymentError` which we can't convert to our error type
+yet:
 
 ```rust,noplayground
 use cosmwasm_std::{Addr, StdError};
@@ -775,9 +793,14 @@ pub enum ContractError {
 }
 ```
 
-As you can see, to handle incoming funds, I used the utility function - I encourage you to take a look at [its implementation](https://docs.rs/cw-utils/0.13.4/src/cw_utils/payment.rs.html#32-39) - this would give you a good understanding of how incomming funds are structured in `MessageInfo`.
+As you can see, to handle incoming funds, I used the utility function - I
+encourage you to take a look at [its
+implementation](https://docs.rs/cw-utils/0.13.4/src/cw_utils/payment.rs.html#32-39) -
+this would give you a good understanding of how incoming funds are structured
+in `MessageInfo`.
 
-Now it's time to check if the funds are distributed correctly. The way for that is to write a test.
+Now it's time to check if the funds are distributed correctly. The way for that
+is to write a test.
 
 ```rust,noplayground
 # use crate::error::ContractError;
@@ -1196,21 +1219,28 @@ mod tests {
 }
 ```
 
-Fairly simple. I don't like that every balance check is eight lines of code, but it can be improved by
-enclosing this assertion into a separate function, probably with
+Fairly simple. I don't particularly appreciate that every balance check is
+eight lines of code, but it can be improved by enclosing this assertion into a
+separate function, probably with the
 [`#[track_caller]`](https://doc.rust-lang.org/reference/attributes/diagnostics.html#the-track_caller-attribute)
 attribute.
 
-The critical thing to talk about is how `app` creation changed. Because we need some initial tokens on an `user` account,
-instead of using the default constructor, we have to provide it with an initializer function. Unfortunately,
-[`new`](https://docs.rs/cw-multi-test/0.13.4/cw_multi_test/struct.App.html#method.new) documentation is not easy to
-follow - even if a function is not very complicated. What it takes as an argument is a closure with three arguments -
-the [`Router`](https://docs.rs/cw-multi-test/0.13.4/cw_multi_test/struct.Router.html) with all modules supported by
-multi-test, the API object, and the state. This function is called once during contract instantiation. The `router`
-object contains some generic fields - we are interested in `bank` in particular. It has a type of
-[`BankKeeper`](https://docs.rs/cw-multi-test/0.13.4/cw_multi_test/struct.BankKeeper.html), where the
-[`init_balance`](https://docs.rs/cw-multi-test/0.13.4/cw_multi_test/struct.BankKeeper.html#method.init_balance) function
-sits.
+The critical thing to talk about is how `app` creation changed. Because we need
+some initial tokens on a `user` account, instead of using the default
+constructor, we have to provide it with an initializer function. Unfortunately,
+[`new`](https://docs.rs/cw-multi-test/0.13.4/cw_multi_test/struct.App.html#method.new)
+documentation is not easy to follow - even if a function is not very
+complicated. What it takes as an argument is a closure with three arguments -
+the
+[`Router`](https://docs.rs/cw-multi-test/0.13.4/cw_multi_test/struct.Router.html)
+with all modules supported by multi-test, the API object, and the state. This
+function is called once during contract instantiation. The `router` object
+contains some generic fields - we are interested in `bank` in particular. It
+has a type of
+[`BankKeeper`](https://docs.rs/cw-multi-test/0.13.4/cw_multi_test/struct.BankKeeper.html),
+where the
+[`init_balance`](https://docs.rs/cw-multi-test/0.13.4/cw_multi_test/struct.BankKeeper.html#method.init_balance)
+function sits.
 
 ## Plot Twist!
 

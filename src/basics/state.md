@@ -8,7 +8,7 @@ The state would still be static for now - it would be initialized on contract in
 would contain a list of admins who would be eligible to execute messages in the future.
 
 The first thing to do is to update `Cargo.toml` with yet another dependency - the
-[`storage-plus`](https://crates.io/crates/cw-storage-plus) crate with high level bindings for CosmWasm
+[`storage-plus`](https://crates.io/crates/cw-storage-plus) crate with high-level bindings for CosmWasm
 smart contracts state management:
 
 ```toml
@@ -169,7 +169,7 @@ pub fn instantiate(
 # }
 ```
 
-We also need to update the message type on entrypoint in `src/lib.rs`:
+We also need to update the message type on entry point in `src/lib.rs`:
 
 ```rust,noplayground
 # use cosmwasm_std::{entry_point, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult};
@@ -212,7 +212,7 @@ function to write it into the contract state. Note that the first argument of `s
 storage. As emphasized, the `Item` object stores nothing and is just an accessor. It determines how to store the data
 in the storage given to it. The second argument is the serializable data to be stored.
 
-It is a good time to check if regression we have passes - try running our tests:
+It is a good time to check if the regression we have passes - try running our tests:
 ```
 > cargo test
 
@@ -348,9 +348,10 @@ empty JSON to some non-empty message! We can quickly fix it by updating the test
 ```
 
 ## Testing state
-When we have the state initialized, we want a way to test it. 
-We want to provide a query to check if the instantiation affects the state. Just create a simple one listing all admins.
-Start with adding a variant for query message:
+
+When the state is initialized, we want a way to test it. We want to provide a
+query to check if the instantiation affects the state. Just create a simple one
+listing all admins. Start with adding a variant for query message:
 
 ```rust,noplayground
 # use cosmwasm_std::Addr;

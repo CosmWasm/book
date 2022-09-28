@@ -6,14 +6,14 @@ function called "entry point" is called. Unlike native applications, which have 
 `main` entry point, smart contracts have a couple corresponding to different message types:
 `instantiate`, `execute`, `query`, `sudo`, `migrate` and more.
 
-For start, we will go with three basic entry points:
+To start, we will go with three basic entry points:
 
 * `instantiate` which is called once per smart contract lifetime - you can think about it as
   a constructor or initializer of a contract.
 * `execute` for handling messages which are able to modify contract state - they are used to
   perform some actual actions.
 * `query` for handling messages requesting some information from a contract; unlike `execute`,
-  they never can affect any contract state, and they are used just like database queries.
+  they can never affect any contract state, and are used just like database queries.
 
 Go to your `src/lib.rs` file, and start with an `instantiate` entry point:
 
@@ -33,8 +33,8 @@ pub fn instantiate(
 }
 ```
 
-In fact, `instantiate` is the only entry point required for smart contract to be valid. It is not
-very useful in this form, but it is a start. Let's take closer look at the entry point structure.
+In fact, `instantiate` is the only entry point required for a smart contract to be valid. It is not
+very useful in this form, but it is a start. Let's take a closer look at the entry point structure.
 
 First, we start with importing couple of types just for more consistent usage. Then we define our
 entry point. The `instantiate` takes four arguments:
@@ -52,10 +52,10 @@ entry point. The `instantiate` takes four arguments:
 * [`msg: Empty`](https://docs.rs/cosmwasm-std/1.0.0/cosmwasm_std/struct.Empty.html)
   is the message triggering execution itself - for now, it is `Empty` type that
   represents `{}` JSON, but the type of this argument can be anything that is deserializable,
-  and we will pass more complex types here in future.
+  and we will pass more complex types here in the future.
 
 If you are new to the blockchain, those arguments may not have much sense to you, but while
-progressing with this guide, I will explain their usage of them one by one.
+progressing with this guide, I will explain their usage one by one.
 
 Notice an essential attribute decorating our entry point
 [`#[entry_point]`](https://docs.rs/cosmwasm-std/1.0.0/cosmwasm_std/attr.entry_point.html). Its purpose is to

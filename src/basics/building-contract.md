@@ -1,11 +1,12 @@
 # Building the contract
 
-Now it is time to build our contract. We can use a traditional cargo build pipeline for local
-testing purposes: `cargo build` for compiling it and `cargo test` for running all tests (which
-we don't have yet, but we will work on that soon).
+Now it is time to build our contract. We can use a traditional cargo build
+pipeline for local testing purposes: `cargo build` for compiling it and `cargo
+test` for running all tests (which we don't have yet, but we will work on that
+soon).
 
-However, to upload the contract to the blockchain, we need to create a wasm binary. We can do
-it by passing an additional argument to the build command:
+However, we need to create a wasm binary to upload the contract to blockchain.
+We can do it by passing an additional argument to the build command:
 
 ```
 $ cargo build --target wasm32-unknown-unknown --release
@@ -15,12 +16,13 @@ The `--target` argument tells cargo to perform cross-compilation for a given tar
 building a native binary for an OS it is running on - in this case, `wasm32-unknown-unknown`,
 which is a fancy name for Wasm target.
 
-Additionally, I passed the `--release` argument to the command - it is not required, but in
-most cases, debug information is not very useful while running on-chain. It is crucial to reduce
-the uploaded binary size for gas cost minimization. It is worth knowing that there is a [CosmWasm
-Rust Optimizer](https://github.com/CosmWasm/rust-optimizer) tool that takes care of building even
-smaller binaries. For the production, all
-the contracts should be compiled using this tool, but for learning purposes, it is not an essential
+Additionally, I passed the `--release` argument to the command - it is not
+required, but in most cases, debug information is not very useful while running
+on-chain. It is crucial to reduce the uploaded binary size for gas cost
+minimization. It is worth knowing that there is a [CosmWasm Rust
+Optimizer](https://github.com/CosmWasm/rust-optimizer) tool that takes care of
+building even smaller binaries. For production, all the contracts should be
+compiled using this tool, but for learning purposes, it is not an essential
 thing to do.
 
 ## Aliasing build command

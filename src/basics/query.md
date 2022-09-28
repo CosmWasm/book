@@ -89,9 +89,9 @@ model message flow - they cannot trigger any actions nor communicate with other 
 than querying them (which is handled by the `deps` argument). The query always returns plain data, which
 should be presented directly to the querier.
 
-Now take a look at the implementation. Nothing complicated happens in there - we create an object we want
+Now take a look at the implementation. Nothing complicated happens there - we create an object we want
 to return and encode it to the [`Binary`](https://docs.rs/cosmwasm-std/1.0.0/cosmwasm_std/struct.Binary.html)
-type using [`to_binary`](https://docs.rs/cosmwasm-std/1.0.0/cosmwasm_std/fn.to_binary.html) function.
+type using the [`to_binary`](https://docs.rs/cosmwasm-std/1.0.0/cosmwasm_std/fn.to_binary.html) function.
 
 ## Improving the message
 
@@ -148,11 +148,11 @@ default, it would serialize to a JSON with a single field - the name of the fiel
 will be an enum variant (in our case - always "greet" - at least for now), and the
 value of this field would be an object assigned to this enum variant.
 
-Note that our enum does not have any type assigned to the only `Greet` variant. Typically
+Note that our enum has no type assigned to the only `Greet` variant. Typically
 in Rust, we create such variants without additional `{}` after the variant name. Here the
 curly braces have a purpose - without them. The variant would serialize to just a string
 type - so instead of `{ "greet": {} }`, the JSON representation of this variant would be
-`"greet"`. This behavior brings inconsistency in the message schema. It is, in general,
+`"greet"`. This behavior brings inconsistency in the message schema. It is, generally,
 a good habit to always add the `{}` to serde serializable empty enum variants - for better
 JSON representation.
 
@@ -213,29 +213,30 @@ mod query {
 }
 ```
 
-Now it looks much better. Note there are a couple of additional improvements.
-I renamed the query-response type `GreetResp` as I may have different responses
-for different queries. I want the name relates to the variant, not the whole message.
+Now it looks much better. Note there are a couple of additional improvements. I
+renamed the query-response type `GreetResp` as I may have different responses
+for different queries. I want the name to relate only to the variant, not the
+whole message.
 
-Next is enclosing my new function in the module `query`. It makes it easier to avoid
-name collisions - I can have the same variant for queries and execution messages in
-the future, and their handlers would lie in separate namespaces.
+Next is enclosing my new function in the module `query`. It makes it easier to
+avoid name collisions - I can have the same variant for queries and execution
+messages in the future, and their handlers would lie in separate namespaces.
 
-A questionable decision may be returning `StdResult` instead of `GreetResp` from
-`greet` function, as it would never return an error. It is a matter of style, but
-I prefer consistency over the message handler, and the majority of them would have
-failure cases - e.g., when reading the state.
+A questionable decision may be returning `StdResult` instead of `GreetResp`
+from `greet` function, as it would never return an error. It is a matter of
+style, but I prefer consistency over the message handler, and the majority of
+them would have failure cases - e.g. when reading the state.
 
 Also, you might pass `deps` and `env` arguments to all your query handlers for
 consistency. I'm not too fond of this, as it introduces unnecessary boilerplate
-which doesn't read well, but I also agree with the consistency argument - I leave
-it to your judgment.
+which doesn't read well, but I also agree with the consistency argument - I
+leave it to your judgment.
 
 ## Structuring the contract
 
 You can see that our contract is becoming a bit bigger now. About 50 lines are maybe
 not so much, but there are many different entities in a single file, and I think we
-can do better. I already can distinguish three different types of entities in the code:
+can do better. I can already distinguish three different types of entities in the code:
 entry points, messages, and handlers. In most contracts, we would divide them across
 three files. Start with extracting all the messages to `src/msg.rs`:
 
