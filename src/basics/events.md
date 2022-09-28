@@ -1,13 +1,13 @@
-# Events attributes, and data
+# Events attributes and data
 
-The only way our contract can communicate to the world, for now, is by queries. Smart contracts
-are passive - they cannot invoke any action by themselves. They can do it only as a reaction to
-a call. But if you tried playing with `wasmd` you know that execution on the blockchain can return
-some metadata.
+The only way our contract can communicate to the world, for now, is by queries.
+Smart contracts are passive - they cannot invoke any action by themselves. They
+can do it only as a reaction to a call. But if you tried playing with `wasmd`,
+you know that execution on the blockchain can return some metadata.
 
-There are two things the contract can return to the caller: events and data. Events are something
-produced by almost every real-life smart contract. In contrast, data is very rarely used, designed
-for contract-to-contract communication.
+There are two things the contract can return to the caller: events and data.
+Events are something produced by almost every real-life smart contract. In
+contrast, data is rarely used, designed for contract-to-contract communication.
 
 ## Returning events
 
@@ -30,7 +30,6 @@ use cosmwasm_std::{
 # ) -> StdResult<Response> {
 #     let admins: StdResult<Vec<_>> = msg
 #         .admins
-#         .into_iter()
 #         .map(|addr| deps.api.addr_validate(&addr))
 #         .collect();
 #     ADMINS.save(deps.storage, &admins?)?;
@@ -259,8 +258,8 @@ mod exec {
 An event is built from two things: an event type provided in the
 [`new`](https://docs.rs/cosmwasm-std/1.0.0/cosmwasm_std/struct.Event.html#method.new) function and attributes.
 Attributes are added to an event with
-[`add_attributes`](https://docs.rs/cosmwasm-std/1.0.0/cosmwasm_std/struct.Event.html#method.add_attributes)
-or [`add_attribute`](https://docs.rs/cosmwasm-std/1.0.0/cosmwasm_std/struct.Event.html#method.add_attribute)
+the [`add_attributes`](https://docs.rs/cosmwasm-std/1.0.0/cosmwasm_std/struct.Event.html#method.add_attributes)
+or the  [`add_attribute`](https://docs.rs/cosmwasm-std/1.0.0/cosmwasm_std/struct.Event.html#method.add_attribute)
 call. Attributes are key-value pairs. Because an event cannot contain any list, to achieve reporting
 multiple similar actions taking place, we need to emit multiple small events instead of a collective one.
 
@@ -271,7 +270,7 @@ Additionally, there is a possibility to add attributes directly to the response.
 every execution emits a standard "wasm" event. Adding attributes to the result adds them to the default event.
 
 We can check if events are properly emitted by contract. It is not always done, as it is much of boilerplate in
-test, but events are, in general, more like logs - not necessarily considered main contract logic. Let's now write
+test, but events are, generally, more like logs - not necessarily considered main contract logic. Let's now write
 single test checking if execution emits events:
 
 ```rust,noplayground
@@ -583,13 +582,14 @@ mod tests {
 }
 ```
 
-As you can see, testing events on a simple test made it clunky. First of all, every string is heavily
-string-based - a lack of type control makes writing such tests difficult. Also, even types are prefixed
-with "wasm-" - it may not be a huge problem, but it doesn't clarify verification. But the problem is a
-difficulty is how layered is events structure, which makes building them for comparison tricky. Also,
-the "wasm" event is particularly tricky, as it contains an implied attribute - `_contract_addr` containing
-an address called a contract. My general rule is - do not test emitted events unless some logic depends
-on them.
+As you can see, testing events on a simple test made it clunky. First of all,
+every string is heavily string-based - a lack of type control makes writing
+such tests difficult. Also, even types are prefixed with "wasm-" - it may not
+be a huge problem, but it doesn't clarify verification. But the problem is, how
+layered events structure are, which makes verifying them tricky. Also, the
+"wasm" event is particularly tricky, as it contains an implied attribute -
+`_contract_addr` containing an address called a contract. My general rule is -
+do not test emitted events unless some logic depends on them.
 
 ## Data
 

@@ -1,6 +1,6 @@
 # Preparing account
 
-The first thing you need to interact with testnet is a valid account. Start with adding a new key to `wasmd` configuration: 
+The first thing you need to interact with testnet is a valid account. Start with adding a new key to the `wasmd` configuration: 
 
 ```
 $ wasmd keys add wallet
@@ -12,7 +12,7 @@ $ wasmd keys add wallet
 ...
 ```
 
-As a result of this command, you got information about just the prepared account. Two things are relevant here:
+As a result of this command, you get information about just the prepared account. Two things are relevant here:
 * address is your identity in the blockchain
 * mnemonic (omitted by myself in the example) is 12 words that allow you to recreate an account so you can use it, for
 example, from a different machine
@@ -20,8 +20,8 @@ example, from a different machine
 For testing purposes, storing the mnemonic is probably never necessary, but it is critical information to keep safe in the real world.
 
 Now, when you create an account, you have to initialize it with some tokens - you will need them to pay for any interaction with
-blockchain - we call this the "gas cost" of an operation. Usually, you would need to buy those tokens somehow, but in testnets
-you can typically create as many tokens as you want on your accounts. to do so on malaga network, invoke:
+blockchain - we call this the "gas cost" of an operation. Usually, you would need to buy those tokens somehow, but in testnets,
+you can typically create as many tokens as you want on your accounts. To do so on malaga network, invoke:
 
 ```
 $ curl -X POST --header "Content-Type: application/json" \

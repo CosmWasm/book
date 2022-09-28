@@ -4,13 +4,14 @@ All the relevant basics are covered. Now let's talk about some good practices.
 
 ## JSON renaming
 
-Due to Rust style, all the message variants we create are spelled in a
+Due to Rust style, all our message variants are spelled in a
 [camel-case](https://en.wikipedia.org/wiki/CamelCase). It is standard practice,
-but it has a drawback - all messages are serialized and deserialized by serde using those variant names. The
-problem is that it is more common to use [snake cases](https://en.wikipedia.org/wiki/Snake_case) for field
-names in the JSON world. Hopefully, there is an
-effortless way to tell serde, to change the names casing for serialization purposes. Let's update our messages
-with a `#[serde]` attribute:
+but it has a drawback - all messages are serialized and deserialized by serde
+using those variant names. The problem is that it is more common to use [snake
+cases](https://en.wikipedia.org/wiki/Snake_case) for field names in the JSON
+world. Hopefully, there is an effortless way to tell serde, to change the names
+casing for serialization purposes. Let's update our messages with a `#[serde]`
+attribute:
 
 ```rust,noplayground
 use cosmwasm_std::Addr;
@@ -81,7 +82,7 @@ cosmwasm-schema = { version = "1.0.0" }
 There is one additional change in this file - in `crate-type` I added "rlib". "cdylib" crates cannot be used as typical
 Rust dependencies. As a consequence, it is impossible to create examples for such crates.
 
-Now go back to `src/msg.rs` and add new derive for all messages:
+Now go back to `src/msg.rs` and add a new derive for all messages:
 
 ```rust,noplayground
 # use cosmwasm_std::Addr;
@@ -123,8 +124,8 @@ pub enum QueryMsg {
 }
 ```
 
-We also want to make `msg` module public and accessible by crates depending on our contract (in this case - for
-schema example). Update a `src/lib.rs`:
+We also want to make the `msg` module public and accessible by crates depending
+on our contract (in this case - for schema example). Update a `src/lib.rs`:
 
 ```rust,noplayground
 # use cosmwasm_std::{entry_point, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult};
@@ -166,7 +167,7 @@ I changed the visibility of all modules - as our crate can now be used as a depe
 If someone would like to do so, he may need access to handlers or state. 
 
 The next step is to create a tool generating actual schemas. We will do it by creating
-an example application. Create new `examples/schema.rs` file:
+an example application. Create a new `examples/schema.rs` file:
 
 ```rust,noplayground
 use std::env::current_dir;
@@ -226,7 +227,7 @@ schema = "run --example schema"
 
 Now you can generate a schema with a simple `cargo schema`.
 
-## Disabling entry points for libraties
+## Disabling entry points for libraries
 
 Since we added the "rlib" target for the contract, it is, as mentioned before, useable as a dependency.
 The problem is that the contract depended on ours would have Wasm entry points generated twice - once
@@ -281,7 +282,7 @@ pub fn query(deps: Deps, env: Env, msg: QueryMsg) -> StdResult<Binary> {
 ```
 
 The [`cfg_attr`](https://doc.rust-lang.org/reference/conditional-compilation.html#the-cfg_attr-attribute) attribute is
-a conditional compilation attribute, similar to `cfg` we used before for the test. It expands to the given attribute if
+a conditional compilation attribute, similar to the `cfg` we used before for the test. It expands to the given attribute if
 the condition expands to true. In our case - it would expand to nothing if the feature "library" is enabled, or it
 would expand just to `#[entry_point]` in another case.
 

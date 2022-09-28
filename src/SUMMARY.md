@@ -33,7 +33,6 @@
 
 - [Cross contract communication](cross-contract.md)
     - [Design](cross-contract/design.md)
-    - [Fixing `admin` contract](cross-contract/fixing-admin.md)
 
 - [Inter-blockchain communication]()
 
