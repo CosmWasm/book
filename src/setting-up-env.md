@@ -80,7 +80,7 @@ of the root repo directory - not in the contract directory itself! Now you can c
 validation passes:
 
 ```
-cw-plus $ check_contract /target/wasm32-unknown-unknown/release/cw1_whitelist.wasm
+cw-plus $ cosmwasm-check ../../target/wasm32-unknown-unknown/release/cw1_whitelist.wasm
 Supported features: {"stargate", "iterator", "staking"}
 contract checks passed.
 ```
