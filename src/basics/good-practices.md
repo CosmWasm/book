@@ -68,15 +68,15 @@ edition = "2021"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-cosmwasm-std = { version = "1.0.0-beta8", features = ["staking"] }
+cosmwasm-std = { version = "1.1.4", features = ["staking"] }
 serde = { version = "1.0.103", default-features = false, features = ["derive"] }
-cw-storage-plus = "0.13.4"
+cw-storage-plus = "0.15.1"
 thiserror = "1"
 schemars = "0.8.1"
+cosmwasm-schema = "1.1.4"
 
 [dev-dependencies]
 cw-multi-test = "0.13.4"
-cosmwasm-schema = { version = "1.0.0" }
 ```
 
 There is one additional change in this file - in `crate-type` I added "rlib". "cdylib" crates cannot be used as typical
@@ -124,7 +124,92 @@ pub enum QueryMsg {
 }
 ```
 
-We also want to make the `msg` module public and accessible by crates depending
+You may argue that all those derives look slightly clunky, and I agree.
+Hopefully, the
+[`cosmwasm-schema`](https://docs.rs/cosmwasm-schema/1.1.4/cosmwasm_schema/#)
+crate delivers a utility `cw_serde` macro, which we can use to reduce a
+boilerplate:
+
+```rust,noplayground
+# use cosmwasm_std::Addr;
+use cosmwasm_schema::cw_serde
+
+#[cw_serde]
+pub struct InstantiateMsg {
+    pub admins: Vec<String>,
+    pub donation_denom: String,
+}
+
+#[cw_serde]
+pub enum ExecuteMsg {
+    AddMembers { admins: Vec<String> },
+    Leave {},
+    Donate {},
+}
+
+#[cw_serde]
+pub struct GreetResp {
+    pub message: String,
+}
+
+#[cw_serde]
+pub struct AdminsListResp {
+    pub admins: Vec<Addr>,
+}
+
+#[cw_serde]
+pub enum QueryMsg {
+    Greet {},
+    AdminsList {},
+}
+```
+
+Additionally, we have to derive the additional `QueryResponses` trait for our
+query message to correlate the message variants with responses we would
+generate for them:
+
+```rust,noplayground
+# use cosmwasm_std::Addr;
+use cosmwasm_schema::{cw_serde, QueryResponses}
+
+# #[cw_serde]
+# pub struct InstantiateMsg {
+#     pub admins: Vec<String>,
+#     pub donation_denom: String,
+# }
+# 
+# #[cw_serde]
+# pub enum ExecuteMsg {
+#     AddMembers { admins: Vec<String> },
+#     Leave {},
+#     Donate {},
+# }
+# 
+# #[cw_serde]
+# pub struct GreetResp {
+#     pub message: String,
+# }
+# 
+# #[cw_serde]
+# pub struct AdminsListResp {
+#     pub admins: Vec<Addr>,
+# }
+# 
+#[cw_serde]
+#[derive(QueryResponses)]
+pub enum QueryMsg {
+    #[returns(GreetResp)]
+    Greet {},
+    #[returns(AdminsListResp)]
+    AdminsList {},
+}
+```
+
+The `QueryResponses` is a trait that requires the `#[returns(...)]` attribute
+to all your query variants to generate additional information about the
+query-response relationship.
+
+Now, we want to make the `msg` module public and accessible by crates depending
 on our contract (in this case - for schema example). Update a `src/lib.rs`:
 
 ```rust,noplayground
@@ -167,65 +252,51 @@ I changed the visibility of all modules - as our crate can now be used as a depe
 If someone would like to do so, he may need access to handlers or state. 
 
 The next step is to create a tool generating actual schemas. We will do it by creating
-an example application. Create a new `examples/schema.rs` file:
+an binary in our crate. Create a new `bin/schema.rs` file:
 
 ```rust,noplayground
-use std::env::current_dir;
-use std::fs::create_dir_all;
-
-use cosmwasm_schema::{
-    export_schema, export_schema_with_title,
-    remove_schemas, schema_for
-};
-
-use contract::msg::*;
+use contract::msg::{ExecuteMsg, InstantiateMsg, QueryMsg};
+use cosmwasm_schema::write_api;
 
 fn main() {
-    let mut out_dir = current_dir().unwrap();
-    out_dir.push("schema");
-    create_dir_all(&out_dir).unwrap();
-    remove_schemas(&out_dir).unwrap();
-
-    export_schema_with_title(
-        &schema_for!(InstantiateMsg), &out_dir, "InstantiateMsg"
-    );
-    export_schema_with_title(
-        &schema_for!(ExecuteMsg), &out_dir, "ExecuteMsg"
-    );
-    export_schema_with_title(
-        &schema_for!(QueryMsg), &out_dir, "QueryMsg"
-    );
-    export_schema(&schema_for!(AdminsListResp), &out_dir);
-    export_schema(&schema_for!(GreetResp), &out_dir);
+    write_api! {
+        instantiate: InstantiateMsg,
+        execute: ExecuteMsg,
+        query: QueryMsg
+    }
 }
 ```
 
-Now we can generate our schemas:
+Cargo is smart enough to recognize files in `src/bin` directory as utility
+binaries for the crate. Now we can generate our schemas:
 
 ```
-$ cargo run --example schema
-
-...
-Created /home/hashed/confio/git/book/examples/03-basics/schema/instantiate_msg.json
-Created /home/hashed/confio/git/book/examples/03-basics/schema/execute_msg.json
-Created /home/hashed/confio/git/book/examples/03-basics/schema/query_msg.json
-Created /home/hashed/confio/git/book/examples/03-basics/schema/admins_list_resp.json
-Created /home/hashed/confio/git/book/examples/03-basics/schema/greet_resp.json
+$ cargo run schema
+    Finished dev [unoptimized + debuginfo] target(s) in 0.52s
+     Running `target/debug/schema schema`
+Removing "/home/hashed/confio/git/book/examples/03-basics/schema/contract.json" …
+Exported the full API as /home/hashed/confio/git/book/examples/03-basics/schema/contract.json
 ```
 
-I encourage you to go to generated files to see what the schema looks like.
+I encourage you to go to generated file to see what the schema looks like.
 
-Now it's time to last touch - we can add an alias for schema generation. Go to `.cargo/config`
-and add new entry:
+
+The problem is that, unfortunately, creating this binary makes our project fail
+to compile on the Wasm target - which is, in the end, the most important one.
+Hopefully, we don't need to build the schema binary for the Wasm target - let's
+align the `.cargo/config` file:
 
 ```toml
 [alias]
-wasm = "build --target wasm32-unknown-unknown --release"
-wasm-debug = "build --target wasm32-unknown-unknown"
-schema = "run --example schema"
+wasm = "build --target wasm32-unknown-unknown --release --lib"
+wasm-debug = "build --target wasm32-unknown-unknown --lib"
+schema = "run schema"
 ```
 
-Now you can generate a schema with a simple `cargo schema`.
+The `--lib` flag added to `wasm` cargo aliases tells the toolchain to build
+only the library target - it would skip building any binaries. Additionally, I
+added the convenience `schema` alias so that one can generate schema calling
+simply `cargo schema`.
 
 ## Disabling entry points for libraries
 

@@ -1,2 +1,3 @@
 book
-**/target/
+examples/**/target/
+examples/**/schema/
