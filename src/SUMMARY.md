@@ -33,6 +33,7 @@
 
 - [Cross contract communication](cross-contract.md)
     - [Design](cross-contract/design.md)
+    - [Cleaning up]()
 
 - [Inter-blockchain communication]()
 
