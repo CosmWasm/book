@@ -16,6 +16,8 @@ jobs:
         mkdir mdbook
         curl -sSL https://github.com/rust-lang/mdBook/releases/download/v0.4.14/mdbook-v0.4.14-x86_64-unknown-linux-gnu.tar.gz | tar -xz --directory=./mdbook
         echo `pwd`/mdbook >> $GITHUB_PATH
+    - name: Update dependencies
+      run: sudo apt update && sudo apt upgrade -y
     - name: Install plantuml
       run: sudo apt-get install plantuml
     - name: Install Rust
