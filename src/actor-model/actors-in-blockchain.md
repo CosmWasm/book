@@ -195,7 +195,7 @@ $ wasmd keys add wallet3
 You can always check your address:
 
 ```bash
-$ wasmd keys show walle
+$ wasmd keys show wallet
 - name: wallet
   type: local
   address: wasm1um59mldkdj8ayl5gknp9pnrdlw33v40sh5l4nx

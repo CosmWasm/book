@@ -93,7 +93,7 @@ corresponds to the `update_admin` message we were sending previously.
 Note, that all the messages are attributed with
 `#[derive(Serialize, Deserialize)]`, and
 `#[serde(rename_all="snake_case")]`. Those attributes come from
-the [serde](https://serde.rs/) create, and they help us with
+the [serde](https://serde.rs/) crate, and they help us with
 deserialization of them (and serialization in case of sending
 them to other contracts). The second one is not required,
 but it allows us to keep a camel-case style in our Rust code,
