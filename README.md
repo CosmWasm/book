@@ -1,4 +1,4 @@
-# The CosmWams Smart Contracts Book
+# The CosmWasm Smart Contracts Book
 
 The book about writing Smart Contracts for CosmWasm using Rust
 
