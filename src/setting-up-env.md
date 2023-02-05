@@ -33,11 +33,9 @@ to install [docker](https://www.docker.com/). To minimize your contract sizes,
 it will be required to run CosmWasm Rust Optimizer; without that, more complex
 contracts might exceed a size limit.
 
-## Check contract utility
+## cosmwasm-check utility
 
-An additional helpful tool for building smart contracts is the `check_contract`
-utility. It allows you to check if the wasm binary is a proper smart contract
-ready to upload into the blockchain. You can install it using cargo:
+An additional helpful tool for building smart contracts is the `cosmwasm-check`[utility](https://github.com/CosmWasm/cosmwasm/tree/main/packages/check). It allows you to check if the wasm binary is a proper smart contract ready to upload into the blockchain. You can install it using cargo:
 
 ```
 $ cargo install cosmwasm-check
@@ -67,8 +65,7 @@ You should see that everything in the repository gets compiled, and all tests pa
 `cw-plus` is a great place to find example contracts - look for them in `contracts` directory. The
 repository is maintained by CosmWasm creators, so contracts in there should follow good practices.
 
-To verify the `check_contract` utility, first, you need to build a smart contract. Go to some contract
-directory, for example, `contracts/cw1-whitelist`, and call `cargo wasm`:
+To verify the `cosmwasm-check` utility, first, you need to build a smart contract. Go to some contract directory, for example, `contracts/cw1-whitelist`, and call `cargo wasm`:
 
 ```
 cw-plus $ cd contracts/cw1-whitelist
