@@ -150,7 +150,7 @@ value of this field would be an object assigned to this enum variant.
 
 Note that our enum has no type assigned to the only `Greet` variant. Typically
 in Rust, we create such variants without additional `{}` after the variant name. Here the
-curly braces have a purpose - without them. The variant would serialize to just a string
+curly braces have a purpose - without them, the variant would serialize to just a string
 type - so instead of `{ "greet": {} }`, the JSON representation of this variant would be
 `"greet"`. This behavior brings inconsistency in the message schema. It is, generally,
 a good habit to always add the `{}` to serde serializable empty enum variants - for better
