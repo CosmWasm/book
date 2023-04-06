@@ -47,7 +47,7 @@ If the installation succeeds, you should be able to execute the utility from you
 
 ```
 $ cosmwasm-check --version
-Contract checking 1.1.0
+Contract checking 1.2.3
 ```
 
 ## Verifying the installation
@@ -80,7 +80,10 @@ of the root repo directory - not in the contract directory itself! Now you can c
 validation passes:
 
 ```
-cw-plus $ cosmwasm-check ../../target/wasm32-unknown-unknown/release/cw1_whitelist.wasm
-Supported features: {"stargate", "iterator", "staking"}
-contract checks passed.
+cw-plus/contracts/cw1-whitelist $ cosmwasm-check ../../target/wasm32-unknown-unknown/release/cw1_whitelist.wasm
+Available capabilities: {"iterator", "cosmwasm_1_1", "cosmwasm_1_2", "stargate", "staking"}
+
+../../target/wasm32-unknown-unknown/release/cw1_whitelist.wasm: pass
+
+All contracts (1) passed checks!
 ```
