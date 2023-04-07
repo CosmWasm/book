@@ -50,7 +50,7 @@ pointing to the contract which owns them (so no other contract can alter them in
 removing the prefixes, the single contract state is a smaller key-value pair.
 
 `storage-plus` handles more complex state structures by additionally prefixing items keys intelligently. For now,
-we just used the simplest storage entity - and
+we just used the simplest storage entity - an
 [`Item<_>`](https://docs.rs/cw-storage-plus/0.13.4/cw_storage_plus/struct.Item.html), which holds a single optional
 value of a given type -
 `Vec<Addr>` in this case. And what would be a key to this item in the storage? It doesn't matter to us - it would
