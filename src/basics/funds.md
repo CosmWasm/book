@@ -763,7 +763,7 @@ the response. The blockchain would expect any message which is returned in
 contract response as a part of an execution. This design is related to an actor
 model implemented by CosmWasm. The whole actor model will be described in
 detail later. For now, you can assume this is a way to handle token transfers.
-Before sending tokens to admins, we have to calculate the amount of dotation
+Before sending tokens to admins, we have to calculate the amount of donation
 per admin. It is done by searching funds for an entry describing our donation
 token and dividing the number of tokens sent by the number of admins. Note that
 because the integral division is always rounding down.
