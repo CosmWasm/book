@@ -38,6 +38,32 @@ use cw_storage_plus::Item;
 pub const ADMINS: Item<Vec<Addr>> = Item::new("admins");
 ```
 
+And make sure we declare the module in `src/lib.rs`:
+
+```rust,noplayground
+# use cosmwasm_std::{
+#     entry_point, Binary, Deps, DepsMut, Empty, Env, MessageInfo, Response, StdResult,
+# };
+# 
+# mod contract;
+# mod msg;
+mod state;
+#
+# #[entry_point]
+# pub fn instantiate(deps: DepsMut, env: Env, info: MessageInfo, msg: Empty)
+#   -> StdResult<Response>
+# {
+#     contract::instantiate(deps, env, info, msg)
+# }
+#
+# #[entry_point]
+# pub fn query(deps: Deps, env: Env, msg: msg::QueryMsg)
+#   -> StdResult<Binary>
+# {
+#     contract::query(deps, env, msg)
+# }
+```
+
 The new thing we have here is the `ADMINS` constant of type `Item<Vec<Addr>>`. You could ask an excellent
 question here - how is the state constant? How do I modify it if it is a constant value?
 
@@ -79,11 +105,12 @@ pub struct InstantiateMsg {
 # }
 ```
 
-Now go forward to instantiate the entry point, and initialize our state to whatever we got in the instantiation message:
+Now go forward to instantiate the entry point in `src/contract.rs`, and initialize our state to whatever we got in the instantiation message:
 
 ```rust,noplayground
 # use crate::msg::{GreetResp, InstantiateMsg, QueryMsg};
-# use crate::state::ADMINS;
+use crate::state::ADMINS;
+// --snip--
 # use cosmwasm_std::{
 #     to_binary, Binary, Deps, DepsMut, Empty, Env, MessageInfo, Response, StdResult,
 # };
@@ -173,7 +200,8 @@ We also need to update the message type on entry point in `src/lib.rs`:
 
 ```rust,noplayground
 # use cosmwasm_std::{entry_point, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult};
-# use msg::InstantiateMsg;
+use msg::InstantiateMsg;
+// --snip--
 # 
 # mod contract;
 # mod msg;
