@@ -7,12 +7,7 @@ The story is short: you cannot use floating-point types in smart contracts. Neve
 does not implement floating-point Wasm instructions, even such basics as `F32Load`. The reasoning is simple: they are
 not safe to work with in the blockchain world.
 
-The biggest problem is that contract will compile, but uploading it to the blockchain would fail with an error message
-claiming there is a floating-point operation in the contract. A tool that verifies if the contract is valid (it does
-not contain any fp operations but also has all needed entry points and so on) is called
-[`check_contract`](https://github.com/CosmWasm/cosmwasm/blob/main/packages/vm/examples/check_contract.rs). It is implemented
-as an example on `cosmwasm` vm, but I encourage you to build it and put the binary available from your `PATH` so you can
-use it easily.
+The biggest problem is that contract will compile, but uploading it to the blockchain would fail with an error message claiming there is a floating-point operation in the contract. A tool that verifies if the contract is valid (it does not contain any fp operations but also has all needed entry points and so on) is called `cosmwasm-check` [utility](https://github.com/CosmWasm/cosmwasm/tree/main/packages/check).
 
 This limitation has two implications. First, you always have to use decimal of fixed-point arithmetic in your contracts.
 It is not a problem, considering that `cosmwasm-std` provides you with the

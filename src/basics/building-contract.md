@@ -45,7 +45,7 @@ Now, building your Wasm binary is as easy as executing `cargo wasm`. We also add
 ## Checking contract validity
 
 When the contract is built, the last step is to ensure it is a valid CosmWasm contract is to call
-`check_contract` on it:
+`cosmwasm-check` on it:
 
 ```
 $ cargo wasm

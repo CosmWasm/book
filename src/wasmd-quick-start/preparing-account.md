@@ -1,6 +1,6 @@
 # Preparing account
 
-The first thing you need to interact with testnet is a valid account. Start with adding a new key to the `wasmd` configuration: 
+The first thing you need to interact with the testnet is a valid account. Start with adding a new key to the `wasmd` configuration: 
 
 ```
 $ wasmd keys add wallet
