@@ -379,7 +379,7 @@ empty JSON to some non-empty message! We can quickly fix it by updating the test
 
 When the state is initialized, we want a way to test it. We want to provide a
 query to check if the instantiation affects the state. Just create a simple one
-listing all admins. Start with adding a variant for query message:
+listing all admins. Start with adding a variant for query message and a corresponding response message in `src/msg.rs`. We'll call the variant `AdminsList`, the response `AdminsListResp`, and have it return a vector of `cosmwasm_std::Addr`:
 
 ```rust,noplayground
 # use cosmwasm_std::Addr;
@@ -396,16 +396,21 @@ listing all admins. Start with adding a variant for query message:
 # }
 # 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
+pub struct AdminsListResp  {
+    pub admins: Vec<Addr>,
+}
+
+[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub enum QueryMsg {
     Greet {},
     AdminsList {},
 }
 ```
 
-And implement it:
+And implement it in `src/contract.rs`:
 
 ```rust,noplayground
-# use crate::msg::{AdminsListResp, GreetResp, InstantiateMsg, QueryMsg};
+use crate::msg::{AdminsListResp, GreetResp, InstantiateMsg, QueryMsg};
 # use crate::state::ADMINS;
 # use cosmwasm_std::{
 #     to_binary, Binary, Deps, DepsMut, Empty, Env, MessageInfo, Response, StdResult,
@@ -502,7 +507,7 @@ mod query {
 Now when we have the tools to test the instantiation, let's write a test case:
 
 ```rust,noplayground
-# use crate::msg::{AdminsListResp, GreetResp, InstantiateMsg, QueryMsg};
+use crate::msg::{AdminsListResp, GreetResp, InstantiateMsg, QueryMsg};
 # use crate::state::ADMINS;
 # use cosmwasm_std::{
 #     to_binary, Binary, Deps, DepsMut, Empty, Env, MessageInfo, Response, StdResult,
