@@ -143,7 +143,8 @@ pub fn query(_deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
 }
 ```
 
-Now we introduced a proper message type for the query message. It is an enum, and by
+Now we introduced a proper message type for the query message. It is an
+[enum](https://doc.rust-lang.org/book/ch06-01-defining-an-enum.html), and by
 default, it would serialize to a JSON with a single field - the name of the field
 will be an enum variant (in our case - always "greet" - at least for now), and the
 value of this field would be an object assigned to this enum variant.
