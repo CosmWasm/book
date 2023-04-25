@@ -51,6 +51,7 @@ When the contract is built, the last step is to ensure it is a valid CosmWasm co
 $ cargo wasm
 ...
 $ cosmwasm-check ./target/wasm32-unknown-unknown/release/contract.wasm
-Supported features: {"iterator", "staking", "stargate"}
-contract checks passed.
+Available capabilities: {"cosmwasm_1_1", "staking", "stargate", "iterator", "cosmwasm_1_2"}
+
+./target/wasm32-unknown-unknown/release/contract.wasm: pass
 ```
