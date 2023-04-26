@@ -14,7 +14,7 @@ pub fn instantiate(
 ) -> StdResult<Response> {
     for addr in msg.admins {
         let admin = deps.api.addr_validate(&addr)?;
-        ADMINS.save(deps.storage, admin, &Empty {})?;
+        ADMINS.save(deps.storage, &admin, &Empty {})?;
     }
     DONATION_DENOM.save(deps.storage, &msg.donation_denom)?;
 
@@ -47,7 +47,7 @@ mod exec {
     use super::*;
 
     pub fn leave(deps: DepsMut, info: MessageInfo) -> StdResult<Response> {
-        ADMINS.remove(deps.storage, info.sender.clone());
+        ADMINS.remove(deps.storage, &info.sender);
 
         let resp = Response::new()
             .add_attribute("action", "leave")
