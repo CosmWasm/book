@@ -1,5 +1,5 @@
 use cosmwasm_schema::{cw_serde, QueryResponses};
-use cosmwasm_std::Addr;
+use cosmwasm_std::{Addr, Timestamp};
 
 #[cw_serde]
 pub struct InstantiateMsg {
@@ -19,8 +19,16 @@ pub struct AdminsListResp {
 }
 
 #[cw_serde]
+pub struct JoinTimeResp {
+    pub joined: Timestamp,
+}
+
+#[cw_serde]
 #[derive(QueryResponses)]
 pub enum QueryMsg {
     #[returns(AdminsListResp)]
     AdminsList {},
+
+    #[returns(JoinTimeResp)]
+    JoinTime { admin: String },
 }

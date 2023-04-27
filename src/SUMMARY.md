@@ -35,6 +35,7 @@
   - [Design](cross-contract/design.md)
   - [Fixing admin contract](cross-contract/fixing-admin.md)
   - [Map storage](cross-contract/map-storage.md)
+  - [Working with time](cross-contract/working-with-time.md)
 
 - [Inter-blockchain communication]()
 
