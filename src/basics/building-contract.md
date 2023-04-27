@@ -28,7 +28,7 @@ thing to do.
 ## Aliasing build command
 
 Now I can see you are disappointed in building your contracts with some overcomplicated command
-instead of simple `cargo build`. Hopefully, it is not the case. The common practice is to alias
+instead of simple `cargo build`. Fortunately, it is not the case. The common practice is to alias
 the building command to make it as simple as building a native app.
 
 Let's create the `.cargo/config` file in your contract project directory with the following content:

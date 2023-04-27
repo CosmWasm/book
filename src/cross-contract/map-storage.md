@@ -240,7 +240,7 @@ pub fn donate(deps: DepsMut, info: MessageInfo) -> Result<Response, ContractErro
 
 If I had to write a contract like this, and this `donate` would be a critical,
 often called flow, I would advocate for going for an `Item<Vec<Addr>>` here.
-Hopefully, it is not the case - the distribution does not have to be linear in
+Fortunately, it is not the case - the distribution does not have to be linear in
 complexity! It might sound a bit crazy, as we have to iterate over all receivers
 to distribute funds, but this is not true - there is a pretty nice way to do so
 in constant time, which I will describe later in the book. For now, we will

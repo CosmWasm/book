@@ -865,7 +865,7 @@ call. Now, as we have an error value, we can check if it matches what we
 expected with an `assert_eq!`. There is a slight complication - the error
 returned from `execute_contract` is an
 [`anyhow::Error`](https://docs.rs/anyhow/1.0.57/anyhow/struct.Error.html)
-error, but we expect it to be a `ContractError`. Hopefully, as I said before,
+error, but we expect it to be a `ContractError`. Fortunately, as I said before,
 `anyhow` errors can recover their original type using the
 [`downcast`](https://docs.rs/anyhow/1.0.57/anyhow/struct.Error.html#method.downcast)
 function. The `unwrap` right after it is needed because downcasting may fail.

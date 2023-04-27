@@ -171,7 +171,7 @@ mod tests {
 ```
 
 We needed to produce two entities for the `query` functions: the `deps` and `env` instances.
-Hopefully, `cosmwasm-std` provides utilities for testing those -
+Fortunately, `cosmwasm-std` provides utilities for testing those -
 [`mock_dependencies`](https://docs.rs/cosmwasm-std/1.0.0/cosmwasm_std/testing/fn.mock_dependencies.html)
 and [`mock_env`](https://docs.rs/cosmwasm-std/1.0.0/cosmwasm_std/testing/fn.mock_env.html)
 functions.

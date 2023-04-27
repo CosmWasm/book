@@ -9,7 +9,7 @@ Due to Rust style, all our message variants are spelled in a
 but it has a drawback - all messages are serialized and deserialized by serde
 using those variant names. The problem is that it is more common to use [snake
 cases](https://en.wikipedia.org/wiki/Snake_case) for field names in the JSON
-world. Hopefully, there is an effortless way to tell serde, to change the names
+world. Fortunately, there is an effortless way to tell serde, to change the names
 casing for serialization purposes. Let's update our messages with a `#[serde]`
 attribute:
 
@@ -125,7 +125,7 @@ pub enum QueryMsg {
 ```
 
 You may argue that all those derives look slightly clunky, and I agree.
-Hopefully, the
+Fortunately, the
 [`cosmwasm-schema`](https://docs.rs/cosmwasm-schema/1.1.4/cosmwasm_schema/#)
 crate delivers a utility `cw_serde` macro, which we can use to reduce a
 boilerplate:
@@ -283,7 +283,7 @@ I encourage you to go to generated file to see what the schema looks like.
 
 The problem is that, unfortunately, creating this binary makes our project fail
 to compile on the Wasm target - which is, in the end, the most important one.
-Hopefully, we don't need to build the schema binary for the Wasm target - let's
+Fortunately, we don't need to build the schema binary for the Wasm target - let's
 align the `.cargo/config` file:
 
 ```toml
