@@ -1,20 +1,20 @@
 use crate::error::ContractError;
-use crate::msg::{AdminsListResp, ExecuteMsg, InstantiateMsg, QueryMsg};
+use crate::msg::{AdminsListResp, ExecuteMsg, InstantiateMsg, JoinTimeResp, QueryMsg};
 use crate::state::{ADMINS, DONATION_DENOM};
 use cosmwasm_std::{
-    coins, to_binary, BankMsg, Binary, Deps, DepsMut, Empty, Env, MessageInfo, Order, Response,
+    coins, to_binary, Addr, BankMsg, Binary, Deps, DepsMut, Env, MessageInfo, Order, Response,
     StdResult,
 };
 
 pub fn instantiate(
     deps: DepsMut,
-    _env: Env,
+    env: Env,
     _info: MessageInfo,
     msg: InstantiateMsg,
 ) -> StdResult<Response> {
     for addr in msg.admins {
         let admin = deps.api.addr_validate(&addr)?;
-        ADMINS.save(deps.storage, &admin, &Empty {})?;
+        ADMINS.save(deps.storage, &admin, &env.block.time)?;
     }
     DONATION_DENOM.save(deps.storage, &msg.donation_denom)?;
 
@@ -26,6 +26,7 @@ pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
 
     match msg {
         AdminsList {} => to_binary(&query::admins_list(deps)?),
+        JoinTime { admin } => to_binary(&query::join_time(deps, admin)?),
     }
 }
 
@@ -93,6 +94,12 @@ mod query {
         let resp = AdminsListResp { admins };
         Ok(resp)
     }
+
+    pub fn join_time(deps: Deps, admin: String) -> StdResult<JoinTimeResp> {
+        ADMINS
+            .load(deps.storage, &Addr::unchecked(admin))
+            .map(|joined| JoinTimeResp { joined })
+    }
 }
 
 #[cfg(test)]
@@ -132,6 +139,7 @@ mod tests {
 
         assert_eq!(resp, AdminsListResp { admins: vec![] });
 
+        let block = app.block_info();
         let addr = app
             .instantiate_contract(
                 code_id,
@@ -148,7 +156,7 @@ mod tests {
 
         let resp: AdminsListResp = app
             .wrap()
-            .query_wasm_smart(addr, &QueryMsg::AdminsList {})
+            .query_wasm_smart(addr.clone(), &QueryMsg::AdminsList {})
             .unwrap();
 
         assert_eq!(
@@ -157,6 +165,37 @@ mod tests {
                 admins: vec![Addr::unchecked("admin1"), Addr::unchecked("admin2")],
             }
         );
+
+        let resp: JoinTimeResp = app
+            .wrap()
+            .query_wasm_smart(
+                addr.clone(),
+                &QueryMsg::JoinTime {
+                    admin: "admin1".to_owned(),
+                },
+            )
+            .unwrap();
+        assert_eq!(resp.joined, block.time);
+
+        let resp: JoinTimeResp = app
+            .wrap()
+            .query_wasm_smart(
+                addr.clone(),
+                &QueryMsg::JoinTime {
+                    admin: "admin2".to_owned(),
+                },
+            )
+            .unwrap();
+        assert_eq!(resp.joined, block.time);
+
+        app.wrap()
+            .query_wasm_smart::<JoinTimeResp>(
+                addr,
+                &QueryMsg::JoinTime {
+                    admin: "admin3".to_owned(),
+                },
+            )
+            .unwrap_err();
     }
 
     #[test]
