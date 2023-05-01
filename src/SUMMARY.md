@@ -8,6 +8,7 @@
 - [Quick start with wasmd](wasmd-quick-start.md)
   - [Testnet setup](wasmd-quick-start/testnet.md)
   - [Preparing account](wasmd-quick-start/preparing-account.md)
+  - [Running Docker](wasmd-quick-start/running-docker.md)
   - [Interaction with testnet](wasmd-quick-start/testned-interaction.md)
 
 # Smart contracts

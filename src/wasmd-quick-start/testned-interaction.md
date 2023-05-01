@@ -13,10 +13,20 @@ $ git clone git@github.com:CosmWasm/cw-plus.git
 Now go to cloned repo and run Rust optimizer on it:
 
 ```
+$ cd cw-plus
 $ docker run --rm -v "$(pwd)":/code \
   --mount type=volume,source="$(basename "$(pwd)")_cache",target=/code/target \
   --mount type=volume,source=registry_cache,target=/usr/local/cargo/registry \
-  cosmwasm/workspace-optimizer:0.12.6
+  cosmwasm/workspace-optimizer:0.12.13
+```
+
+N.B. If you are working in Windows Powershell, the equivalent command is:
+
+```
+$ docker run --rm -v "$(pwd)":/code \
+  --mount type=volume,source="$((Get-Item "$(pwd)").basename)_cache",target=/code/target \
+  --mount type=volume,source=registry_cache,target=/usr/local/cargo/registry \
+  cosmwasm/workspace-optimizer:0.12.13
 ```
 
 After a couple of minutes - it can take some for the first time - you should
@@ -157,3 +167,42 @@ to be able to play with your simple contracts. We would focus on testing them
 locally, but if you want to check in real life, you have some basics now.
 We will take a closer look at `wasmd` later when we would talk about the
 architecture of the actor model defining communication between smart contracts.
+
+## Troubleshooting Common Issues
+
+### Error: unsupported return type block; supported types: sync, async
+
+When using the `store` command, use `-b sync` instead of `-b block`. Block is 
+deprecated in 0.40.
+
+The resulting logs will not have the relevant tx details so after that you will 
+need to copy the `txhash` result and use the command:
+
+```bash
+$ wasmd query tx TXHASH
+```
+
+### Error: open ./artifacts/cw4_group.wasm: no such file or directory
+
+Check that your terminal is in the correct working directory. If you are using a 
+docker container then you should use the mount path instead 
+`/code/artifacts/cw4_group.wasm`.
+
+### Out of gas in location
+
+Increase the reserved gas space by adding `--gas 2000000` to the end of your 
+command.
+
+### Error: payload msg: invalid
+
+Check the JSON string passed is actually valid. If using Windows Powershell you 
+will need to escape the double quotes (i.e. `'{ \"admins\": \"wasm...\" }')`).
+
+### Contract state did not update
+
+Check the logs of the transaction for hints of the error by querying the 
+txhash of the tx that was supposed to update the state:
+
+```bash
+$ wasmd query tx TXHASH
+```
