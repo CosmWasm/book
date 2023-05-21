@@ -520,7 +520,7 @@ mod exec {
         let messages = admins.into_iter().map(|admin| BankMsg::Send {
             to_address: admin.to_string(),
             amount: coins(donation_per_admin, &denom),
-        });
+        }).collect();
 
         let resp = Response::new()
             .add_messages(messages)
