@@ -57,7 +57,7 @@ its folder:
 ```
 $ git clone git@github.com:CosmWasm/cw-plus.git
 $ cd ./cw-plus
-cw-plus $ cargo test
+$ cargo test
 ```
 
 You should see that everything in the repository gets compiled, and all tests pass. 
