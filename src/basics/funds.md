@@ -1,28 +1,25 @@
 # Dealing with funds
 
 When you hear smart contracts, you think blockchain. When you hear blockchain,
-you often think of cryptocurrencies. It is not the same, but crypto assets, or
-as we often call them: tokens, are very closely connected to the blockchain.
-CosmWasm has a notion of a native token. Native tokens are assets managed by
-the blockchain core instead of smart contracts. Often such assets have some
-special meaning, like being used for paying [gas
+you often think of cryptocurrencies. Although they are not exactly the same thing, crypto assets (or
+`tokens` as they are often called) are indeed very closely connected to the blockchain.
+CosmWasm has the notion of a native token. Native tokens are assets managed by
+the blockchain core instead of by smart contracts. Often such assets have some
+special use-case, such as being used for paying [gas
 fees](https://docs.cosmos.network/master/basics/gas-fees.html) or
-[staking](https://en.wikipedia.org/wiki/Proof_of_stake) for consensus
-algorithm, but can be just arbitrary assets.
+[staking](https://en.wikipedia.org/wiki/Proof_of_stake) for a consensus
+algorithm, but they can also be just any arbitrary assets.
 
-Native tokens are assigned to their owners but can be transferred by their
-nature. Everything had an address in the blockchain is eligible to have its
-native tokens. As a consequence - tokens can be assigned to smart contracts!
-Every message sent to the smart contract can have some funds sent with it. In
-this chapter, we will take advantage of that and create a way to reward hard
-work performed by admins. We will create a new message - `Donate`, which will be
-used by anyone to donate some funds to admins, divided equally.
+Native tokens are assigned to their owners but can also be transferred. Everything that has an address on the blockchain is eligible to have (own) native tokens. As a consequence - tokens can also be assigned to smart contracts!
+Every message sent to the smart contract can have some funds sent along with it. In
+this chapter, we will take advantage of this and create a way to reward hard
+work performed by admins. We will create a new message - `Donate`, which can be
+used by anyone to donate some funds to admins, which will be divided equally between them.
 
 ## Preparing messages
 
-Traditionally we need to prepare our messages. We need to create a new
-`ExecuteMsg` variant, but we will also modify the `Instantiate` message a bit -
-we need to have some way of defining the name of a native token we would use
+As before, we need to prepare our messages. We need to create a new
+`ExecuteMsg` variant, but we will also modify the `Instantiate` message a bit as we need some way of defining the name of the native token we'll use
 for donations. It would be possible to allow users to send any tokens they
 want, but we want to simplify things for now.
 
@@ -382,8 +379,9 @@ pub fn instantiate(
 # }
 ```
 
-What also needs some corrections are tests - instantiate messages have a new field. I leave it to you as an exercise.
-Now we have everything we need to implement donating funds to admins. First, a minor update to the `Cargo.toml` - we
+What also need to update some of the tests since instantiate messages now have a new field. We leave this to you as an exercise.
+
+Now we have everything we need to implement donating funds to admins. First, a minor update to the `Cargo.toml` as we
 will use an additional utility crate:
 
 ```toml
@@ -759,22 +757,20 @@ mod exec {
 ```
 
 Sending the funds to another contract is performed by adding bank messages to
-the response. The blockchain would expect any message which is returned in
-contract response as a part of an execution. This design is related to an actor
-model implemented by CosmWasm. The whole actor model will be described in
-detail later. For now, you can assume this is a way to handle token transfers.
-Before sending tokens to admins, we have to calculate the amount of donation
-per admin. It is done by searching funds for an entry describing our donation
-token and dividing the number of tokens sent by the number of admins. Note that
-because the integral division is always rounding down.
-
-As a consequence, it is possible that not all tokens sent as a donation would
-end up with no admins accounts. Any leftover would be left on our contract
-account forever. There are plenty of ways of dealing with this issue - figuring
-out one of them would be a great exercise.
+the response. The blockchain will expect any message that is returned in the
+contract response as a part of an execution. This design is related to the "Actor
+Model" implemented by CosmWasm. The model will be described in
+detail later. For now, you can assume that this is a convenient way to handle token transfers.
+Before sending the tokens to the admins, we have to calculate the amount of donation
+per admin. This is done by searching the funds for an entry describing our donation
+token and dividing the number of tokens sent by the number of admins. Since
+the integral division always rounds down, it is possible that not all of the tokens sent as a donation would
+end up being sent an admin's account. Any remainder would be left on our contract
+account forever. There are a number of different ways of dealing with this issue - figuring
+out one of them will be a great exercise!
 
 The last missing part is updating the `ContractError` - the `must_pay` call
-returns a `cw_utils::PaymentError` which we can't convert to our error type
+returns a `cw_utils::PaymentError` that we can't convert to our custom error type
 yet:
 
 ```rust,noplayground
@@ -793,14 +789,11 @@ pub enum ContractError {
 }
 ```
 
-As you can see, to handle incoming funds, I used the utility function - I
-encourage you to take a look at [its
-implementation](https://docs.rs/cw-utils/0.13.4/src/cw_utils/payment.rs.html#32-39) -
-this would give you a good understanding of how incoming funds are structured
-in `MessageInfo`.
+As you can see, to handle incoming funds we used the utility function - you're 
+encouraged to take a look at [its
+implementation](https://docs.rs/cw-utils/0.13.4/src/cw_utils/payment.rs.html#32-39).  This should give you a good understanding of how incoming funds are structured in `MessageInfo`.
 
-Now it's time to check if the funds are distributed correctly. The way for that
-is to write a test.
+Now it's time to check if the funds are being distributed correctly by writing another test.
 
 ```rust,noplayground
 # use crate::error::ContractError;
@@ -1219,17 +1212,17 @@ mod tests {
 }
 ```
 
-Fairly simple. I don't particularly appreciate that every balance check is
-eight lines of code, but it can be improved by enclosing this assertion into a
-separate function, probably with the
+This is fairly straightforward, though you may not particularly appreciate that every balance check is
+eight lines of code!  It can be improved by enclosing this assertion in a
+separate function, probably with the use of the
 [`#[track_caller]`](https://doc.rust-lang.org/reference/attributes/diagnostics.html#the-track_caller-attribute)
 attribute.
 
-The critical thing to talk about is how `app` creation changed. Because we need
-some initial tokens on a `user` account, instead of using the default
-constructor, we have to provide it with an initializer function. Unfortunately,
+The critical thing to discuss is how `app` creation changed. As we need
+some initial tokens in a `user`'s account, instead of using the default
+constructor we have to provide it with an initializer function. Unfortunately, the
 [`new`](https://docs.rs/cw-multi-test/0.13.4/cw_multi_test/struct.App.html#method.new)
-documentation is not easy to follow - even if a function is not very
+documentation is not very easy to follow, even if our required function is not very
 complicated. What it takes as an argument is a closure with three arguments -
 the
 [`Router`](https://docs.rs/cw-multi-test/0.13.4/cw_multi_test/struct.Router.html)
@@ -1244,14 +1237,14 @@ function sits.
 
 ## Plot Twist!
 
-As we covered most of the important basics about building Rust smart contracts, I have a serious exercise for you.
+As we have now covered the most important basics required to buildi smart contracts in Rust, we have a serious exercise for you.
 
 The contract we built has an exploitable bug. All donations are distributed equally across admins. However, every
-admin is eligible to add another admin. And nothing is preventing the admin from adding himself to the list and
-receiving twice as many rewards as others!
+admin is eligible to add another admin... and nothing is preventing the admin from adding himself to the list and
+receiving twice as many rewards as the others!
 
-Try to write a test that detects such a bug, then fix it and ensure the bug nevermore occurs.
+Try to write a test that detects such a bug, then fix it and ensure the bug no longer occurs!
 
-Even if the admin cannot add the same address to the list, he can always create new accounts and add them, but this
-is something unpreventable on the contract level, so do not prevent that. Handling this kind of case is done by
-properly designing whole applications, which is out of this chapter's scope.
+Of course, even if the admin cannot add the same address to the list, they could always create new accounts and add them, but this
+is something unpreventable on the contract level, so you don't need to prevent that here. Handling this kind of case is done by the
+proper design of whole applications which is out of scope for this chapter.

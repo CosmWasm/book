@@ -1,15 +1,14 @@
 # Good practices
 
-All the relevant basics are covered. Now let's talk about some good practices.
+All the relevant basics have been covered, so now let's talk about some good practices.
 
 ## JSON renaming
 
-Due to Rust style, all our message variants are spelled in a
-[camel-case](https://en.wikipedia.org/wiki/CamelCase). It is standard practice,
-but it has a drawback - all messages are serialized and deserialized by serde
-using those variant names. The problem is that it is more common to use [snake
-cases](https://en.wikipedia.org/wiki/Snake_case) for field names in the JSON
-world. Hopefully, there is an effortless way to tell serde, to change the names
+Due to Rust style, all our message variants are spelled using
+[camel-case](https://en.wikipedia.org/wiki/CamelCase). This is standard practice,
+but it has a drawback since all messages are serialized and deserialized by serde
+using those variant names. The problem is that in the JSON world it is more common to use [snake
+cases](https://en.wikipedia.org/wiki/Snake_case) for field names. Thankfully, there is an effortless way to tell serde to change the names
 casing for serialization purposes. Let's update our messages with a `#[serde]`
 attribute:
 
@@ -54,9 +53,9 @@ pub enum QueryMsg {
 
 ## JSON schema
 
-Talking about JSON API, it is worth mentioning JSON Schema. It is a way of defining a shape for JSON messages.
-It is good practice to provide a way to generate schemas for contract API. The problem is that writing JSON
-schemas by hand is a pain. The good news is that there is a crate that would help us with that. Go to the `Cargo.toml`:
+Talking of the JSON API, it is worth mentioning JSON Schema. This is a way of defining a shape for JSON messages.
+It is good practice to provide a way to generate schemas for our contract API. The problem is that writing JSON
+schemas by hand is a pain. The good news is that there is a crate that can help us. Go to the `Cargo.toml` and update as follows:
 
 ```toml
 [package]
@@ -79,7 +78,7 @@ cosmwasm-schema = "1.1.4"
 cw-multi-test = "0.13.4"
 ```
 
-There is one additional change in this file - in `crate-type` I added "rlib". "cdylib" crates cannot be used as typical
+There is one additional change in this file - in `crate-type` we've added "rlib". "cdylib" crates cannot be used as normal
 Rust dependencies. As a consequence, it is impossible to create examples for such crates.
 
 Now go back to `src/msg.rs` and add a new derive for all messages:
@@ -124,10 +123,9 @@ pub enum QueryMsg {
 }
 ```
 
-You may argue that all those derives look slightly clunky, and I agree.
-Hopefully, the
+All those derives look slightly clunky, but thankfully the
 [`cosmwasm-schema`](https://docs.rs/cosmwasm-schema/1.1.4/cosmwasm_schema/#)
-crate delivers a utility `cw_serde` macro, which we can use to reduce a
+crate delivers a utility `cw_serde` macro which we can use to reduce the amount of
 boilerplate:
 
 ```rust,noplayground
@@ -164,8 +162,8 @@ pub enum QueryMsg {
 }
 ```
 
-Additionally, we have to derive the additional `QueryResponses` trait for our
-query message to correlate the message variants with responses we would
+Additionally, we have to derive the `QueryResponses` trait for our
+query message to be able to correlate the message variants with responses we shall
 generate for them:
 
 ```rust,noplayground
@@ -205,12 +203,12 @@ pub enum QueryMsg {
 }
 ```
 
-The `QueryResponses` is a trait that requires the `#[returns(...)]` attribute
+`QueryResponses` is a trait that requires the `#[returns(...)]` attribute
 to all your query variants to generate additional information about the
 query-response relationship.
 
-Now, we want to make the `msg` module public and accessible by crates depending
-on our contract (in this case - for schema example). Update a `src/lib.rs`:
+Now, we need to make the `msg` module public and accessible by crates that depend
+on our contract (in this case - for schema example). Update `src/lib.rs`:
 
 ```rust,noplayground
 # use cosmwasm_std::{entry_point, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult};
@@ -248,11 +246,11 @@ pub mod state;
 # }
 ```
 
-I changed the visibility of all modules - as our crate can now be used as a dependency.
-If someone would like to do so, he may need access to handlers or state. 
+We've changed the visibility of all modules so our crate can now be used as a dependency.
+Someone using it as a dependency may need access to handlers or state. 
 
-The next step is to create a tool generating actual schemas. We will do it by creating
-an binary in our crate. Create a new `bin/schema.rs` file:
+The next step is to create a tool generating actual schemas. We'll do this by creating
+a binary in our crate. Create a new `bin/schema.rs` file:
 
 ```rust,noplayground
 use contract::msg::{ExecuteMsg, InstantiateMsg, QueryMsg};
@@ -278,12 +276,11 @@ Removing "/home/hashed/confio/git/book/examples/03-basics/schema/contract.json" 
 Exported the full API as /home/hashed/confio/git/book/examples/03-basics/schema/contract.json
 ```
 
-I encourage you to go to generated file to see what the schema looks like.
+You're encouraged to go and look at the generated file to see what the schema looks like.
 
-
-The problem is that, unfortunately, creating this binary makes our project fail
-to compile on the Wasm target - which is, in the end, the most important one.
-Hopefully, we don't need to build the schema binary for the Wasm target - let's
+Unforunately, creating this binary makes our project fail
+to compile on the Wasm target - which is, in the end, the most important one!
+Thankfully, we don't need to build the schema binary for the Wasm target, so let's
 align the `.cargo/config` file:
 
 ```toml
@@ -294,17 +291,17 @@ schema = "run schema"
 ```
 
 The `--lib` flag added to `wasm` cargo aliases tells the toolchain to build
-only the library target - it would skip building any binaries. Additionally, I
-added the convenience `schema` alias so that one can generate schema calling
-simply `cargo schema`.
+only the library target and skip building any binaries. In addition we have 
+added the convenience `schema` alias so that we can generate the schema simply by calling
+`cargo schema`.
 
 ## Disabling entry points for libraries
 
-Since we added the "rlib" target for the contract, it is, as mentioned before, useable as a dependency.
-The problem is that the contract depended on ours would have Wasm entry points generated twice - once
-in the dependency and once in the final contract. We can work this around by disabling generating Wasm
-entry points for the contract if the crate is used as a dependency. We would use
-[feature flags](https://doc.rust-lang.org/cargo/reference/features.html) for that.
+As mentioned before, since we have added the "rlib" target for the contract, it is now useable as a dependency.
+The problem is that a contract dependent on ours would have Wasm entry points generated twice - once
+in the dependency and once in the final contract! We can work around this by disabling generating Wasm
+entry points for the contract if the crate is used as a dependency. We use
+[feature flags](https://doc.rust-lang.org/cargo/reference/features.html) for this.
 
 Start with updating `Cargo.toml`:
 
@@ -313,8 +310,8 @@ Start with updating `Cargo.toml`:
 library = []
 ```
 
-This way, we created a new feature for our crate. Now we want to disable the `entry_point` attribute on
-entry points - we will do it by a slight update of `src/lib.rs`:
+The above adjustment creates a new feature for our crate. Next we want to disable the `entry_point` attribute on
+entry points, which we will do with a slight update of `src/lib.rs`:
 
 ```rust,noplayground
 # use cosmwasm_std::{entry_point, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult};
@@ -354,10 +351,10 @@ pub fn query(deps: Deps, env: Env, msg: QueryMsg) -> StdResult<Binary> {
 
 The [`cfg_attr`](https://doc.rust-lang.org/reference/conditional-compilation.html#the-cfg_attr-attribute) attribute is
 a conditional compilation attribute, similar to the `cfg` we used before for the test. It expands to the given attribute if
-the condition expands to true. In our case - it would expand to nothing if the feature "library" is enabled, or it
-would expand just to `#[entry_point]` in another case.
+the condition expands to true. In our case, it would expand to nothing if the feature "library" is enabled, otherwise
+it would expand to `#[entry_point]`.
 
-Since now to add this contract as a dependency, don't forget to enable the feature like this:
+When adding this contract as a dependency, don't forget to enable the feature like this:
 
 ```toml
 [dependencies]

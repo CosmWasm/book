@@ -1,15 +1,15 @@
 # Fixing admin contract
 
-Now that we know what we want to achieve, we can start by aligning the
-contract we already have to become an admin contract. It is primarily
-fine at this point, but we want to do a cleanup.
+Now that we know what we want to achieve, we can start by converting the
+contract we already have into an admin contract. It is mostly
+fine at this point, but we want to clean it up.
 
 ## Cleaning up queries
 
 The first thing to do is to get rid of the `Greet` query - it was good as a
 starter query example, but it has no practical purpose and only generates noise.
 
-We want to remove the unnecessary variant from the query enum:
+Let's remove the unnecessary variant from the query enum:
 
 ```rust
 # use cosmwasm_schema::{cw_serde, QueryResponses};
@@ -40,7 +40,7 @@ pub enum QueryMsg {
 }
 ```
 
-Then we also remove the invalid path in the query dispatcher:
+We should also remove the invalid path in the query dispatcher:
 
 ```rust
 pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
@@ -52,23 +52,23 @@ pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
 }
 ```
 
-Finally, we remove the irrelevant handler from the `contract::query` module.
-We also need to make sure all references to it are gone (eg. if there are any
-in the tests).
+Finally, we remove the unnecessary handler from the `contract::query` module.
+We also need to make sure all references to it are gone (e.g. any references
+in the tests if they exist).
 
 ## Generating the library output
 
-At the very beginning of the book, we set the `crate-type` in `Cargo.toml` as
-`"cdylib"`. It was required to generate the wasm output, but it comes with a
-drawback - the dynamic libraries, as this cannot be used as dependencies in
-other crates. It was not a problem before, but in practice we often want to
-depend contract on others to get access to some types of them - for example,
+At the very beginning of the book, we set the `crate-type` in `Cargo.toml` to
+`"cdylib"`. This was required to generate the wasm output, but it comes with a
+drawback - dynamic libraries cannot be used as dependencies in
+other crates. It wasn;t a problem before, but in practice we often want to
+enable contracts that depend on others to have access to some of their types - for example,
 defined messages.
 
-Good for us. It is easy to fix. You might notice that the `crate-type` is an array,
+Lucky for us, it's easy to fix. You may have noticed that the `crate-type` is an array,
 not a single string. The reason for that is that our project can emit several
-targets - in particular, we can add there the default `"rlib"` crate type to
-make it generate a "rust library" output - which is what we need to use as a
+targets - in particular, we can add the default `"rlib"` crate type to it. This 
+makes it generate a "rust library" output which is what we need to be able to use it as a
 dependency. Let's update our `Cargo.toml`:
 
 ```toml
@@ -96,26 +96,24 @@ crate-type = ["cdylib", "rlib"]
 # cw-multi-test = "0.15.1"
 ```
 
-Also, note I changed the contract name - "contract" is not very descriptive, so
-I updated it to "admin".
+Also note the change of contract name - "contract" is not very descriptive, so
+we've updated it to "admin".
 
 ## Project structure
 
-Last but not least - we want to better structure our project. So far, we have
-only one contract, so we just worked on it as a whole project. Now we want some
-directory tree that reflects relations between contracts we create.
+Last but not least,  we want to improve the structure of our project. Up to now we only had
+one contract to deal with, which is why we just worked on it as the whole project. Now we want to create a
+directory tree that reflects relations between the contracts we create.
 
-First, create a directory for the project. Then we want to create a "contracts"
-subdirectory in it. It is not technically required from Rust's POV, but there
-are tools in our environment, like the workspace optimizer, which would assume
-it is where it should look for a contract. It is a common pattern you will see
-in CosmWasm contracts repos.
+First, let's create a directory for the project. Then we'll want to create a "contracts"
+subdirectory inside it. This is not technically required from Rust's point-of-view, but there
+are tools in our environment such as the workspace optimizer which will look for contracts there. This is a common pattern you will see in CosmWasm contracts repos.
 
-Then we copy the whole project directory from the previous chapter into the
-`contracts`, renaming it to `admin`.
+Next we copy the whole project directory from the previous chapter into the
+`contracts` folder, renaming it to `admin`.
 
-Finally, we want to couple all our projects (for now, it is just one, but we know
-there will be more there). To do so, we create the workspace-level `Cargo.toml`
+Finally, we want to group all our projects (for now, we have just one, but we know
+there will be more). To do so, we create a workspace-level `Cargo.toml`
 file in the top-level project directory:
 
 ```toml
@@ -125,18 +123,18 @@ resolver = "2"
 ```
 
 This `Cargo.toml` differs slightly from the typical project-level one - it
-defines the workspace. The most important field here is the `members` - it
-defines projects being part of the workspace.
+defines a workspace. The most important field here is `members` - it
+defines projects as being part of the workspace.
 
-The other field is the `resolver`. It is something to remember to add - it
-instructs cargo to use version 2 of the dependency resolver. This has been the
-default for non-workspaces since Rust 2021, but because of compatibility reasons,
-the default couldn't be changed for workspaces - but it is advised to add it to
-every single newly created workspace.
+The other field is the `resolver`. This is something it is important to remember to add - it
+instructs Cargo to use version 2 of the dependency resolver. This has been the
+default for non-workspaces since Rust 2021, but for compatibility reasons
+the default couldn't be changed for workspaces.  It is generally recommended to add it to
+every newly created workspace.
 
-The last field which might be useful for workspaces is exclude - it allows to
-create projects in the workspace directory tree, which is not a part of this
-workspace - we will not use it, but it is good to know about it.
+The last field which might be useful for some workspaces is exclude - it allows us to
+create projects in the workspace directory tree which are not a part of this
+workspace.  We won't use it, but it can be useful to know about it.
 
 Now just for clarity, let's see the top-level directory structure:
 
@@ -151,7 +149,7 @@ Now just for clarity, let's see the top-level directory structure:
    └── debug
 ```
 
-You can see the target directory and `Cargo.lock` files existing in the tree - it is
-because I already built and ran tests for the `admin` contract - in Rust workspaces,
-`cargo`` knows to build everything in the top level, even if it would be built from
-the inner directory.
+You can see the target directory and `Cargo.lock` files exist in the tree - this is
+because we already built and ran tests for the `admin` contract. In Rust workspaces,
+Cargo knows to build everything at the top level even if it was initially built from
+an inner directory.

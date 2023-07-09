@@ -1,12 +1,12 @@
 # Introduction
 
 This book is a guide for creating CosmWasm smart contracts. It will lead you
-step by step through the process, and explain all of the relevant topics from
-the easiest to the trickiest ones.
+step by step through the process and explain all of the relevant topics, from
+the easiest to the trickiest.
 
 The idea of the book is not only to describe the API for smart contracts but also
-to show you how to use them in a clean and maintainable way. We will show you
-patterns that CosmWasm creators have established and encourage you to use as well.
+to show you how to use them in a clean and maintainable way. We will show you the
+patterns that CosmWasm creators have established and we encourage you to use as well.
 
 ## Prerequirements
 
