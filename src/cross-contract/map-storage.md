@@ -1,6 +1,6 @@
 # Map storage
 
-There is one thing to be immediately improved in the admin contract. Let's
+There is one thing we can immediately improve in the admin contract. Let's
 check the contract state:
 
 ```rust
@@ -11,22 +11,19 @@ pub const ADMINS: Item<Vec<Addr>> = Item::new("admins");
 pub const DONATION_DENOM: Item<String> = Item::new("donation_denom");
 ```
 
-Note that we keep our admin list as a single vector. However, in the whole
-contract, in most cases, we access only a single element of this vector.
-
-This is not ideal, as now, whenever we want to access the single admin entry,
-we have first to deserialize the list containing all of them and then iterate
-over them until we find the interesting one. This might consume a serious
-amount of gas and is completely unnecessary overhead - we can avoid that using
+Note that we keep our admin list as a single vector. However, in most cases we only need to access a single element of this vector.  This is not ideal since it means that whenever we want to access a single admin entry,
+we first have to deserialize the entire list of them and then iterate
+over them until we find the one we are interested in. This may consume a serious
+amount of gas and is completely unnecessary overhead that we can avoid by using
 the [Map](https://docs.rs/cw-storage-plus/1.0.1/cw_storage_plus/struct.Map.html)
 storage accessor.
 
-## The `Map` storage
+## The `Map` storage accessor
 
-First, let's define a map - in this context, it would be a set of keys with values
+First, let's define a map - in this context, it will be a set of keys with values
 assigned to them, just like a `HashMap` in Rust or dictionaries in many languages.
-We define it as similar to an `Item`, but this time we need two types - the key type
-and the value type:
+We define it in a similar way to how we define an `Item`, but this time we need two types, a key type
+and a value type:
 
 ```rust
 use cw_storage_plus::Map;
@@ -34,10 +31,10 @@ use cw_storage_plus::Map;
 pub const STR_TO_INT_MAP: Map<String, u64> = Map::new("str_to_int_map");
 ```
 
-Then to store some items on the [`Map`](https://docs.rs/cw-storage-plus/1.0.1/cw_storage_plus/struct.Map.html),
-we use a
+To store some items on the [`Map`](https://docs.rs/cw-storage-plus/1.0.1/cw_storage_plus/struct.Map.html),
+we use the 
 [`save`](https://docs.rs/cw-storage-plus/1.0.1/cw_storage_plus/struct.Map.html#method.save)
-method - same as for an `Item`:
+method just as we did for an `Item`:
 
 ```rust
 STR_TO_INT_MAP.save(deps.storage, "ten".to_owned(), 10);
@@ -54,15 +51,15 @@ let two = STR_TO_INT_MAP.may_load(deps.storage, "two".to_owned())?;
 assert_eq!(two, None);
 ```
 
-Obviously, if the element is missing in the map, the
+Obviously, if the element is missing from the map, the
 [`load`](https://docs.rs/cw-storage-plus/1.0.1/cw_storage_plus/struct.Map.html#method.load)
-function will result in an error - just like for an item. On the other hand -
+function will result in an error - just as for an item. Alternatively we can use 
 [`may_load`](https://docs.rs/cw-storage-plus/1.0.1/cw_storage_plus/struct.Map.html#method.may_load)
-returns a `Some` variant when element exits.
+which returns a `Some` variant when an element exits.
 
 Another very useful accessor that is specific to the map is the
 [`has`](https://docs.rs/cw-storage-plus/1.0.1/cw_storage_plus/struct.Map.html#method.has)
-function, which checks for the existence of the key in the map:
+function, which checks for the existence of a key in the map:
 
 ```rust
 let contains = STR_TO_INT_MAP.has(deps.storage, "three".to_owned())?;
@@ -84,53 +81,53 @@ for item in STR_TO_INT_MAP.range(deps.storage, None, None, Order::Ascending) {
 }
 ```
 
-First, you might wonder about extra values passed to
+You may be wondering about those extra values we passed to
 [`keys`](https://docs.rs/cw-storage-plus/1.0.1/cw_storage_plus/struct.Map.html#method.keys)
 and
 [`range`](https://docs.rs/cw-storage-plus/1.0.1/cw_storage_plus/struct.Map.html#method.range) -
-those are in order: lower and higher bounds of iterated elements, and the order
-elements should be traversed.
+in order, these are: lower and higher bounds of iterated elements, and the order
+in which elements should be traversed.
 
-While working with typical Rust iterators, you would probably first create an
+When working with typical Rust iterators, you would probably first create an
 iterator over all the elements and then somehow skip those you are not
-interested in. After that, you will stop after the last interesting element.
+interested in. After that, you stop after the last interesting element.
 
-It would more often than not require accessing elements you filter out, and
-this is the problem - it requires reading the element from the storage. And
-reading it from the storage is the expensive part of working with data, which
-we try to avoid as much as possible. One way to do it is to instruct the Map
-where to start and stop deserializing elements from storage so it never reaches
+This would more often than not require accessing elements you filter out, and
+this is the problem - it requires reading that element from the storage. Reading from the storage is the expensive part of working with data, which
+we try to avoid as much as possible. One way to do that is to instruct the Map
+where exactly to start and stop deserializing elements from storage so it never reaches
 those outside the range.
 
-Another critical thing to notice is that the iterator returned by both keys and
-range functions are not iterators over elements - they are iterators over `Result`s.
-It is a thing because, as it is rare, it might be that item is supposed to exist,
+Another critical thing to notice is that the iterators returned by both keys and
+range functions are not actually iterators over elements - they are iterators over `Result`s.
+Although it is rare, it's possible that an item is supposed to exist 
 but there is some error while reading from storage - maybe the stored value is
-serialized in a way we didn't expect, and deserialization fails. This is actually
-a real thing that happened in one of the contracts I worked on in the past - we
+serialized in a way we didn't expect and deserialization fails. This is actually
+a real thing that happened in one of the contracts the authors worked on in the past - we
 changed the value type of the Map, and then forgot to migrate it, which caused
 all sorts of problems.
 
 ## Maps as sets
 
-So I imagine you can call me crazy right now - why do I spam about a `Map`, while
-we are working with vector? It is clear that those two represent two distinct
+So you may well be thinking we're crazy right now - why are we going on about `Map` so much when
+we are actually working with a vector? They clearly represent two distinct
 things! Or do they?
 
 Let's reconsider what we keep in the `ADMINS` vector - we have a list of objects
-which we expect to be unique, which is a definition of a mathematical set. So
-now let me bring back my initial definition of the map:
+that we expect to be unique, which is the definition of a mathematical set. So
+now let us bring back our initial definition of a map:
 
-> First, let's define a map - in this context, it would be a *set* of keys with
-> values assigned to them, just like a HashMap in Rust or dictionaries in many languages.
+> First, let's define a map - in this context, it will be a *set* of keys with values
+> assigned to them, just like a `HashMap` in Rust or dictionaries in many languages.
 
-I purposely used the word "set" here - the map has the set built into it. It is
-a generalization of a set or reversing the logic - the set is a particular case
-of a map. If you imagine a set that map every single key to the same value, then
+
+We purposely used the word "set" here - a map has a set built into it. It is
+a generalization of a set, or reversing the logic, a set is a particular case
+of a map. If you imagine a set that maps every single key to the same value, then
 the values become irrelevant, and such a map becomes a set semantically.
 
-How can you make a map mapping all the keys to the same value? We pick a type
-with a single value. Typically in Rust, it would be a unit type (`()`), but in
+How can we make a map that maps all the keys to the same value? We pick a type
+with a single value. Typically in Rust, this would be a unit type (`()`), but in
 CosmWasm, we tend to use the
 [`Empty`](https://docs.rs/cosmwasm-std/1.2.4/cosmwasm_std/struct.Empty.html)
 type from CW standard crate:
@@ -168,8 +165,8 @@ pub fn instantiate(
 }
 ```
 
-It didn't simplify much, but we no longer need to collect our address. Then
-let's move to the leaving logic:
+It didn't simplify much, but we no longer need to collect our addresses. Then
+let's move on to the leaving logic:
 
 ```rust
 use crate::state::ADMINS;
@@ -186,20 +183,20 @@ pub fn leave(deps: DepsMut, info: MessageInfo) -> StdResult<Response> {
 }
 ```
 
-Here we see a difference - we don't need to load a whole vector. We remove a
+Here we notice the difference - we don't need to load a whole vector. We remove a
 single entry with the
 [`remove`](https://docs.rs/cw-storage-plus/1.0.1/cw_storage_plus/struct.Map.html#method.remove)
 function.
 
-What I didn't emphasize before, and what is relevant, is that `Map` stores every
+Something relevant that we didn't point out before is that `Map` stores every
 single key as a distinct item. This way, accessing a single element will be
 cheaper than using a vector.
 
-However, this has its downside - accessing all the elements is more
-gas-consuming using Map! In general, we tend to avoid such situations - the
+However, this has its downside as well - accessing all the elements consumes more
+gas using Map! In general, we tend to try to avoid such situations - the
 linear complexity of the contract might lead to very expensive executions
-(gas-wise) and potential vulnerabilities - if the user finds a way to create
-many dummy elements in such a vector, he may make the execution cost exceeding
+(gas-wise) and potential vulnerabilities.  If the user finds a way to create
+many dummy elements in such a vector they can make the execution cost exceed
 any gas limit.
 
 Unfortunately, we have such an iteration in our contract - the distribution flow
@@ -238,13 +235,13 @@ pub fn donate(deps: DepsMut, info: MessageInfo) -> Result<Response, ContractErro
 }
 ```
 
-If I had to write a contract like this, and this `donate` would be a critical,
-often called flow, I would advocate for going for an `Item<Vec<Addr>>` here.
-Hopefully, it is not the case - the distribution does not have to be linear in
-complexity! It might sound a bit crazy, as we have to iterate over all receivers
-to distribute funds, but this is not true - there is a pretty nice way to do so
-in constant time, which I will describe later in the book. For now, we will
-leave it as it is, acknowledging the flaw of the contract, which we will fix later.
+If writing a contract like this in which this `donate` is a critical common part of the
+flow, we would advise going for an `Item<Vec<Addr>>` here.
+Thankfully, this is not the case - the distribution does not have to be linear in
+complexity! It might sound a bit unbelievable, since we have to iterate over all receivers
+to distribute funds, but there is a pretty nice way to do so
+in constant time which I will describe later in the book. For now, we will
+leave it as it is, just acknowledging this flaw in the contract that we will fix later.
 
 The final function to fix is the `admins_list` query handler:
 
@@ -264,21 +261,21 @@ pub fn admins_list(deps: Deps) -> StdResult<AdminsListResp> {
 
 Here we also have an issue with linear complexity, but it is far less of a problem.
 
-First, queries are often purposed to be called on local nodes, with no gas cost -
+First of all, queries are often purposed to be called on local nodes, with no gas cost.  This means that
 we can query contracts as much as we want.
 
-And then, even if we have some limit on execution time/cost, there is no reason to
+Even if we do have some limit on execution time/cost, there is no reason to
 query all the items every single time! We will fix this function later, adding
-pagination - to limit the execution time/cost of the query caller would be able to
-ask for a limited amount of items starting from the given one. Knowing this chapter,
+pagination - to limit the execution time/cost of the query caller by being able to
+ask for a limited amount of items starting from a given one. Having gone through this chapter,
 you can probably figure implementation of it right now, but I will show the common
-way we do that when I go through common CosmWasm practices.
+way we do it when we get to looking at common CosmWasm practices.
 
 ## Reference keys
 
-There is one subtlety to improve in our map usage.
+There is another subtlety to improve in our map usage.
 
-The thing is that right now, we index the map with the owned Addr key. That forces
+The thing is that right now, we index the map with the owned Addr key. This forces
 us to clone it if we want to reuse the key (particularly in the leave implementation).
 This is not a huge cost, but we can avoid it - we can define the key of the map
 to be a reference:
@@ -291,7 +288,7 @@ pub const ADMINS: Map<&Addr, Empty> = Map::new("admins");
 pub const DONATION_DENOM: Item<String> = Item::new("donation_denom");
 ```
 
-Finally, we need to fix the usages of the map in two places:
+Finally, we need to fix the usage of the map in two places:
 
 ```rust
 # use crate::state::{ADMINS, DONATION_DENOM};

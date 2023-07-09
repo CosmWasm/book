@@ -1,14 +1,14 @@
 # Introducing multitest
 
-Let me introduce the [`multitest`](https://crates.io/crates/cw-multi-test) -
-library for creating tests for smart contracts in Rust.
+Here we introduce the [`multitest`](https://crates.io/crates/cw-multi-test) -
+a Rust library for creating tests for smart contracts.
 
-The core idea of `multitest` is abstracting an entity of contract and
-simulating the blockchain environment for testing purposes. The purpose of this
-is to be able to test communication between smart contracts. It does its job
-well, but it is also an excellent tool for testing single-contract scenarios.
+The core idea of `multitest` is abstracting entities of contracts and
+simulating the blockchain environment for testing purposes. This allows us to test
+communication between smart contracts. It does this job well, but it is also an
+excellent tool for testing single-contract scenarios.
 
-First, we need to add a multitest to our `Cargo.toml`.
+First, we need to add multitest to our `Cargo.toml`.
 
 ```toml
 [package]
@@ -27,12 +27,12 @@ serde = { version = "1.0.103", default-features = false, features = ["derive"] }
 cw-multi-test = "0.13.4"
 ```
 
-I added a new
+Here we've added a new
 [`[dev-dependencies]`](https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html#development-dependencies)
 section with dependencies not used by the final binary
-but which may be used by tools around the development process - for example, tests.
+but which may be used by tools around the development process such as tests.
 
-When we have the dependency ready, update our test to use the framework:
+Once we have the dependency set up, we can update our test to use the framework:
 
 ```rust,noplayground
 # use crate::msg::{GreetResp, QueryMsg};
@@ -119,42 +119,37 @@ mod tests {
 }
 ```
 
-You probably notice that I added the function for an `execute` entry point. I didn't add the entry point
-itself or the function's implementation, but for the multitest purposes contract has to contain at least
-instantiate, query, and execute handlers. I attributed the function as
+You may have noticed that we added the parameter for an `execute` entry point. Although it wasn't necessary
+to add either the entry point itself or the function's implementation, multitest requires that the contract 
+contain at least instantiate, query, and execute handlers. By attributing the function with
 [`#[allow(dead_code)]`](https://doc.rust-lang.org/reference/attributes/diagnostics.html#lint-check-attributes),
-so, `cargo` will not complain about it not being used anywhere. Enabling it for tests only with `#[cfg(test)]`
-would also be a way.
+, we ensure that `cargo` will not complain about it not being used anywhere. Alternatively, we could enable it for tests only by using `#[cfg(test)]`.
 
-Then at the beginning of the test, I created the
+At the beginning of the test, there is an 
 [`App`](https://docs.rs/cw-multi-test/0.13.4/cw_multi_test/struct.App.html#)
-object. It is a core multitest entity representing the virtual blockchain on
+object. This is a core multitest entity representing the virtual blockchain on
 which we will run our contracts. As you can see, we can call functions on it
-just like we would interact with blockchain using `wasmd`!
+just like we would interact with the blockchain using `wasmd`!
 
-Right after creating `app`, I prepared the representation of the `code`, which
-would be "uploaded" to the blockchain. As multitests are just native Rust
-tests, they do not involve any Wasm binaries, but this name matches well what
-happens in a real-life scenario. We store this object in the blockchain with
+Right after creating `app`, we prepare the representation of the `code` which
+will be "uploaded" to the blockchain. As multitests are just native Rust
+tests, they do not involve any Wasm binaries, but this name represents pretty well what
+happens in a real-life scenario. We store this object on the blockchain with
 the [`store_code`](https://docs.rs/cw-multi-test/0.13.4/cw_multi_test/struct.App.html#method.store_code)
-function, and as a result, we are getting the code id - we would need it to
-instantiate a contract.
+function, and receive back the code id as a result, which is required to instantiate the contract.
 
 Instantiation is the next step. In a single
 [`instantiate_contract`](https://docs.rs/cw-multi-test/0.13.4/cw_multi_test/trait.Executor.html#method.instantiate_contract)
-call, we provide everything we would provide via `wasmd` - the contract code id, the address which performs instantiation,
+call, we provide everything we would provide via `wasmd` - the contract code id, the address which performs instantiation, the message triggering it, and any funds sent with the message (again - empty for now). We are adding the contract label and its admin for migrations - set to `None` as we don't need it yet.
 
-the message triggering it, and any funds sent with the message (again - empty for now). We are adding the contract label
-and its admin for migrations - `None`, as we don't need it yet.
-
-And after the contract is online, we can query it. The
+Once the contract is online, we can query it. The
 [`wrap`](https://docs.rs/cw-multi-test/0.13.4/cw_multi_test/struct.App.html?search=in#method.wrap) function is an accessor
-for querying Api (queries are handled a bit differently than other calls), and the
+for the querying API (queries are handled a bit differently to other calls), and the
 [`query_wasm_smart`](https://docs.rs/cosmwasm-std/1.0.0/cosmwasm_std/struct.QuerierWrapper.html#method.query_wasm_smart)
-queries are given a contract with the message. Also, we don't need to care about query results as `Binary` - multitest
+queries are given a contract along with the message. We don't need to care about query results being `Binary` - multitest
 assumes that we would like to deserialize them to some response type, so it takes advantage of Rust type elision to
-provide us with a nice Api.
+provide us with a nice API.
 
-Now it's time to rerun the test. It should still pass, but now we nicely abstracted the testing contract as a whole,
-not some internal functions. The next thing we should probably cover is making the contract more interesting
+Now it's time to rerun the test. It should still pass, but now we nicely abstracted testing contract as a whole,
+rather than just some internal functions. The next thing we'll cover is making the contract more interesting
 by adding some state.

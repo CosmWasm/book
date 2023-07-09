@@ -1,16 +1,14 @@
 # Execution messages
 
-We went through instantiate and query messages. It is finally time to introduce the last basic entry point -
-the execute messages. It is similar to what we have done so far that I expect this to be just chilling and
-revisiting our knowledge. I encourage you to try implementing what I am describing here on your own as an
-exercise - without checking out the source code.
+We have been through instantiate and query messages. It is finally time to introduce the last basic entry point -
+the execute message. It is similar to what we have done so far, so you can expect this to be quite easy as we are just revisiting our knowledge. We encourage you to try implementing what is described on your own first before checking the source code as an exercise .
 
-The idea of the contract will be easy - every contract admin would be eligible to call two execute messages:
+The idea of the contract is simple: every contract admin is eligible to call the following two execute messages:
 
-* `AddMembers` message would allow the admin to add another address to the admin's list
-* `Leave` would allow and admin to remove himself from the list
+* `AddMembers` admins can call this message to add another address to the admin's list
+* `Leave` admins can call this message to remove themselves from the admin list
 
-Not too complicated. Let's go coding. Start with defining messages:
+That doesn't sound too complicated, so let's get coding! We'll start with defining the messages:
 
 ```rust,noplayground
 # use cosmwasm_std::Addr;
@@ -44,7 +42,7 @@ pub enum ExecuteMsg {
 # }
 ```
 
-And implement entry point:
+Next, we implement the entry point:
 
 ```rust,noplayground
 use crate::msg::{AdminsListResp, ExecuteMsg, GreetResp, InstantiateMsg, QueryMsg};
@@ -241,7 +239,7 @@ mod exec {
 # }
 ```
 
-The entry point itself also has to be created in `src/lib.rs`:
+The real entry point itself also has to be created in `src/lib.rs`:
 
 ```rust,noplayground
 use cosmwasm_std::{entry_point, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult};
@@ -272,36 +270,30 @@ pub fn query(deps: Deps, env: Env, msg: QueryMsg) -> StdResult<Binary> {
 }
 ```
 
-There are a couple of new things, but nothing significant. First is how do I reach the message sender
-to verify he is an admin or remove him from the list - I used the `info.sender` field of `MessageInfo`,
-which is how it looks like - the member. As the message is always sent from the proper address, the
-`sender` is already of the `Addr` type - no need to validate it. Another new thing is the
+There are a couple of new things here, but nothing major. The first is how we handled getting the identity of the message sender is so that we could verify that they are actually allowed to carry out the execute functions.  We used the `info.sender` field of `MessageInfo`, which is exactly as it sounds like. As the message is always sent from a proper address, the
+`sender` is already of the `Addr` type and there is no need to validate it. The other new thing is the
 [`update`](https://docs.rs/cw-storage-plus/0.13.4/cw_storage_plus/struct.Item.html#method.update)
-function on an `Item` - it makes a read and update of an entity potentially more efficient. It is
-possible to do it by reading admins first, then updating and storing the result.
+function on an `Item` - it makes the read and update of an entity potentially more efficient. This would also be possible by reading the admins first, followed by updating and storing the result.
 
-You probably noticed that when working with `Item`, we always assume something
-is there. But nothing forces us to initialize the `ADMINS` value on
-instantiation! So what happens there? Well, both `load` and `update` functions
-would return an error. But there is a
+You may have noticed that when working with `Item`, we have been always assuming that something
+is actually there. However, this may not be warranted, since there's nothing forcing us to initialize the `ADMINS` value on
+instantiation! So what would happen in then? Well, both `load` and `update` functions
+would return an error. However, there is also the option of using the
 [`may_load`](https://docs.rs/cw-storage-plus/0.13.4/cw_storage_plus/struct.Item.html#method.may_load)
-function, which returns `StdResult<Option<T>>` - it would return `Ok(None)` in
-case of empty storage. There is even a possibility to remove an existing item
-from storage with the
+function, which returns `StdResult<Option<T>>`.  In the case of empty storage, it returns `Ok(None)`. It is also possible to remove an existing item from storage with the
 [`remove`](https://docs.rs/cw-storage-plus/0.13.4/cw_storage_plus/struct.Item.html#method.remove)
 function.
 
-One thing to improve is error handling. While validating the sender to be admin, we are returning
-some arbitrary string as an error. We can do better.
+One thing we need to improve is the error handling. While validating that the sender is an admin, we are just returning
+some arbitrary string as an error. We can do better!
 
 ## Error handling
 
-In our contract, we now have an error situation when a user tries to execute `AddMembers` not being
-an admin himself. There is no proper error case in
+In our contract, we now generate an error whenever a non-admin user tries to execute `AddMembers`. There is no proper error case in
 [`StdError`](https://docs.rs/cosmwasm-std/1.0.0/cosmwasm_std/enum.StdError.html) to report this
-situation, so we have to return a generic error with a message. It is not the best approach.
+situation, so we have resorted to just returning a generic error with a message, which is not the best approach.
 
-For error reporting, we encourage using [`thiserror`](https://crates.io/crates/thiserror/1.0.24/dependencies)
+For error reporting, we recommend using the [`thiserror`](https://crates.io/crates/thiserror/1.0.24/dependencies)
 crate. Start with updating your dependencies:
 
 ```toml
@@ -370,17 +362,17 @@ mod state;
 # }
 ```
 
-Using `thiserror` we define errors like a simple enum, and the crate ensures
-that the type implements
+Using `thiserror` we define errors just in a simple enum, and the crate ensures
+that the type implements the
 [`std::error::Error`](https://doc.rust-lang.org/std/error/trait.Error.html)
-trait. A very nice feature of this crate is the inline definition of
-[`Display`](https://doc.rust-lang.org/std/fmt/trait.Display.html) trait by an
-`#[error]` attribute. Also, another helpful thing is the `#[from]` attribute,
-which automatically generates proper
+trait. A very nice feature of this crate is the inline definition of the
+[`Display`](https://doc.rust-lang.org/std/fmt/trait.Display.html) trait by use of an
+`#[error]` attribute. Another helpful thing is the `#[from]` attribute,
+which automatically generates a proper
 [`From`](https://doc.rust-lang.org/std/convert/trait.From.html) implementation,
-so it is easy to use `?` operator with `thiserror` types.
+allowing us to use the `?` operator with `thiserror` types.
 
-Now update the execute endpoint to use our new error type:
+Now we can update the execute endpoint to use our new error type:
 
 ```rust,noplayground
 use crate::error::ContractError;
@@ -617,11 +609,11 @@ pub fn execute(
 
 ## Custom error and multi-test
 
-Using proper custom error type has one nice upside - multi-test is maintaining error type using
-the [`anyhow`](https://crates.io/crates/anyhow) crate. It is a sibling of `thiserror`, designed
-to implement type-erased errors in a way that allows getting the original error back.
+Using a proper custom error type has one more nice advantage - multi-test maintains the error type using
+the [`anyhow`](https://crates.io/crates/anyhow) crate. This is a sibling of `thiserror`, designed
+to implement type-erased errors in a way that allows us to get the original error back.
 
-Let's write a test that verifies that a non-admin cannot add himself to a list:
+Let's write a test that verifies that a non-admin cannot add themselves to the list:
 
 ```rust,noplayground
 # use crate::error::ContractError;
@@ -858,23 +850,21 @@ mod tests {
 Executing a contract is very similar to any other call - we use an
 [`execute_contract`](https://docs.rs/cw-multi-test/0.13.4/cw_multi_test/trait.Executor.html#method.execute_contract)
 function. As the execution may fail, we get an error type out of this call, but
-instead of calling `unwrap` to extract a value out of it, we expect an error to
-occur - this is the purpose of the
+instead of calling `unwrap` to extract a value out of it, we make use of the
 [`unwrap_err`](https://doc.rust-lang.org/std/result/enum.Result.html#method.unwrap_err)
-call. Now, as we have an error value, we can check if it matches what we
-expected with an `assert_eq!`. There is a slight complication - the error
+call since we are expecting an error to
+occur. Now that we have an error value, we can check whether it matches what we
+expected with an `assert_eq!`. There is a slight complication here, however: the error
 returned from `execute_contract` is an
 [`anyhow::Error`](https://docs.rs/anyhow/1.0.57/anyhow/struct.Error.html)
-error, but we expect it to be a `ContractError`. Hopefully, as I said before,
+error, but we are expecting a `ContractError`. Thankfully, as mentioned above,
 `anyhow` errors can recover their original type using the
 [`downcast`](https://docs.rs/anyhow/1.0.57/anyhow/struct.Error.html#method.downcast)
-function. The `unwrap` right after it is needed because downcasting may fail.
-The reason is that `downcast` doesn't magically know the type kept in the
-underlying error. It deduces it by some context - here, it knows we expect it
-to be a `ContractError`, because of being compared to it - type elision
-miracles. But if the underlying error would not be a `ContractError`, then
+function. The `unwrap` right after it is required because downcasting may fail, because `downcast` doesn't magically know the type kept in the
+underlying error. It deduces this by using the context - in this case, it knows we expect it
+to be a `ContractError` by the fact that it is being compared to it (type elision
+miracles!). If the underlying error was not a `ContractError`, then
 `unwrap` would panic.
 
-We just created a simple failure test for execution, but it is not enough to claim the contract is production-ready.
-All reasonable ok-cases should be covered for that. I encourage you to create some tests and experiment with them as
-an exercise after this chapter.
+We have just created a simple failure test for execution, but it is not enough by itself to enable us to claim that the contract is production-ready.
+We would need to cover all reasonable Ok-cases to be able to claim that. We encourage you to create some tests and experiment with them as an exercise after this chapter.

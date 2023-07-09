@@ -2,15 +2,15 @@
 
 The concept of time in the blockchain is tricky - as in
 every distributed system, it is not easy to synchronize the
-clocks of all the nodes.
+clocks of all of the nodes.
 
-However, there is the notion of a time that is even
-monotonic - which means that it should never go "backward"
-between executions. Also, what is important is - time is
-always unique throughout the whole transaction - and even
-the entire block, which is built of multiple transactions.
+There is a notion of a time that it is should be
+monotonic, meaning that it should never go "backwards"
+between executions. Also, it is important that time is
+always unique throughout not just the whole transaction, but also
+the entire block, which of course can be built up from multiple transactions.
 
-The time is encoded in the
+Time is encoded in the
 [`Env`](https://docs.rs/cosmwasm-std/1.2.4/cosmwasm_std/struct.Env.html)
 type in its
 [`block`](https://docs.rs/cosmwasm-std/1.2.4/cosmwasm_std/struct.BlockInfo.html)
@@ -26,16 +26,14 @@ pub struct BlockInfo {
 
 You can see the `time` field, which is the timestamp of the
 processed block. The `height` field is also worth
-mentioning - it contains a sequence number of the processed
-block. It is sometimes more useful than time, as it is
-guaranteed that the `height` field is guaranteed to increase
+mentioning as it contains a sequence number of the processed
+block. It is sometimes more useful than time, as the `height` field is guaranteed to increase
 between blocks, while two blocks may be executed with the
-same `time` (even though it is rather not probable).
+same `time` (even though this is rather improbable).
 
-Also, many transactions might be executed in a single block.
-That means that if we need a unique id for the execution of
-a particular message, we should look for something more.
-This thing is a
+Since many transactions may be executed in a single block, if we need a unique id for the execution of
+a particular message then we shall need something else.
+What we can use is the
 [`transaction`](https://docs.rs/cosmwasm-std/1.2.4/cosmwasm_std/struct.TransactionInfo.html)
 field of the `Env` type:
 
@@ -46,14 +44,14 @@ pub struct TransactionInfo {
 ```
 
 The `index` here contains a unique index of the transaction
-in the block. That means that to get the unique identifier
-of a transaction through the whole block, we can use the
+in the block. That means that to get a unique identifier
+of a transaction within the entire blockchain, we can use the
 `(height, transaction_index)` pair.
 
 ## Join time
 
 We want to use the time in our system to keep track of the
-join time of admins. We don't yet add new members to the
+join time of admins. We won't yet solve this for adding new members to the
 group, but we can already set the join time of initial
 admins. Let's start updating our state:
 
@@ -66,20 +64,16 @@ pub const ADMINS: Map<&Addr, Timestamp> = Map::new("admins");
 # pub const DONATION_DENOM: Item<String> = Item::new("donation_denom");
 ```
 
-As you can see, our admins set became a proper map - we will
+As you can see, our admins set has became a proper map - we will
 assign the join time to every admin.
 
-Now we need to update how we initialize a map - we stored the Empty data previously, but it nevermore matches our value type. Let's check an updated instantiation function:
+Now we need to update how we initialize a map - we stored the `Empty` data previously, but it no longer matches our value type. Let's consider an updated instantiation function:
 
-You might argue to create a separate structure for the value
-of this map, so in the future, if we would need to add
-something there, but in my opinion, it would be premature -
-we can also change the entire value type in the future, as
-it would be the same breaking change.
+You might argue for creating a separate structure for the value
+of this map, so that in future we can add things if necessary.  In the author's opinion, this would be premature as
+it would be the same breaking change, and in any case we can still change the entire value type in the futur if we need to.
 
-Now we need to update how we initialize a map - we stored
-the `Empty` data previously, but it nevermore matches our
-value type. Let's check an updated instantiation function:
+Let's take a look at an updated instantiation function:
 
 ```rust
 use crate::state::{ADMINS, DONATION_DENOM};
@@ -105,9 +99,9 @@ pub fn instantiate(
 
 Instead of storing `&Empty {}` as an admin value, we store
 the join time, which we read from `&env.block.time`. Also,
-note that I removed the underscore from the name of the
-`env` block - it was there only to ensure the Rust compiler
-the variable is purposely unused and not some kind of a bug.
+note that we have removed the underscore from the name of the
+`env` block (it was there only to assure the Rust compiler that
+the variable was deliberately unused and not some kind of bug).
 
 Finally, remember to remove any obsolete `Empty` imports
 through the project - the compiler should help you point out
@@ -117,8 +111,7 @@ unused imports.
 
 The last thing to add regarding join time is the new query
 asking for the join time of a particular admin. Everything
-you need to do that was already discussed, I'll leave it for
-you as an exercise. The query variant should look like:
+you need to do that was already discussed, so it is left as an exercise. The query variant should look like this:
 
 ```rust
 #[returns(JoinTimeResp)]
@@ -134,23 +127,23 @@ pub struct JoinTimeResp {
 }
 ```
 
-You may question that in response type, I suggest always returning a `joined`
-value, but what to do when no such admin is added? Well, in such a case, I
-would rely on the fact that `load` function returns a descriptive error of
-missing value in storage - however, feel free to define your own error for such
-a case or even make the `joined` field optional, and be returned if requested
+You may question the fact that the suggested response type always returns a `joined`
+value, while there is always the possibility that no such admin exists in the group. Well, in such a case, we
+rely on the fact that the `load` function returns a descriptive error of
+`missing value in storage`.  However, feel free to define your own error for such
+a case or even to make the `joined` field optional, to be returned only if the requested
 admin exists.
 
-Finally, there would be a good idea to make a test for new functionality - call
-a new query right after instantiation to verify initial admins has proper join
+Finally, it would be a good idea to make a test for this new functionality - call
+a new query right after instantiation to verify that the initial admins all have a proper join
 time (possibly by extending the existing instantiation test).
 
-One thing you might need help with in tests might be how to get the time of
-execution. Using any OS-time would be doomed to fail - instead, you can call
+One thing you might need help with in the tests is how exactly to get the time of
+execution. Using any OS-time will be doomed to fail - instead, you can call
 the
 [`block_info`](https://docs.rs/cw-multi-test/0.16.4/cw_multi_test/struct.App.html#method.block_infohttps://docs.rs/cw-multi-test/0.16.4/cw_multi_test/struct.App.html#method.block_info)
 function to reach the
 [`BlockInfo`](https://docs.rs/cosmwasm-std/latest/cosmwasm_std/struct.BlockInfo.html)
 structure containing the block state at a particular moment in the app - calling
-it just before instantiation would make you sure you are working with the same state
+it just before instantiation ensures that you are working with the same state
 which would be simulated on the call.

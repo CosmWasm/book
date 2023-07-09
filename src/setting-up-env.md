@@ -1,25 +1,25 @@
 # Setting up the environment
 
-To work with CosmWasm smart contract, you will need rust installed on your
-machine. If you don't have one, you can find installation instructions on [the
+To work with a CosmWasm smart contract, you will need Rust installed on your
+machine. If you don't have it, you can find installation instructions on [the
 Rust website](https://www.rust-lang.org/tools/install).
 
-I assume you are working with a stable Rust channel in this book.
+I assume you are working with a stable Rust version in this book.
 
-Additionally, you will need the Wasm rust compiler backend installed to build
+Additionally, you will need the Wasm Rust compiler backend installed to build
 Wasm binaries. To install it, run:
 
 ```
 rustup target add wasm32-unknown-unknown
 ```
 
-Optionally if you want to try out your contracts on a testnet, you will need a
-[wasmd](https://github.com/CosmWasm/wasmd) binary. We would focus on testing
-contracts with Rust unit testing utility throughout the book, so it is not
-required to follow. However, seeing the product working in a real-world
-environment may be nice.
+Optionally, if you also want to try out your contracts on a testnet then you will need the
+[wasmd](https://github.com/CosmWasm/wasmd) binary. We will focus on testing
+contracts using Rust's unit testing utility throughout the book, so it is not
+required to follow along. However, seeing the product working in a real-world
+environment may be nice!
 
-To install `wasmd`, first install the [golang](https://github.com/golang/go/wiki#working-with-go). Then
+To install `wasmd`, first install [golang](https://github.com/golang/go/wiki#working-with-go). Then
 clone the `wasmd` and install it:
 
 ```
@@ -28,14 +28,14 @@ $ cd ./wasmd
 $ make install
 ```
 
-Also, to be able to upload Rust Wasm Contracts into the blockchain, you will need
+Also, to be able to upload Rust Wasm Contracts onto the blockchain, you will need
 to install [docker](https://www.docker.com/). To minimize your contract sizes,
-it will be required to run CosmWasm Rust Optimizer; without that, more complex
+it will be required to run CosmWasm Rust Optimizer, otherwise more complex
 contracts might exceed a size limit.
 
 ## cosmwasm-check utility
 
-An additional helpful tool for building smart contracts is the `cosmwasm-check`[utility](https://github.com/CosmWasm/cosmwasm/tree/main/packages/check). It allows you to check if the wasm binary is a proper smart contract ready to upload into the blockchain. You can install it using cargo:
+An additional helpful tool for building smart contracts is the `cosmwasm-check`[utility](https://github.com/CosmWasm/cosmwasm/tree/main/packages/check). It allows you to check if the wasm binary is a proper smart contract ready to upload onto the blockchain. You can install it using Cargo:
 
 ```
 $ cargo install cosmwasm-check
@@ -50,7 +50,7 @@ Contract checking 1.2.3
 
 ## Verifying the installation
 
-To guarantee you are ready to build your smart contracts, you need to make sure you can build examples.
+To guarantee you are ready to build your smart contracts, you need to make sure you can build the examples.
 Checkout the [cw-plus](https://github.com/CosmWasm/cw-plus) repository and run the testing command in
 its folder:
 
@@ -60,12 +60,12 @@ $ cd ./cw-plus
 cw-plus $ cargo test
 ```
 
-You should see that everything in the repository gets compiled, and all tests pass. 
+You should see that everything in the repository gets compiled correctly, and all tests pass. 
 
-`cw-plus` is a great place to find example contracts - look for them in `contracts` directory. The
+`cw-plus` is a great place to find example contracts - look for them in the `contracts` directory. The
 repository is maintained by CosmWasm creators, so contracts in there should follow good practices.
 
-To verify the `cosmwasm-check` utility, first, you need to build a smart contract. Go to some contract directory, for example, `contracts/cw1-whitelist`, and call `cargo wasm`:
+To verify the `cosmwasm-check` utility, you will first need to build a smart contract. Go to some contract's directory (for example, `contracts/cw1-whitelist`), and call `cargo wasm`:
 
 ```
 cw-plus $ cd contracts/cw1-whitelist

@@ -1,17 +1,17 @@
 # Events attributes and data
 
-The only way our contract can communicate to the world, for now, is by queries.
+The only way our contract can communicate with the outside world, for now, is by means of queries.
 Smart contracts are passive - they cannot invoke any action by themselves. They
-can do it only as a reaction to a call. But if you tried playing with `wasmd`,
-you know that execution on the blockchain can return some metadata.
+can do so only in response to a call. However, if you have ever tried playing around with `wasmd`,
+you'll know that execution on the blockchain can return some metadata.
 
-There are two things the contract can return to the caller: events and data.
+There are two things the contract can return to the caller: `event`s and `data`.
 Events are something produced by almost every real-life smart contract. In
-contrast, data is rarely used, designed for contract-to-contract communication.
+contrast, `data` is designed for contract-to-contract communication and is much more rarely used, and it .
 
 ## Returning events
 
-As an example, we would add an event `admin_added` emitted by our contract on the execution of
+As an example, we shall add an event `admin_added`, which shall be emitted by our contract on the execution of
 `AddMembers`:
 
 ```rust,noplayground
@@ -260,18 +260,16 @@ An event is built from two things: an event type provided in the
 Attributes are added to an event with
 the [`add_attributes`](https://docs.rs/cosmwasm-std/1.0.0/cosmwasm_std/struct.Event.html#method.add_attributes)
 or the  [`add_attribute`](https://docs.rs/cosmwasm-std/1.0.0/cosmwasm_std/struct.Event.html#method.add_attribute)
-call. Attributes are key-value pairs. Because an event cannot contain any list, to achieve reporting
-multiple similar actions taking place, we need to emit multiple small events instead of a collective one.
+call. Attributes are key-value pairs. Because an event cannot contain a list, to achieve the reporting
+of multiple similar actions taking place, we need to emit multiple small events rather than a single collective one.
 
 Events are emitted by adding them to the response with
 [`add_event`](https://docs.rs/cosmwasm-std/1.0.0/cosmwasm_std/struct.Response.html#method.add_event) or
 [`add_events`](https://docs.rs/cosmwasm-std/1.0.0/cosmwasm_std/struct.Response.html#method.add_events) call.
-Additionally, there is a possibility to add attributes directly to the response. It is just sugar. By default,
+Additionally, it is possible to add attributes directly to the response. However, this is just sugar. By default,
 every execution emits a standard "wasm" event. Adding attributes to the result adds them to the default event.
 
-We can check if events are properly emitted by contract. It is not always done, as it is much of boilerplate in
-test, but events are, generally, more like logs - not necessarily considered main contract logic. Let's now write
-single test checking if execution emits events:
+We can check if events are properly emitted by our contract. It's not always done, since there is a lot of boilerplate in the test and events are generally more like logs so not necessarily considered main contract logic. Let's now write a single test checking if execution emits events:
 
 ```rust,noplayground
 # use crate::error::ContractError;
@@ -582,22 +580,20 @@ mod tests {
 }
 ```
 
-As you can see, testing events on a simple test made it clunky. First of all,
-every string is heavily string-based - a lack of type control makes writing
-such tests difficult. Also, even types are prefixed with "wasm-" - it may not
-be a huge problem, but it doesn't clarify verification. But the problem is, how
-layered events structure are, which makes verifying them tricky. Also, the
-"wasm" event is particularly tricky, as it contains an implied attribute -
-`_contract_addr` containing an address called a contract. My general rule is -
-do not test emitted events unless some logic depends on them.
+As you can see, testing events even in a simple test is clunky. First of all,
+every check is heavily string-based - a lack of type control makes writing
+such tests difficult. Also, event types are prefixed with "wasm-" - this may not
+be a huge problem, but it certainly doesn't help clarify verification. However, the main problem lies in the layered events structure.  This makes verifying them particularly tricky. Further, the
+"wasm" event itself is also tricky, as it contains an implied attribute -
+`_contract_addr` containing an address called a contract. Given these difficulties, the author follows a general approach of not testing emitted events unless some logic depends on them!
 
 ## Data
 
 Besides events, any smart contract execution may produce a `data` object. In contrast to events, `data`
-can be structured. It makes it a way better choice to perform any communication logic relies on. On the
-other hand, it turns out it is very rarely helpful outside of contract-to-contract communication. Data
-is always only one single object on the response, which is set using the
+can be structured. This makes it a much better choice for performing any communication that the contract logic relies upon. On the
+other hand, it turns out that it is very rarely helpful outside of contract-to-contract communication. Data
+is always only one single object in the response, which is set using the
 [`set_data`](https://docs.rs/cosmwasm-std/1.0.0/cosmwasm_std/struct.Response.html#method.set_data) function.
-Because of its low usefulness in a single contract environment, we will not spend time on it right now - an
+Because it is so rarely useful outside of a single contract environment, we will not spend time on it right now - an
 example of it will be covered later when contract-to-contract communication will be discussed. Until then,
-it is just helpful to know such an entity exists.
+it is just helpful to bear in mind that such an entity exists.
