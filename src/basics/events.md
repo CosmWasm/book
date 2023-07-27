@@ -164,7 +164,7 @@ mod exec {
 #                 code_id,
 #                 Addr::unchecked("owner"),
 #                 &InstantiateMsg {
-#                     admins: vec!["admin1".to_owned(), "admin2".to_owned()],
+#                     admins: vec![Addr::unchecked("admin1"), Addr::unchecked("admin2")],
 #                 },
 #                 &[],
 #                 "Contract 2",
@@ -525,7 +525,7 @@ mod tests {
                 code_id,
                 Addr::unchecked("owner"),
                 &InstantiateMsg {
-                    admins: vec!["owner".to_owned()],
+                    admins: vec![Addr::unchecked("owner")],
                 },
                 &[],
                 "Contract",
