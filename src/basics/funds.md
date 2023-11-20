@@ -11,8 +11,8 @@ fees](https://docs.cosmos.network/master/basics/gas-fees.html) or
 algorithm, but can be just arbitrary assets.
 
 Native tokens are assigned to their owners but can be transferred by their
-nature. Everything had an address in the blockchain is eligible to have its
-native tokens. As a consequence - tokens can be assigned to smart contracts!
+nature. Everything that has an address in the blockchain is eligible to have its native tokens.
+As a consequence - tokens can be assigned to smart contracts!
 Every message sent to the smart contract can have some funds sent with it. In
 this chapter, we will take advantage of that and create a way to reward hard
 work performed by admins. We will create a new message - `Donate`, which will be
