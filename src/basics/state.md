@@ -124,7 +124,7 @@ pub fn instantiate(
     let admins: StdResult<Vec<_>> = msg
         .admins
         .into_iter()
-        .map(|addr| deps.api.addr_validate(&addr))
+        .map(|addr| deps.api.addr_validate(&addr.to_string()))
         .collect();
     ADMINS.save(deps.storage, &admins?)?;
 
@@ -395,7 +395,7 @@ listing all admins. Start with adding a variant for query message and a correspo
 #     pub message: String,
 # }
 # 
-#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
+# #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct AdminsListResp  {
     pub admins: Vec<Addr>,
 }
@@ -598,7 +598,7 @@ mod tests {
                 code_id,
                 Addr::unchecked("owner"),
                 &InstantiateMsg {
-                    admins: vec!["admin1".to_owned(), "admin2".to_owned()],
+                    admins: vec![Addr::unchecked("admin1"), Addr::unchecked("admin2")],
                 },
                 &[],
                 "Contract 2",
