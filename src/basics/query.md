@@ -297,7 +297,7 @@ mod query {
 I moved most of the logic here, so my `src/lib.rs` is just a very thin library entry with nothing
 else but module definitions and entry points definition. I removed the `#[entry_point]` attribute
 from my `query` function in `src/contract.rs`. I will have a function with this attribute.
-Still, I wanted to split functions' responsibility further - not the `contract::query` function is
+Still, I wanted to split functions' responsibility further - now the `contract::query` function is
 the top-level query handler responsible for dispatching the query message. The `query` function on
 crate-level is only an entry point. It is a subtle distinction, but it will make sense in the future
 when we would like not to generate the entry points but to keep the dispatching functions. I introduced
