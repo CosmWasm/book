@@ -400,7 +400,7 @@ pub struct AdminsListResp  {
     pub admins: Vec<Addr>,
 }
 
-[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub enum QueryMsg {
     Greet {},
     AdminsList {},
