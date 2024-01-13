@@ -653,7 +653,7 @@ mod tests {
 ```
 
 The test is simple - instantiate the contract twice with different initial admins, and ensure the query result
-is proper each time. This is often the way we test our contract - we execute bunch o messages on the contract,
+is proper each time. This is often the way we test our contract - we execute bunch of messages on the contract,
 and then we query it for some data, verifying if query responses are like expected.
 
 We are doing a pretty good job developing our contract. Now it is time to use the state and allow for some executions.
