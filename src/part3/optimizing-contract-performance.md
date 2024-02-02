@@ -36,7 +36,34 @@ Rust offers several features and optimizations that are beneficial for smart con
 - **Optimal Data Structures**: Choosing the right data structures for various scenarios in smart contract development.
 - **Algorithmic Efficiency**: Writing algorithms that minimize computational complexity.
 
+Most optimizations are very specific to the contract's use case and specific requirements,
+but choosing the right data structure is the most important factor.
+
+For example, if you have some configuration you need almost everywhere in the contract,
+it makes sense to put all of it into struct and store it as a single `Item` instead
+of storing each field separately. This is the case because every load from storage incurs a gas
+cost consisting of a flat and a variable part. For many small reads, the flat part starts to add up.
+It is important to stress that this only makes sense if you need all or most of the fields at once anyways.
+
 ```rust
 // Example Rust code showcasing an optimization technique in CosmWasm
-// Placeholder for Rust optimization code snippet
+#[cw_serde]
+struct Config {
+    owner: Addr,
+    receiver: Addr,
+    gift_amount: Coin,
+}
+
+const CONFIG: Item<Config> = Item::new("config");
+
+// then later in the contract:
+let Config {
+    owner,
+    receiver,
+    gift_amount,
+} = CONFIG.load(deps.storage)?;
+// instead of:
+// let owner = CONFIG.load(deps.storage)?.owner;
+// let receiver = CONFIG.load(deps.storage)?.receiver;
+// let gift_amount = CONFIG.load(deps.storage)?.gift_amount;
 ```
