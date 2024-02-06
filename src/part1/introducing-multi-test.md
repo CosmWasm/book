@@ -59,4 +59,4 @@ This example demonstrates how to initialize the `cw-multi-test` app, wrap your c
 ## Advancing with Complex Interactions and Multiple Contracts
 `cw-multi-test` excels in scenarios involving complex contract interactions and the orchestration of multiple contracts. It allows developers to simulate intricate blockchain states and interactions, ensuring that contracts perform as expected in a composite ecosystem.
 
-By leveraging cw-multi-test, developers can craft detailed tests that mimic real-world contract usage, interactions, and dependencies, providing a robust framework for ensuring contract reliability and functionality within the CosmWasm ecosystem.
+By leveraging `cw-multi-test`, developers can craft detailed tests that mimic real-world contract usage, interactions, and dependencies, providing a robust framework for ensuring contract reliability and functionality within the CosmWasm ecosystem.
