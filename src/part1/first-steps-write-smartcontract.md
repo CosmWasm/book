@@ -107,5 +107,3 @@ mod tests {
     }
 }
 ```
-
-# Multi-test examples
