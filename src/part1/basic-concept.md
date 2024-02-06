@@ -64,4 +64,20 @@ pub fn execute(deps: DepsMut, _env: Env, info: MessageInfo, msg: ExecuteMsg) -> 
     Ok(res)
 }
 ```
+```mermaid
+sequenceDiagram
+    participant C1 as Contract 1
+    participant C2 as Contract 2
+    participant B as Blockchain
+
+    C1->>+B: Send Message
+    B->>+C2: Route Message
+    Note over C2: Perform Logic
+    C2->>-B: Response
+    B-->>-C1: Acknowledgement
+
+```
+
+Effective communication in the CosmWasm ecosystem is crucial for the seamless operation and interoperability of decentralized applications. This section delves into the significance of communication between contracts and the blockchain, highlighting the pivotal role of the `Response` object in signaling execution results and facilitating event-driven interactions. By ensuring a robust communication framework, CosmWasm enhances the functionality and reliability of smart contracts, making them more adaptable and efficient in the ever-evolving landscape of blockchain technology.
+
 CosmWasm's architecture, focusing on interoperability, security, and ease of use, makes it an ideal framework for building robust and scalable decentralized applications.
