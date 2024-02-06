@@ -75,7 +75,6 @@ sequenceDiagram
     Note over C2: Perform Logic
     C2->>-B: Response
     B-->>-C1: Acknowledgement
-
 ```
 
 Effective communication in the CosmWasm ecosystem is crucial for the seamless operation and interoperability of decentralized applications. This section delves into the significance of communication between contracts and the blockchain, highlighting the pivotal role of the `Response` object in signaling execution results and facilitating event-driven interactions. By ensuring a robust communication framework, CosmWasm enhances the functionality and reliability of smart contracts, making them more adaptable and efficient in the ever-evolving landscape of blockchain technology.
