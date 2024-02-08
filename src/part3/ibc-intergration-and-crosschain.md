@@ -51,4 +51,4 @@ To illustrate the practical applications of IBC, we delve into case studies show
 // Placeholder for case study 1 code example and diagram explanation.
 
 // Placeholder for case study 2 code example and diagram explanation.
-
+ 
