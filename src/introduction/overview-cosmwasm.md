@@ -27,11 +27,11 @@ CosmWasm 2.0 stands as a testament to the evolving nature of blockchain technolo
 
 This document serves as a guide-like introduction to developing with CosmWasm, designed to provide you with a foundational understanding of smart contract development in this ecosystem. However, for those who are delving into the development process and require detailed reference materials, the API documentation is an invaluable resource. To further your knowledge and assist with specific development needs, you may find the following API documentation links particularly useful:
 
-- cosmwasm-std: The standard library for CosmWasm smart contracts, offering essential utilities and interfaces for interacting with the blockchain.
-- cw-storage-plus: A set of extensions to the basic storage capabilities, simplifying common patterns for storing and accessing data within smart contracts.
-- cw-multi-test: A testing framework designed to facilitate complex contract interactions and integration testing scenarios.
+- **cosmwasm-std:** The standard library for CosmWasm smart contracts, offering essential utilities and interfaces for interacting with the blockchain.
+- **cw-storage-plus:** A set of extensions to the basic storage capabilities, simplifying common patterns for storing and accessing data within smart contracts.
+- **cw-multi-test:** A testing framework designed to facilitate complex contract interactions and integration testing scenarios.
 - cw-utils: Utility functions and helpers that provide additional functionality beyond the standard library.
-- sylvia framework: A comprehensive framework for CosmWasm development, offering advanced features and tools for contract creation.
+- **sylvia framework:** A comprehensive framework for CosmWasm development, offering advanced features and tools for contract creation.
 
 ## Contributing to the Book
 
