@@ -8,7 +8,7 @@ CosmWasm 2.0 introduces a range of advanced features and improvements, marking a
 
 ### Feature Breakdown and Enhancements
 
-#### Performance Improvements
+### Performance Improvements
 
 CosmWasm 2.0 brings several optimizations to the execution environment:
 
