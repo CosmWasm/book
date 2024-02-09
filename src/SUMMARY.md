@@ -39,3 +39,47 @@
 ---
 
 [Legal Information](impressum.md)
+
+# Introduction
+
+# Part 1
+  - [Section:1 Getting Started](section-1-getting-started-w/part1)
+    - [1.1 Basics Concept](section-1-getting-started-w/1.1basics-concept.mc)
+    - [1.2 Setting up your Enviroment](secting-1-getting-started-w/1.2setting-up-envriment.md)
+    - [1.3 Entry Point](section-1-getting-started-w/1.3.entry-points.md)
+    - [1.4 First Steps to write a smart contract](section-1-getting-started-w/1.4.first-steps-write-smartcontract.md)
+
+  - [Section:2 Interacting with Smart Contracts]()
+    - [1.5 Creating a Query]()
+    - [1.6 Testing a Query]()
+    - [1.7 Multi-Test]()
+
+  - [Section:3 Advanced]()
+    - [1.8 Contract State]()
+    - [1.9 Execute a Message]()
+    - [1.10 Events,Attributes, and Data]()
+    - [1.11 Dealing with Funds]()
+
+  - [Section:4 Best Practices]()
+    - [1.12 Good Practices]()
+    - [1.13 Floating Types]()
+
+# Part 2
+- [Part 2]()
+  - [Deep Dive Into the Cosmos]()
+  - [Interacting with Contracts]()
+  - [Smart Contract Development]()
+
+# Part 3
+- [Part 3]()
+  - [IBC intergration and Crosschain]()
+  - [Optimizing Contracts]()
+  - [Security and Best Practices]()
+
+# Part 4 
+- [Part 4]()
+  - [Case Studies]()
+  - [Ecosystem and Community]()
+
+# Conclusion
+[Conclusion]()

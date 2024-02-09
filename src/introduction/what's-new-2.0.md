@@ -1,6 +1,6 @@
 # What's New in CosmWasm 2.0
 
-The release of **CosmWasm 2.0** marks a significant milestone in the evolution of the CosmWasm framework. This version introduces an array of new features, performance enhancements, and security improvements, establishing a more robust, efficient, and secure foundation for decentralized application development. Key updates include advanced interoperability through IBC integration, optimized smart contract performance, and comprehensive security upgrades, ensuring that CosmWasm remains at the forefront of smart contract development technologies.
+The release of **CosmWasm 2.0** marks a significant milestone in the evolution of the CosmWasm framework. This version introduces an array of new features, performance enhancements, and security improvements, establishing a more robust, efficient, and secure foundation for decentralized application development. Key updates include advanced interoperability through IBC integration, optimized smart contract performance, and comprehensive security upgrades, ensuring that CosmWasm remains at the forefront of smart contract development.
 
 ## From 1.5 to 2.0: A Leap Forward
 
