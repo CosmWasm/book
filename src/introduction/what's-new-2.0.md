@@ -15,9 +15,9 @@ We invite you to review the [official changelog on GitHub](https://github.com/Co
 
 ## Highlights from the changelog include:
 
-- **IBC Integration**: Enhanced support for Inter-Blockchain Communication (IBC), allowing CosmWasm contracts to seamlessly interact with other IBC-enabled blockchains.
-- **Performance Optimizations**: Significant improvements in contract execution speed and efficiency, reducing gas costs and improving the overall user experience.
-- **Security Enhancements**: Introduction of new security protocols and measures to strengthen contract integrity and protect against emerging vulnerabilities.
+- **IBC Integration**: The addition of IbcMsg::Transfer with an optional memo field enhances the IBC functionality, allowing for richer cross-chain interactions. The introduction of IbcReceiveResponse::without_ack constructor and making acknowledgement optional streamline the handling of IBC packets, facilitating a more efficient integration process with other IBC-enabled blockchains. ([#1878], [#1892])
+- **Performance Optimizations**: The resolution of memory increase issues and the optimization of Wasmer Engine usage significantly boost contract execution efficiency. The upgrade to Wasmer 4.2.5, alongside adjustments to memory handling and function parameter limits, contributes to overall performance improvements, ensuring faster execution and lower gas costs. ([#1978], [#1992], [#2005], [#1991])
+- **Security Enhancements**: Fixes addressing specific vulnerabilities, such as CWA-2023-004, directly contribute to the security robustness of CosmWasm contracts. The removal of features that potentially impact security, coupled with the continuous update and refinement of the contract environment, ensures a safer execution space for smart contracts. ([#1996])
 - **Developer Tooling** : The update focused on streamlining error handling and backtraces within smart contracts. The backtraces feature has been removed from cosmwasm-std, and developers can now utilize the RUST_BACKTRACE=1 environment variable for error diagnostics. This change ensures that error variants consistently contain backtrace information, simplifying debugging processes for developers. ([#1967])
 
 These updates are part of our ongoing commitment to providing a powerful, flexible, and secure smart contract platform that meets the evolving needs of the blockchain developer community. For more information and a complete list of changes, please visit the [CosmWasm 2.0 changelog](https://github.com/CosmWasm/cosmwasm/blob/main/CHANGELOG.md).
