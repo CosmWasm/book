@@ -18,7 +18,7 @@ We invite you to review the [official changelog on GitHub](https://github.com/Co
 - **IBC Integration**: Enhanced support for Inter-Blockchain Communication (IBC), allowing CosmWasm contracts to seamlessly interact with other IBC-enabled blockchains.
 - **Performance Optimizations**: Significant improvements in contract execution speed and efficiency, reducing gas costs and improving the overall user experience.
 - **Security Enhancements**: Introduction of new security protocols and measures to strengthen contract integrity and protect against emerging vulnerabilities.
-- **Developer Tooling** : Upgrades to the developer toolkit, including better debugging and testing capabilities, to streamline the smart contract development process.
+- **Developer Tooling** : The update focused on streamlining error handling and backtraces within smart contracts. The backtraces feature has been removed from cosmwasm-std, and developers can now utilize the RUST_BACKTRACE=1 environment variable for error diagnostics. This change ensures that error variants consistently contain backtrace information, simplifying debugging processes for developers. ([#1967])
 
 These updates are part of our ongoing commitment to providing a powerful, flexible, and secure smart contract platform that meets the evolving needs of the blockchain developer community. For more information and a complete list of changes, please visit the [CosmWasm 2.0 changelog](https://github.com/CosmWasm/cosmwasm/blob/main/CHANGELOG.md).
 
