@@ -1,47 +1,41 @@
-# Summary 
+# Summary
 
-# Introduction
+[Introduction](README.md)
 
-# Part 1
-  - [Section:1 Getting Started](section-1-getting-started-w/part1)
-    - [1.1 Basics Concept](section-1-getting-started-w/1.1basics-concept.mc)
-    - [1.2 Setting up your Enviroment](secting-1-getting-started-w/1.2setting-up-envriment.md)
-    - [1.3 Entry Point](section-1-getting-started-w/1.3.entry-points.md)
-    - [1.4 First Steps to write a smart contract](section-1-getting-started-w/1.4.first-steps-write-smartcontract.md)
+# Getting started
 
-  - [Section:2 Interacting with Smart Contracts]()
-    - [1.5 Creating a Query](section-2-interacting-w-smartcontrancts/1.5creating-a-query.md)
-    - [1.6 Testing a Query](section-2-interacting-w-smartcontracts/1.6testing-a-query.md)
-    - [1.7 Multi-Test](section-2-interacting-w-smartcontracts/1.7.introducing-multi-test.md)
+- [Setting up the environment](setting-up-env.md)
+- [Quick start with wasmd](wasmd-quick-start.md)
 
-  - [Section:3 Advanced]()
-    - [1.8 Contract State](section-3-advanced/1.8.contract-state.md)
-    - [1.9 Execute a Message](section-3-advanced/1.9executing-a-message.md)
-    - [1.10 Events,Attributes, and Data](section-3-advanced/1.10event-attribute-data.md)
-    - [1.11 Dealing with Funds](section-3-advanced/1.11dealing-with-funds.md)
+# Smart contracts
 
-  - [Section:4 Best Practices](section-4-best-practices)
-    - [1.12 Good Practices](section-4-best-practices/1.12good-practices.md)
-    - [1.13 Floating Types](section-4-best-practices/1.13floating-point-types.md)
+- [Basics](basics.md)
+  - [Create a Rust project](basics/rust-project.md)
+  - [Entry points](basics/entry-points.md)
+  - [Building the contract](basics/building-contract.md)
+  - [Creating a query](basics/query.md)
+  - [Testing a query](basics/query-testing.md)
+  - [Introducing multitest](basics/multitest-intro.md)
+  - [Contract state](basics/state.md)
+  - [Execution messages](basics/execute.md)
+  - [Events, attributes and data](basics/events.md)
+  - [Dealing with funds](basics/funds.md)
+  - [Good practices](basics/good-practices.md)
+  - [Floating point types](basics/fp-types.md)
 
-# Part 2
-- [Part 2](part2)
-  - [Deep Dive Into the Cosmos](part2/deep-dive-cosmos.md)
-  - [Interacting with Contracts](part2/interacting-with-contracts.md)
-  - [Smart Contract Development](part2/smart-contract-development.md)
+- [The Actor Model](actor-model.md)
+  - [The idea](actor-model/idea.md)
+  - [Actors in the blockchain](actor-model/actors-in-blockchain.md)
+  - [Contract as an actor](actor-model/contract-as-actor.md)
 
-# Part 3
-- [Part 3](part3)
-  - [IBC intergration and Crosschain](part3/ibc-intergration-and-crosschain.md)
-  - [Optimizing Contracts](part3/optimizing-contract-performance.md)
-  - [Security and Best Practices](part3/security-and-best-practices.md)
+- [Cross contract communication](cross-contract.md)
+  - [Design](cross-contract/design.md)
+  - [Fixing admin contract](cross-contract/fixing-admin.md)
+  - [Map storage](cross-contract/map-storage.md)
+  - [Working with time](cross-contract/working-with-time.md)
 
-# Part 4 
-- [Part 4](part4)
-  - [Case Studies](part4/case-studies.md)
-  - [Ecosystem and Community](part4/ecosystem-and-communication.md)
+- [Inter-blockchain communication]()
 
-# Conclusion
-- [Conclusion](conclusion/conclusion.md)
+---
 
 [Legal Information](impressum.md)
