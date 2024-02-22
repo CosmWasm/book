@@ -8,7 +8,7 @@ exercise - without checking out the source code.
 The idea of the contract will be easy - every contract admin would be eligible to call two execute messages:
 
 * `AddMembers` message would allow the admin to add another address to the admin's list
-* `Leave` would allow and admin to remove himself from the list
+* `Leave` would allow an admin to remove themselves from the list
 
 Not too complicated. Let's go coding. Start with defining messages:
 
