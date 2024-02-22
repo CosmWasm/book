@@ -1,0 +1,493 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Good practices - CosmWasm book</title>
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Guide to building CosmWasm smart contracts">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">Getting started</li><li class="chapter-item expanded "><a href="../setting-up-env.html"><strong aria-hidden="true">1.</strong> Setting up the environment</a></li><li class="chapter-item expanded "><a href="../wasmd-quick-start.html"><strong aria-hidden="true">2.</strong> Quick start with wasmd</a></li><li class="chapter-item expanded affix "><li class="part-title">Smart contracts</li><li class="chapter-item expanded "><a href="../basics.html"><strong aria-hidden="true">3.</strong> Basics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../basics/rust-project.html"><strong aria-hidden="true">3.1.</strong> Create a Rust project</a></li><li class="chapter-item expanded "><a href="../basics/entry-points.html"><strong aria-hidden="true">3.2.</strong> Entry points</a></li><li class="chapter-item expanded "><a href="../basics/building-contract.html"><strong aria-hidden="true">3.3.</strong> Building the contract</a></li><li class="chapter-item expanded "><a href="../basics/query.html"><strong aria-hidden="true">3.4.</strong> Creating a query</a></li><li class="chapter-item expanded "><a href="../basics/query-testing.html"><strong aria-hidden="true">3.5.</strong> Testing a query</a></li><li class="chapter-item expanded "><a href="../basics/multitest-intro.html"><strong aria-hidden="true">3.6.</strong> Introducing multitest</a></li><li class="chapter-item expanded "><a href="../basics/state.html"><strong aria-hidden="true">3.7.</strong> Contract state</a></li><li class="chapter-item expanded "><a href="../basics/execute.html"><strong aria-hidden="true">3.8.</strong> Execution messages</a></li><li class="chapter-item expanded "><a href="../basics/events.html"><strong aria-hidden="true">3.9.</strong> Events, attributes and data</a></li><li class="chapter-item expanded "><a href="../basics/funds.html"><strong aria-hidden="true">3.10.</strong> Dealing with funds</a></li><li class="chapter-item expanded "><a href="../basics/good-practices.html" class="active"><strong aria-hidden="true">3.11.</strong> Good practices</a></li><li class="chapter-item expanded "><a href="../basics/fp-types.html"><strong aria-hidden="true">3.12.</strong> Floating point types</a></li></ol></li><li class="chapter-item expanded "><a href="../actor-model.html"><strong aria-hidden="true">4.</strong> The Actor Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../actor-model/idea.html"><strong aria-hidden="true">4.1.</strong> The idea</a></li><li class="chapter-item expanded "><a href="../actor-model/actors-in-blockchain.html"><strong aria-hidden="true">4.2.</strong> Actors in the blockchain</a></li><li class="chapter-item expanded "><a href="../actor-model/contract-as-actor.html"><strong aria-hidden="true">4.3.</strong> Contract as an actor</a></li></ol></li><li class="chapter-item expanded "><a href="../cross-contract.html"><strong aria-hidden="true">5.</strong> Cross contract communication</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cross-contract/design.html"><strong aria-hidden="true">5.1.</strong> Design</a></li><li class="chapter-item expanded "><a href="../cross-contract/fixing-admin.html"><strong aria-hidden="true">5.2.</strong> Fixing admin contract</a></li><li class="chapter-item expanded "><a href="../cross-contract/map-storage.html"><strong aria-hidden="true">5.3.</strong> Map storage</a></li><li class="chapter-item expanded "><a href="../cross-contract/working-with-time.html"><strong aria-hidden="true">5.4.</strong> Working with time</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> Inter-blockchain communication</div></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../impressum.html">Legal Information</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">CosmWasm book</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="good-practices"><a class="header" href="#good-practices">Good practices</a></h1>
+<p>All the relevant basics are covered. Now let's talk about some good practices.</p>
+<h2 id="json-renaming"><a class="header" href="#json-renaming">JSON renaming</a></h2>
+<p>Due to Rust style, all our message variants are spelled in a
+<a href="https://en.wikipedia.org/wiki/CamelCase">camel-case</a>. It is standard practice,
+but it has a drawback - all messages are serialized and deserialized by serde
+using those variant names. The problem is that it is more common to use <a href="https://en.wikipedia.org/wiki/Snake_case">snake
+cases</a> for field names in the JSON
+world. Fortunately, there is an effortless way to tell serde, to change the names
+casing for serialization purposes. Let's update our messages with a <code>#[serde]</code>
+attribute:</p>
+<pre><code class="language-rust noplayground">use cosmwasm_std::Addr;
+use serde::{Deserialize, Serialize};
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
+#[serde(rename_all = &quot;snake_case&quot;)]
+pub struct InstantiateMsg {
+    pub admins: Vec&lt;String&gt;,
+    pub donation_denom: String,
+}
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
+#[serde(rename_all = &quot;snake_case&quot;)]
+pub enum ExecuteMsg {
+    AddMembers { admins: Vec&lt;String&gt; },
+    Leave {},
+    Donate {},
+}
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
+#[serde(rename_all = &quot;snake_case&quot;)]
+pub struct GreetResp {
+    pub message: String,
+}
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
+#[serde(rename_all = &quot;snake_case&quot;)]
+pub struct AdminsListResp {
+    pub admins: Vec&lt;Addr&gt;,
+}
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
+#[serde(rename_all = &quot;snake_case&quot;)]
+pub enum QueryMsg {
+    Greet {},
+    AdminsList {},
+}
+</code></pre>
+<h2 id="json-schema"><a class="header" href="#json-schema">JSON schema</a></h2>
+<p>Talking about JSON API, it is worth mentioning JSON Schema. It is a way of defining a shape for JSON messages.
+It is good practice to provide a way to generate schemas for contract API. The problem is that writing JSON
+schemas by hand is a pain. The good news is that there is a crate that would help us with that. Go to the <code>Cargo.toml</code>:</p>
+<pre><code class="language-toml">[package]
+name = &quot;contract&quot;
+version = &quot;0.1.0&quot;
+edition = &quot;2021&quot;
+
+[lib]
+crate-type = [&quot;cdylib&quot;, &quot;rlib&quot;]
+
+[dependencies]
+cosmwasm-std = { version = &quot;1.1.4&quot;, features = [&quot;staking&quot;] }
+serde = { version = &quot;1.0.103&quot;, default-features = false, features = [&quot;derive&quot;] }
+cw-storage-plus = &quot;0.15.1&quot;
+thiserror = &quot;1&quot;
+schemars = &quot;0.8.1&quot;
+cosmwasm-schema = &quot;1.1.4&quot;
+
+[dev-dependencies]
+cw-multi-test = &quot;0.13.4&quot;
+</code></pre>
+<p>There is one additional change in this file - in <code>crate-type</code> I added &quot;rlib&quot;. &quot;cdylib&quot; crates cannot be used as typical
+Rust dependencies. As a consequence, it is impossible to create examples for such crates.</p>
+<p>Now go back to <code>src/msg.rs</code> and add a new derive for all messages:</p>
+<pre><code class="language-rust noplayground"><span class="boring">use cosmwasm_std::Addr;
+</span>use schemars::JsonSchema;
+<span class="boring">use serde::{Deserialize, Serialize};
+</span>
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone, JsonSchema)]
+#[serde(rename_all = &quot;snake_case&quot;)]
+pub struct InstantiateMsg {
+    pub admins: Vec&lt;String&gt;,
+    pub donation_denom: String,
+}
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone, JsonSchema)]
+#[serde(rename_all = &quot;snake_case&quot;)]
+pub enum ExecuteMsg {
+    AddMembers { admins: Vec&lt;String&gt; },
+    Leave {},
+    Donate {},
+}
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone, JsonSchema)]
+#[serde(rename_all = &quot;snake_case&quot;)]
+pub struct GreetResp {
+    pub message: String,
+}
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone, JsonSchema)]
+#[serde(rename_all = &quot;snake_case&quot;)]
+pub struct AdminsListResp {
+    pub admins: Vec&lt;Addr&gt;,
+}
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone, JsonSchema)]
+#[serde(rename_all = &quot;snake_case&quot;)]
+pub enum QueryMsg {
+    Greet {},
+    AdminsList {},
+}
+</code></pre>
+<p>You may argue that all those derives look slightly clunky, and I agree.
+Fortunately, the
+<a href="https://docs.rs/cosmwasm-schema/1.1.4/cosmwasm_schema/#"><code>cosmwasm-schema</code></a>
+crate delivers a utility <code>cw_serde</code> macro, which we can use to reduce a
+boilerplate:</p>
+<pre><code class="language-rust noplayground"><span class="boring">use cosmwasm_std::Addr;
+</span>use cosmwasm_schema::cw_serde
+
+#[cw_serde]
+pub struct InstantiateMsg {
+    pub admins: Vec&lt;String&gt;,
+    pub donation_denom: String,
+}
+
+#[cw_serde]
+pub enum ExecuteMsg {
+    AddMembers { admins: Vec&lt;String&gt; },
+    Leave {},
+    Donate {},
+}
+
+#[cw_serde]
+pub struct GreetResp {
+    pub message: String,
+}
+
+#[cw_serde]
+pub struct AdminsListResp {
+    pub admins: Vec&lt;Addr&gt;,
+}
+
+#[cw_serde]
+pub enum QueryMsg {
+    Greet {},
+    AdminsList {},
+}
+</code></pre>
+<p>Additionally, we have to derive the additional <code>QueryResponses</code> trait for our
+query message to correlate the message variants with responses we would
+generate for them:</p>
+<pre><code class="language-rust noplayground"><span class="boring">use cosmwasm_std::Addr;
+</span>use cosmwasm_schema::{cw_serde, QueryResponses}
+
+<span class="boring">#[cw_serde]
+</span><span class="boring">pub struct InstantiateMsg {
+</span><span class="boring">    pub admins: Vec&lt;String&gt;,
+</span><span class="boring">    pub donation_denom: String,
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">#[cw_serde]
+</span><span class="boring">pub enum ExecuteMsg {
+</span><span class="boring">    AddMembers { admins: Vec&lt;String&gt; },
+</span><span class="boring">    Leave {},
+</span><span class="boring">    Donate {},
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">#[cw_serde]
+</span><span class="boring">pub struct GreetResp {
+</span><span class="boring">    pub message: String,
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">#[cw_serde]
+</span><span class="boring">pub struct AdminsListResp {
+</span><span class="boring">    pub admins: Vec&lt;Addr&gt;,
+</span><span class="boring">}
+</span><span class="boring">
+</span>#[cw_serde]
+#[derive(QueryResponses)]
+pub enum QueryMsg {
+    #[returns(GreetResp)]
+    Greet {},
+    #[returns(AdminsListResp)]
+    AdminsList {},
+}
+</code></pre>
+<p>The <code>QueryResponses</code> is a trait that requires the <code>#[returns(...)]</code> attribute
+to all your query variants to generate additional information about the
+query-response relationship.</p>
+<p>Now, we want to make the <code>msg</code> module public and accessible by crates depending
+on our contract (in this case - for schema example). Update a <code>src/lib.rs</code>:</p>
+<pre><code class="language-rust noplayground"><span class="boring">use cosmwasm_std::{entry_point, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult};
+</span><span class="boring">use error::ContractError;
+</span><span class="boring">use msg::{ExecuteMsg, InstantiateMsg, QueryMsg};
+</span><span class="boring">
+</span>pub mod contract;
+pub mod error;
+pub mod msg;
+pub mod state;
+<span class="boring">
+</span><span class="boring">#[entry_point]
+</span><span class="boring">pub fn instantiate(
+</span><span class="boring">    deps: DepsMut,
+</span><span class="boring">    env: Env,
+</span><span class="boring">    info: MessageInfo,
+</span><span class="boring">    msg: InstantiateMsg,
+</span><span class="boring">) -&gt; StdResult&lt;Response&gt; {
+</span><span class="boring">    contract::instantiate(deps, env, info, msg)
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">#[entry_point]
+</span><span class="boring">pub fn execute(
+</span><span class="boring">    deps: DepsMut,
+</span><span class="boring">    env: Env,
+</span><span class="boring">    info: MessageInfo,
+</span><span class="boring">    msg: ExecuteMsg,
+</span><span class="boring">) -&gt; Result&lt;Response, ContractError&gt; {
+</span><span class="boring">    contract::execute(deps, env, info, msg)
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">#[entry_point]
+</span><span class="boring">pub fn query(deps: Deps, env: Env, msg: QueryMsg) -&gt; StdResult&lt;Binary&gt; {
+</span><span class="boring">    contract::query(deps, env, msg)
+</span><span class="boring">}
+</span></code></pre>
+<p>I changed the visibility of all modules - as our crate can now be used as a dependency.
+If someone would like to do so, he may need access to handlers or state. </p>
+<p>The next step is to create a tool generating actual schemas. We will do it by creating
+an binary in our crate. Create a new <code>bin/schema.rs</code> file:</p>
+<pre><code class="language-rust noplayground">use contract::msg::{ExecuteMsg, InstantiateMsg, QueryMsg};
+use cosmwasm_schema::write_api;
+
+fn main() {
+    write_api! {
+        instantiate: InstantiateMsg,
+        execute: ExecuteMsg,
+        query: QueryMsg
+    }
+}
+</code></pre>
+<p>Cargo is smart enough to recognize files in <code>src/bin</code> directory as utility
+binaries for the crate. Now we can generate our schemas:</p>
+<pre><code>$ cargo run schema
+    Finished dev [unoptimized + debuginfo] target(s) in 0.52s
+     Running `target/debug/schema schema`
+Removing &quot;/home/hashed/confio/git/book/examples/03-basics/schema/contract.json&quot; …
+Exported the full API as /home/hashed/confio/git/book/examples/03-basics/schema/contract.json
+</code></pre>
+<p>I encourage you to go to generated file to see what the schema looks like.</p>
+<p>The problem is that, unfortunately, creating this binary makes our project fail
+to compile on the Wasm target - which is, in the end, the most important one.
+Fortunately, we don't need to build the schema binary for the Wasm target - let's
+align the <code>.cargo/config</code> file:</p>
+<pre><code class="language-toml">[alias]
+wasm = &quot;build --target wasm32-unknown-unknown --release --lib&quot;
+wasm-debug = &quot;build --target wasm32-unknown-unknown --lib&quot;
+schema = &quot;run schema&quot;
+</code></pre>
+<p>The <code>--lib</code> flag added to <code>wasm</code> cargo aliases tells the toolchain to build
+only the library target - it would skip building any binaries. Additionally, I
+added the convenience <code>schema</code> alias so that one can generate schema calling
+simply <code>cargo schema</code>.</p>
+<h2 id="disabling-entry-points-for-libraries"><a class="header" href="#disabling-entry-points-for-libraries">Disabling entry points for libraries</a></h2>
+<p>Since we added the &quot;rlib&quot; target for the contract, it is, as mentioned before, useable as a dependency.
+The problem is that the contract depended on ours would have Wasm entry points generated twice - once
+in the dependency and once in the final contract. We can work this around by disabling generating Wasm
+entry points for the contract if the crate is used as a dependency. We would use
+<a href="https://doc.rust-lang.org/cargo/reference/features.html">feature flags</a> for that.</p>
+<p>Start with updating <code>Cargo.toml</code>:</p>
+<pre><code class="language-toml">[features]
+library = []
+</code></pre>
+<p>This way, we created a new feature for our crate. Now we want to disable the <code>entry_point</code> attribute on
+entry points - we will do it by a slight update of <code>src/lib.rs</code>:</p>
+<pre><code class="language-rust noplayground"><span class="boring">use cosmwasm_std::{entry_point, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult};
+</span><span class="boring">use error::ContractError;
+</span><span class="boring">use msg::{ExecuteMsg, InstantiateMsg, QueryMsg};
+</span><span class="boring">
+</span><span class="boring">pub mod contract;
+</span><span class="boring">pub mod error;
+</span><span class="boring">pub mod msg;
+</span><span class="boring">pub mod state;
+</span><span class="boring">
+</span>#[cfg_attr(not(feature = &quot;library&quot;), entry_point)]
+pub fn instantiate(
+    deps: DepsMut,
+    env: Env,
+    info: MessageInfo,
+    msg: InstantiateMsg,
+) -&gt; StdResult&lt;Response&gt; {
+    contract::instantiate(deps, env, info, msg)
+}
+
+#[cfg_attr(not(feature = &quot;library&quot;), entry_point)]
+pub fn execute(
+    deps: DepsMut,
+    env: Env,
+    info: MessageInfo,
+    msg: ExecuteMsg,
+) -&gt; Result&lt;Response, ContractError&gt; {
+    contract::execute(deps, env, info, msg)
+}
+
+#[cfg_attr(not(feature = &quot;library&quot;), entry_point)]
+pub fn query(deps: Deps, env: Env, msg: QueryMsg) -&gt; StdResult&lt;Binary&gt; {
+    contract::query(deps, env, msg)
+}
+</code></pre>
+<p>The <a href="https://doc.rust-lang.org/reference/conditional-compilation.html#the-cfg_attr-attribute"><code>cfg_attr</code></a> attribute is
+a conditional compilation attribute, similar to the <code>cfg</code> we used before for the test. It expands to the given attribute if
+the condition expands to true. In our case - it would expand to nothing if the feature &quot;library&quot; is enabled, or it
+would expand just to <code>#[entry_point]</code> in another case.</p>
+<p>Since now to add this contract as a dependency, don't forget to enable the feature like this:</p>
+<pre><code class="language-toml">[dependencies]
+my_contract = { version = &quot;0.1&quot;, features = [&quot;library&quot;] }
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../basics/funds.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="../basics/fp-types.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../basics/funds.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="../basics/fp-types.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+    </body>
+</html>

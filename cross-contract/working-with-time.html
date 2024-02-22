@@ -1,0 +1,324 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Working with time - CosmWasm book</title>
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Guide to building CosmWasm smart contracts">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">Getting started</li><li class="chapter-item expanded "><a href="../setting-up-env.html"><strong aria-hidden="true">1.</strong> Setting up the environment</a></li><li class="chapter-item expanded "><a href="../wasmd-quick-start.html"><strong aria-hidden="true">2.</strong> Quick start with wasmd</a></li><li class="chapter-item expanded affix "><li class="part-title">Smart contracts</li><li class="chapter-item expanded "><a href="../basics.html"><strong aria-hidden="true">3.</strong> Basics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../basics/rust-project.html"><strong aria-hidden="true">3.1.</strong> Create a Rust project</a></li><li class="chapter-item expanded "><a href="../basics/entry-points.html"><strong aria-hidden="true">3.2.</strong> Entry points</a></li><li class="chapter-item expanded "><a href="../basics/building-contract.html"><strong aria-hidden="true">3.3.</strong> Building the contract</a></li><li class="chapter-item expanded "><a href="../basics/query.html"><strong aria-hidden="true">3.4.</strong> Creating a query</a></li><li class="chapter-item expanded "><a href="../basics/query-testing.html"><strong aria-hidden="true">3.5.</strong> Testing a query</a></li><li class="chapter-item expanded "><a href="../basics/multitest-intro.html"><strong aria-hidden="true">3.6.</strong> Introducing multitest</a></li><li class="chapter-item expanded "><a href="../basics/state.html"><strong aria-hidden="true">3.7.</strong> Contract state</a></li><li class="chapter-item expanded "><a href="../basics/execute.html"><strong aria-hidden="true">3.8.</strong> Execution messages</a></li><li class="chapter-item expanded "><a href="../basics/events.html"><strong aria-hidden="true">3.9.</strong> Events, attributes and data</a></li><li class="chapter-item expanded "><a href="../basics/funds.html"><strong aria-hidden="true">3.10.</strong> Dealing with funds</a></li><li class="chapter-item expanded "><a href="../basics/good-practices.html"><strong aria-hidden="true">3.11.</strong> Good practices</a></li><li class="chapter-item expanded "><a href="../basics/fp-types.html"><strong aria-hidden="true">3.12.</strong> Floating point types</a></li></ol></li><li class="chapter-item expanded "><a href="../actor-model.html"><strong aria-hidden="true">4.</strong> The Actor Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../actor-model/idea.html"><strong aria-hidden="true">4.1.</strong> The idea</a></li><li class="chapter-item expanded "><a href="../actor-model/actors-in-blockchain.html"><strong aria-hidden="true">4.2.</strong> Actors in the blockchain</a></li><li class="chapter-item expanded "><a href="../actor-model/contract-as-actor.html"><strong aria-hidden="true">4.3.</strong> Contract as an actor</a></li></ol></li><li class="chapter-item expanded "><a href="../cross-contract.html"><strong aria-hidden="true">5.</strong> Cross contract communication</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cross-contract/design.html"><strong aria-hidden="true">5.1.</strong> Design</a></li><li class="chapter-item expanded "><a href="../cross-contract/fixing-admin.html"><strong aria-hidden="true">5.2.</strong> Fixing admin contract</a></li><li class="chapter-item expanded "><a href="../cross-contract/map-storage.html"><strong aria-hidden="true">5.3.</strong> Map storage</a></li><li class="chapter-item expanded "><a href="../cross-contract/working-with-time.html" class="active"><strong aria-hidden="true">5.4.</strong> Working with time</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> Inter-blockchain communication</div></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../impressum.html">Legal Information</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">CosmWasm book</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="working-with-time"><a class="header" href="#working-with-time">Working with time</a></h1>
+<p>The concept of time in the blockchain is tricky - as in
+every distributed system, it is not easy to synchronize the
+clocks of all the nodes.</p>
+<p>However, there is the notion of a time that is even
+monotonic - which means that it should never go &quot;backward&quot;
+between executions. Also, what is important is - time is
+always unique throughout the whole transaction - and even
+the entire block, which is built of multiple transactions.</p>
+<p>The time is encoded in the
+<a href="https://docs.rs/cosmwasm-std/1.2.4/cosmwasm_std/struct.Env.html"><code>Env</code></a>
+type in its
+<a href="https://docs.rs/cosmwasm-std/1.2.4/cosmwasm_std/struct.BlockInfo.html"><code>block</code></a>
+field, which looks like this:</p>
+<pre><pre class="playground"><code class="language-rust edition2021">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct BlockInfo {
+    pub height: u64,
+    pub time: Timestamp,
+    pub chain_id: String,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>You can see the <code>time</code> field, which is the timestamp of the
+processed block. The <code>height</code> field is also worth
+mentioning - it contains a sequence number of the processed
+block. It is sometimes more useful than time, as it is
+guaranteed that the <code>height</code> field is guaranteed to increase
+between blocks, while two blocks may be executed with the
+same <code>time</code> (even though it is rather not probable).</p>
+<p>Also, many transactions might be executed in a single block.
+That means that if we need a unique id for the execution of
+a particular message, we should look for something more.
+This thing is a
+<a href="https://docs.rs/cosmwasm-std/1.2.4/cosmwasm_std/struct.TransactionInfo.html"><code>transaction</code></a>
+field of the <code>Env</code> type:</p>
+<pre><pre class="playground"><code class="language-rust edition2021">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct TransactionInfo {
+    pub index: u32,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>The <code>index</code> here contains a unique index of the transaction
+in the block. That means that to get the unique identifier
+of a transaction through the whole block, we can use the
+<code>(height, transaction_index)</code> pair.</p>
+<h2 id="join-time"><a class="header" href="#join-time">Join time</a></h2>
+<p>We want to use the time in our system to keep track of the
+join time of admins. We don't yet add new members to the
+group, but we can already set the join time of initial
+admins. Let's start updating our state:</p>
+<pre><pre class="playground"><code class="language-rust edition2021">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use cosmwasm_std::{Addr, Timestamp};
+use cw_storage_plus::Map;
+<span class="boring">use cw_storage_plus::Item;
+</span>
+pub const ADMINS: Map&lt;&amp;Addr, Timestamp&gt; = Map::new(&quot;admins&quot;);
+<span class="boring">pub const DONATION_DENOM: Item&lt;String&gt; = Item::new(&quot;donation_denom&quot;);
+</span><span class="boring">}
+</span></code></pre></pre>
+<p>As you can see, our admins set became a proper map - we will
+assign the join time to every admin.</p>
+<p>Now we need to update how we initialize a map - we stored the Empty data previously, but it nevermore matches our value type. Let's check an updated instantiation function:</p>
+<p>You might argue to create a separate structure for the value
+of this map, so in the future, if we would need to add
+something there, but in my opinion, it would be premature -
+we can also change the entire value type in the future, as
+it would be the same breaking change.</p>
+<p>Now we need to update how we initialize a map - we stored
+the <code>Empty</code> data previously, but it nevermore matches our
+value type. Let's check an updated instantiation function:</p>
+<pre><pre class="playground"><code class="language-rust edition2021">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use crate::state::{ADMINS, DONATION_DENOM};
+use cosmwasm_std::{
+    DepsMut, Env, MessageInfo, Response, StdResult,
+};
+
+pub fn instantiate(
+    deps: DepsMut,
+    env: Env,
+    _info: MessageInfo,
+    msg: InstantiateMsg,
+) -&gt; StdResult&lt;Response&gt; {
+    for addr in msg.admins {
+        let admin = deps.api.addr_validate(&amp;addr)?;
+        ADMINS.save(deps.storage, &amp;admin, &amp;env.block.time)?;
+    }
+    DONATION_DENOM.save(deps.storage, &amp;msg.donation_denom)?;
+
+    Ok(Response::new())
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Instead of storing <code>&amp;Empty {}</code> as an admin value, we store
+the join time, which we read from <code>&amp;env.block.time</code>. Also,
+note that I removed the underscore from the name of the
+<code>env</code> block - it was there only to ensure the Rust compiler
+the variable is purposely unused and not some kind of a bug.</p>
+<p>Finally, remember to remove any obsolete <code>Empty</code> imports
+through the project - the compiler should help you point out
+unused imports.</p>
+<h2 id="query-and-tests"><a class="header" href="#query-and-tests">Query and tests</a></h2>
+<p>The last thing to add regarding join time is the new query
+asking for the join time of a particular admin. Everything
+you need to do that was already discussed, I'll leave it for
+you as an exercise. The query variant should look like:</p>
+<pre><pre class="playground"><code class="language-rust edition2021">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[returns(JoinTimeResp)]
+JoinTime { admin: String },
+<span class="boring">}
+</span></code></pre></pre>
+<p>And the example response type:</p>
+<pre><pre class="playground"><code class="language-rust edition2021">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[cw_serde]
+pub struct JoinTimeResp {
+    pub joined: Timestamp,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>You may question that in response type, I suggest always returning a <code>joined</code>
+value, but what to do when no such admin is added? Well, in such a case, I
+would rely on the fact that <code>load</code> function returns a descriptive error of
+missing value in storage - however, feel free to define your own error for such
+a case or even make the <code>joined</code> field optional, and be returned if requested
+admin exists.</p>
+<p>Finally, there would be a good idea to make a test for new functionality - call
+a new query right after instantiation to verify initial admins has proper join
+time (possibly by extending the existing instantiation test).</p>
+<p>One thing you might need help with in tests might be how to get the time of
+execution. Using any OS-time would be doomed to fail - instead, you can call
+the
+<a href="https://docs.rs/cw-multi-test/0.16.4/cw_multi_test/struct.App.html#method.block_infohttps://docs.rs/cw-multi-test/0.16.4/cw_multi_test/struct.App.html#method.block_info"><code>block_info</code></a>
+function to reach the
+<a href="https://docs.rs/cosmwasm-std/latest/cosmwasm_std/struct.BlockInfo.html"><code>BlockInfo</code></a>
+structure containing the block state at a particular moment in the app - calling
+it just before instantiation would make you sure you are working with the same state
+which would be simulated on the call.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../cross-contract/map-storage.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="../impressum.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../cross-contract/map-storage.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="../impressum.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+    </body>
+</html>

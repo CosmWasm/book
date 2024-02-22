@@ -1,0 +1,233 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Setting up the environment - CosmWasm book</title>
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Guide to building CosmWasm smart contracts">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">Getting started</li><li class="chapter-item expanded "><a href="setting-up-env.html" class="active"><strong aria-hidden="true">1.</strong> Setting up the environment</a></li><li class="chapter-item expanded "><a href="wasmd-quick-start.html"><strong aria-hidden="true">2.</strong> Quick start with wasmd</a></li><li class="chapter-item expanded affix "><li class="part-title">Smart contracts</li><li class="chapter-item expanded "><a href="basics.html"><strong aria-hidden="true">3.</strong> Basics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="basics/rust-project.html"><strong aria-hidden="true">3.1.</strong> Create a Rust project</a></li><li class="chapter-item expanded "><a href="basics/entry-points.html"><strong aria-hidden="true">3.2.</strong> Entry points</a></li><li class="chapter-item expanded "><a href="basics/building-contract.html"><strong aria-hidden="true">3.3.</strong> Building the contract</a></li><li class="chapter-item expanded "><a href="basics/query.html"><strong aria-hidden="true">3.4.</strong> Creating a query</a></li><li class="chapter-item expanded "><a href="basics/query-testing.html"><strong aria-hidden="true">3.5.</strong> Testing a query</a></li><li class="chapter-item expanded "><a href="basics/multitest-intro.html"><strong aria-hidden="true">3.6.</strong> Introducing multitest</a></li><li class="chapter-item expanded "><a href="basics/state.html"><strong aria-hidden="true">3.7.</strong> Contract state</a></li><li class="chapter-item expanded "><a href="basics/execute.html"><strong aria-hidden="true">3.8.</strong> Execution messages</a></li><li class="chapter-item expanded "><a href="basics/events.html"><strong aria-hidden="true">3.9.</strong> Events, attributes and data</a></li><li class="chapter-item expanded "><a href="basics/funds.html"><strong aria-hidden="true">3.10.</strong> Dealing with funds</a></li><li class="chapter-item expanded "><a href="basics/good-practices.html"><strong aria-hidden="true">3.11.</strong> Good practices</a></li><li class="chapter-item expanded "><a href="basics/fp-types.html"><strong aria-hidden="true">3.12.</strong> Floating point types</a></li></ol></li><li class="chapter-item expanded "><a href="actor-model.html"><strong aria-hidden="true">4.</strong> The Actor Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="actor-model/idea.html"><strong aria-hidden="true">4.1.</strong> The idea</a></li><li class="chapter-item expanded "><a href="actor-model/actors-in-blockchain.html"><strong aria-hidden="true">4.2.</strong> Actors in the blockchain</a></li><li class="chapter-item expanded "><a href="actor-model/contract-as-actor.html"><strong aria-hidden="true">4.3.</strong> Contract as an actor</a></li></ol></li><li class="chapter-item expanded "><a href="cross-contract.html"><strong aria-hidden="true">5.</strong> Cross contract communication</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cross-contract/design.html"><strong aria-hidden="true">5.1.</strong> Design</a></li><li class="chapter-item expanded "><a href="cross-contract/fixing-admin.html"><strong aria-hidden="true">5.2.</strong> Fixing admin contract</a></li><li class="chapter-item expanded "><a href="cross-contract/map-storage.html"><strong aria-hidden="true">5.3.</strong> Map storage</a></li><li class="chapter-item expanded "><a href="cross-contract/working-with-time.html"><strong aria-hidden="true">5.4.</strong> Working with time</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> Inter-blockchain communication</div></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="impressum.html">Legal Information</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">CosmWasm book</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="setting-up-the-environment"><a class="header" href="#setting-up-the-environment">Setting up the environment</a></h1>
+<p>To work with CosmWasm smart contract, you will need rust installed on your
+machine. If you don't have one, you can find installation instructions on <a href="https://www.rust-lang.org/tools/install">the
+Rust website</a>.</p>
+<p>I assume you are working with a stable Rust channel in this book.</p>
+<p>Additionally, you will need the Wasm rust compiler backend installed to build
+Wasm binaries. To install it, run:</p>
+<pre><code>rustup target add wasm32-unknown-unknown
+</code></pre>
+<p>Optionally if you want to try out your contracts on a testnet, you will need a
+<a href="https://github.com/CosmWasm/wasmd">wasmd</a> binary. We would focus on testing
+contracts with Rust unit testing utility throughout the book, so it is not
+required to follow. However, seeing the product working in a real-world
+environment may be nice.</p>
+<p>To install <code>wasmd</code>, first install the <a href="https://github.com/golang/go/wiki#working-with-go">golang</a>. Then
+clone the <code>wasmd</code> and install it:</p>
+<pre><code>$ git clone git@github.com:CosmWasm/wasmd.git
+$ cd ./wasmd
+$ make install
+</code></pre>
+<p>Also, to be able to upload Rust Wasm Contracts into the blockchain, you will need
+to install <a href="https://www.docker.com/">docker</a>. To minimize your contract sizes,
+it will be required to run CosmWasm Rust Optimizer; without that, more complex
+contracts might exceed a size limit.</p>
+<h2 id="cosmwasm-check-utility"><a class="header" href="#cosmwasm-check-utility">cosmwasm-check utility</a></h2>
+<p>An additional helpful tool for building smart contracts is the <code>cosmwasm-check</code><a href="https://github.com/CosmWasm/cosmwasm/tree/main/packages/check">utility</a>. It allows you to check if the wasm binary is a proper smart contract ready to upload into the blockchain. You can install it using cargo:</p>
+<pre><code>$ cargo install cosmwasm-check
+</code></pre>
+<p>If the installation succeeds, you should be able to execute the utility from your command line.</p>
+<pre><code>$ cosmwasm-check --version
+Contract checking 1.2.3
+</code></pre>
+<h2 id="verifying-the-installation"><a class="header" href="#verifying-the-installation">Verifying the installation</a></h2>
+<p>To guarantee you are ready to build your smart contracts, you need to make sure you can build examples.
+Checkout the <a href="https://github.com/CosmWasm/cw-plus">cw-plus</a> repository and run the testing command in
+its folder:</p>
+<pre><code>$ git clone git@github.com:CosmWasm/cw-plus.git
+$ cd ./cw-plus
+cw-plus $ cargo test
+</code></pre>
+<p>You should see that everything in the repository gets compiled, and all tests pass. </p>
+<p><code>cw-plus</code> is a great place to find example contracts - look for them in <code>contracts</code> directory. The
+repository is maintained by CosmWasm creators, so contracts in there should follow good practices.</p>
+<p>To verify the <code>cosmwasm-check</code> utility, first, you need to build a smart contract. Go to some contract directory, for example, <code>contracts/cw1-whitelist</code>, and call <code>cargo wasm</code>:</p>
+<pre><code>cw-plus $ cd contracts/cw1-whitelist
+cw-plus/contracts/cw1-whitelist $ cargo wasm
+</code></pre>
+<p>You should be able to find your output binary in the <code>target/wasm32-unknown-unknown/release/</code>
+of the root repo directory - not in the contract directory itself! Now you can check if contract
+validation passes:</p>
+<pre><code>cw-plus/contracts/cw1-whitelist $ cosmwasm-check ../../target/wasm32-unknown-unknown/release/cw1_whitelist.wasm
+Available capabilities: {&quot;iterator&quot;, &quot;cosmwasm_1_1&quot;, &quot;cosmwasm_1_2&quot;, &quot;stargate&quot;, &quot;staking&quot;}
+
+../../target/wasm32-unknown-unknown/release/cw1_whitelist.wasm: pass
+
+All contracts (1) passed checks!
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="wasmd-quick-start.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="wasmd-quick-start.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+    </body>
+</html>

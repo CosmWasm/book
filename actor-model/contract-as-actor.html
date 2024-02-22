@@ -1,0 +1,547 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Contract as an actor - CosmWasm book</title>
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Guide to building CosmWasm smart contracts">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">Getting started</li><li class="chapter-item expanded "><a href="../setting-up-env.html"><strong aria-hidden="true">1.</strong> Setting up the environment</a></li><li class="chapter-item expanded "><a href="../wasmd-quick-start.html"><strong aria-hidden="true">2.</strong> Quick start with wasmd</a></li><li class="chapter-item expanded affix "><li class="part-title">Smart contracts</li><li class="chapter-item expanded "><a href="../basics.html"><strong aria-hidden="true">3.</strong> Basics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../basics/rust-project.html"><strong aria-hidden="true">3.1.</strong> Create a Rust project</a></li><li class="chapter-item expanded "><a href="../basics/entry-points.html"><strong aria-hidden="true">3.2.</strong> Entry points</a></li><li class="chapter-item expanded "><a href="../basics/building-contract.html"><strong aria-hidden="true">3.3.</strong> Building the contract</a></li><li class="chapter-item expanded "><a href="../basics/query.html"><strong aria-hidden="true">3.4.</strong> Creating a query</a></li><li class="chapter-item expanded "><a href="../basics/query-testing.html"><strong aria-hidden="true">3.5.</strong> Testing a query</a></li><li class="chapter-item expanded "><a href="../basics/multitest-intro.html"><strong aria-hidden="true">3.6.</strong> Introducing multitest</a></li><li class="chapter-item expanded "><a href="../basics/state.html"><strong aria-hidden="true">3.7.</strong> Contract state</a></li><li class="chapter-item expanded "><a href="../basics/execute.html"><strong aria-hidden="true">3.8.</strong> Execution messages</a></li><li class="chapter-item expanded "><a href="../basics/events.html"><strong aria-hidden="true">3.9.</strong> Events, attributes and data</a></li><li class="chapter-item expanded "><a href="../basics/funds.html"><strong aria-hidden="true">3.10.</strong> Dealing with funds</a></li><li class="chapter-item expanded "><a href="../basics/good-practices.html"><strong aria-hidden="true">3.11.</strong> Good practices</a></li><li class="chapter-item expanded "><a href="../basics/fp-types.html"><strong aria-hidden="true">3.12.</strong> Floating point types</a></li></ol></li><li class="chapter-item expanded "><a href="../actor-model.html"><strong aria-hidden="true">4.</strong> The Actor Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../actor-model/idea.html"><strong aria-hidden="true">4.1.</strong> The idea</a></li><li class="chapter-item expanded "><a href="../actor-model/actors-in-blockchain.html"><strong aria-hidden="true">4.2.</strong> Actors in the blockchain</a></li><li class="chapter-item expanded "><a href="../actor-model/contract-as-actor.html" class="active"><strong aria-hidden="true">4.3.</strong> Contract as an actor</a></li></ol></li><li class="chapter-item expanded "><a href="../cross-contract.html"><strong aria-hidden="true">5.</strong> Cross contract communication</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cross-contract/design.html"><strong aria-hidden="true">5.1.</strong> Design</a></li><li class="chapter-item expanded "><a href="../cross-contract/fixing-admin.html"><strong aria-hidden="true">5.2.</strong> Fixing admin contract</a></li><li class="chapter-item expanded "><a href="../cross-contract/map-storage.html"><strong aria-hidden="true">5.3.</strong> Map storage</a></li><li class="chapter-item expanded "><a href="../cross-contract/working-with-time.html"><strong aria-hidden="true">5.4.</strong> Working with time</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> Inter-blockchain communication</div></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../impressum.html">Legal Information</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">CosmWasm book</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="smart-contract-as-an-actor"><a class="header" href="#smart-contract-as-an-actor">Smart contract as an actor</a></h1>
+<p>In previous chapters, we talked about the actor model and how it is implemented
+in the blockchain. Now it is time to look closer into the typical contract
+structure to understand how different features of the actor model are mapped to
+it.</p>
+<p>This will not be a step-by-step guide on contract creation, as it is a topic
+for the series itself. It would be going through contract elements roughly to
+visualize how to handle architecture in the actor model.</p>
+<h2 id="the-state"><a class="header" href="#the-state">The state</a></h2>
+<p>As before we would start with the state. Previously we were working with
+the <code>cw4-group</code> contract, so let's start by looking at its code. Go to
+<code>cw-plus/contracts/cw4-group/src</code>. The folder structure should look like
+this:</p>
+<pre><code class="language-bash">  src
+├──  contract.rs
+├──  error.rs
+├──  helpers.rs
+├──  lib.rs
+├──  msg.rs
+└──  state.rs
+</code></pre>
+<p>As you may already figure out, we want to check the <code>state.rs</code> first.</p>
+<p>The most important thing here is a couple of constants: <code>ADMIN</code>, <code>HOOKS</code>,
+<code>TOTAL</code>, and <code>MEMBERS</code>. Every one of such constants represents a single portion
+of the contract state - as tables in databases. The types of those constants
+represent what kind of table this is. The most basic ones are <code>Item&lt;T&gt;</code>, which
+keeps zero or one element of a given type, and <code>Map&lt;K, T&gt;</code> which is a key-value
+map.</p>
+<p>You can see <code>Item</code> is used to keep an admin and some other data: <code>HOOKS</code>, and
+<code>TOTAL</code>. <code>HOOKS</code> is used by the <code>cw4-group</code> to allow subscription to any
+changes to a group - a contract can be added as a hook, so when the group
+changes, a message is sent to it. The <code>TOTAL</code> is just a sum of all members'
+weights.</p>
+<p>The <code>MEMBERS</code> in the group contract is the <code>SnapshotMap</code> - as you can imagine,
+it is a <code>Map</code>, with some steroids - this particular one, gives us access to the
+state of the map at some point in history, accessing it by the blockchain
+<code>height</code>. <code>height</code> is the count of blocks created since the beggining of
+blockchain, and it is the most atomic time representation in smart contracts.
+There is a way to access the clock time in them, but everything happening in a
+single block is considered happening in the same moment.</p>
+<p>Other types of storage objects not used in group contracts are:</p>
+<ul>
+<li><code>IndexedMap</code> - another map type, that allows accessing values
+by a variety of keys</li>
+<li><code>IndexedSnapshotMap</code> - <code>IndexedMap</code> and <code>SnapshotMap</code> married</li>
+</ul>
+<p>What is very important - every state type in the contract is accessed using
+some name. All of those types are not containers, just accessors to the state.
+Do you remember that I told you before that blockchain is our database? And
+that is correct! All those types are just ORM to this database - when we use
+them to get actual data from it, we pass a special <code>State</code> object to them, so
+they can retrieve items from it.</p>
+<p>You may ask - why all that data for a contract are not auto-fetched by
+whatever is running it. That is a good question. The reason is that we want
+contracts to be lazy with fetching. Copying data is a very expensive operation,
+and for everything happening on it, someone has to pay - it is realized by gas
+cost. I told you before, that as a contract developer you don't need to worry
+about gas at all, but it was only partially true. You don't need to know
+exactly how gas is calculated, but by lowering your gas cost, you would may
+execution of your contracts cheaper which is typically a good thing. One good
+practice to achieve that is to avoid fetching data you will not use in a
+particular call.</p>
+<h2 id="messages"><a class="header" href="#messages">Messages</a></h2>
+<p>In a blockchain, contracts communicate with each other by some JSON
+messages. They are defined in most contracts in the <code>msg.rs</code> file. Take
+a look at it.</p>
+<p>There are three types on it, let's go through them one by one.
+The first one is an <code>InstantiateMsg</code>. This is the one, that is sent
+on contract instantiation. It typically contains some data which
+is needed to properly initialize it. In most cases, it is just a
+simple structure.</p>
+<p>Then there are two enums: <code>ExecuteMsg</code>, and <code>QueryMsg</code>. They are
+enums because every single variant of them represents a different
+message which can be sent. For example, the <code>ExecuteMsg::UpdateAdmin</code>
+corresponds to the <code>update_admin</code> message we were sending previously.</p>
+<p>Note, that all the messages are attributed with
+<code>#[derive(Serialize, Deserialize)]</code>, and
+<code>#[serde(rename_all=&quot;snake_case&quot;)]</code>. Those attributes come from
+the <a href="https://serde.rs/">serde</a> crate, and they help us with
+deserialization of them (and serialization in case of sending
+them to other contracts). The second one is not required,
+but it allows us to keep a camel-case style in our Rust code,
+and yet still have JSONs encoded with a snake-case style more
+typical to this format.</p>
+<p>I encourage you to take a closer look at the <code>serde</code> documentation,
+like everything there, can be used with the messages.</p>
+<p>One important thing to notice - empty variants of those enums,
+tend to use the empty brackets, like <code>Admin {}</code> instead of
+more Rusty <code>Admin</code>. It is on purpose, to make JSONs cleaner,
+and it is related to how <code>serde</code> serializes enum.</p>
+<p>Also worth noting is that those message types are not set in stone,
+they can be anything. This is just a convention, but sometimes
+you would see things like <code>ExecuteCw4Msg</code>, or similar. Just keep
+in mind, to keep your message name obvious in terms of their
+purpose - sticking to <code>ExecuteMsg</code>/<code>QueryMsg</code> is generally a good
+idea.</p>
+<h2 id="entry-points"><a class="header" href="#entry-points">Entry points</a></h2>
+<p>So now, when we have our contract message, we need a way to handle
+them. They are sent to our contract via entry points. There are
+three entry points in the <code>cw4-group</code> contract:</p>
+<pre><pre class="playground"><code class="language-rust edition2021">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[cfg_attr(not(feature = &quot;library&quot;), entry_point)]
+pub fn instantiate(
+    deps: DepsMut,
+    env: Env,
+    _info: MessageInfo,
+    msg: InstantiateMsg,
+) -&gt; Result&lt;Response, ContractError&gt; {
+    // ...
+}
+#[cfg_attr(not(feature = &quot;library&quot;), entry_point)]
+pub fn execute(
+    deps: DepsMut,
+    env: Env,
+    info: MessageInfo,
+    msg: ExecuteMsg,
+) -&gt; Result&lt;Response, ContractError&gt; {
+    // ..
+}
+#[cfg_attr(not(feature = &quot;library&quot;), entry_point)]
+pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -&gt; StdResult&lt;Binary&gt; {
+    // ..
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Those functions are called by the CosmWasm virtual machine when
+a message is to be handled by contract. You can think about them
+as the <code>main</code> function of normal programs, except they have a signature
+that better describes the blockchain itself.</p>
+<p>What is very important is that the names of those entry points (similarly to
+the <code>main</code> function) are fixed - it is relevant, so the virtual machine knows
+exactly what to call.</p>
+<p>So, let's start with the first line. Every entry point is attributed with
+<code>#[cfg_attr(not(feature = &quot;library&quot;), entry_point)]</code>. It may look a bit
+scary, but it is just a conditional equivalent of <code>#[entry_point]</code> -
+the attribute would be there if and only if the &quot;library&quot; feature is not set.
+We do this to be able to use our contracts as dependencies for other
+contracts - the final binary can contain only one copy of each entry point,
+so we make sure, that only the top-level one is compiled without this
+feature.</p>
+<p>The <code>entry_point</code> attribute is a macro that generates some boilerplate.
+As the binary is run by WASM virtual machine, it doesn't know much about
+Rust types - the actual entry point signatures are very inconvenient to
+use. To overcome this issue, there is a macro created, which generates
+entry points for us, and those entry points are just calling our functions.</p>
+<p>Now take a look at functions arguments. Every single entry point takes as
+the last argument a message which triggered the execution of it (except for
+<code>reply</code> - I will explain it later). In addition to that, there are
+additional arguments provided by blockchain:</p>
+<ul>
+<li><code>Deps</code> or <code>DepsMut</code> object is the gateway to the world outside the smart contract context. It allows
+accessing the contract state, as well as querying other contracts, and
+also delivers an <code>Api</code> object with a couple of useful utility functions.
+The difference is that <code>DepsMut</code> allows updating state, while <code>Deps</code>
+allows only to look at it.</li>
+<li><code>Env</code> object delivers information about the blockchain state at the
+moment of execution - its height, the timestamp of execution and information
+about the executing contract itself.</li>
+<li><code>MessageInfo</code> object is information about the contract call - it
+contains the address which sends the message, and the funds sent with the
+message.</li>
+</ul>
+<p>Keep in mind, that the signatures of those functions are fixed (except
+the messages type), so you cannot interchange <code>Deps</code> with <code>DepsMut</code> to
+update the contract state in the query call.</p>
+<p>The last portion of entry points is the return type. Every entry point returns
+a <code>Result</code> type, with any error which can be turned into a string - in case of
+contract failure, the returned error is just logged. In most cases, the error
+type is defined for a contract itself, typically using a
+<a href="https://docs.rs/thiserror/latest/thiserror/">thiserror</a> crate. <code>Thiserror</code> is
+not required here, but is strongly recommended - using it makes the error
+definition very straightforward, and also improves the testability of the
+contract.</p>
+<p>The important thing is the <code>Ok</code> part of <code>Result</code>. Let's start with the
+<code>query</code> because this one is the simplest. The query always returns the <code>Binary</code>
+object on the <code>Ok</code> case, which would contain just serialized response.
+The common way to create it is just calling a <code>to_binary</code> method
+on an object implementing <code>serde::Serialize</code>, and they are typically
+defined in <code>msg.rs</code> next to message types.</p>
+<p>Slightly more complex is the return type returned by any other entry
+point - the <code>cosmwasm_std::Response</code> type. This one keep everything
+needed to complete contract execution. There are three chunks of
+information in that.</p>
+<p>The first one is an <code>events</code> field. It contains all events, which would
+be emitted to the blockchain as a result of the execution. Events have
+a really simple structure: they have a type, which is just a string,
+and a list of attributes which are just string-string key-value pairs.</p>
+<p>You can notice that there is another <code>attributes</code> field on the <code>Response</code>.
+This is just for convenience - most executions would return
+only a single event, and to make it a bit easier to operate one, there
+is a set of attributes directly on response. All of them would be converted
+to a single <code>wasm</code> event which would be emitted. Because of that, I consider
+<code>events</code> and <code>attributes</code> to be the same chunk of data.</p>
+<p>Then we have the messages field, of <code>SubMsg</code> type. This one is the clue
+of cross-contact communication. Those messages would be sent to the
+contracts after processing. What is important - the whole execution is
+not finished, unless the processing of all sub-messages scheduled by the contract
+finishes. So, if the group contract sends some messages as a result of
+<code>update_members</code> execution, the execution would be considered done only if
+all the messages sent by it would also be handled (even if they failed).</p>
+<p>So, when all the sub-messages sent by contract are processed, then all the
+attributes generated by all sub-calls and top-level calls are collected and
+reported to the blockchain. But there is one additional piece of information -
+the <code>data</code>. So, this is another <code>Binary</code> field, just like the result of a query
+call, and just like it, it typically contains serialized JSON. Every contract
+call can return some additional information in any format. You may ask - in
+this case, why do we even bother returning attributes? It is because of a
+completely different way of emitting events and data. Any attributes emitted by
+the contract would be visible on blockchain eventually (unless the whole
+message handling fails). So, if your contract emitted some event as a result of
+being sub-call of some bigger use case, the event would always be there visible
+to everyone. This is not true for data. Every contract call would return only
+a single <code>data</code> chunk, and it has to decide if it would just forward the <code>data</code>
+field of one of the sub-calls, or maybe it would construct something by itself.
+I would explain it in a bit more detail in a while.</p>
+<h2 id="sending-submessages"><a class="header" href="#sending-submessages">Sending submessages</a></h2>
+<p>I don't want to go into details of the <code>Response</code> API, as it can be read
+directly from documentation, but I want to take a bit closer look at the part
+about sending messages.</p>
+<p>The first function to use here is <code>add_message</code>, which takes as an argument the
+<code>CosmosMsg</code> (or rather anything convertible to it). A message added to response
+this way would be sent and processed, and its execution would not affect the
+result of the contract at all.</p>
+<p>The other function to use is <code>add_submessage</code>, taking a <code>SubMsg</code> argument. It
+doesn't differ much from <code>add_message</code> - <code>SubMsg</code> just wraps the <code>CosmosMsg</code>,
+adding some info to it: the <code>id</code> field, and <code>reply_on</code>. There is also a
+<code>gas_limit</code> thing, but it is not so important - it just causes sub-message
+processing to fail early if the gas threshold is reached.</p>
+<p>The simple thing is <code>reply_on</code> - it describes if the <code>reply</code> message should be
+sent on processing success, on failure, or both.</p>
+<p>The <code>id</code> field is an equivalent of the order id in our KFC example from the
+very beginning. If you send multiple different sub-messages, it would be
+impossible to distinguish them without that field. It would not even be
+possible to figure out what type of original message reply handling is! This is
+why the <code>id</code> field is there - sending a sub-message you can set it to any
+value, and then on the reply, you can figure out what is happening based on
+this field.</p>
+<p>An important note here - you don't need to worry about some sophisticated way
+of generating ids. Remember, that the whole processing is atomic, and only one
+execution can be in progress at once. In most cases, your contract sends a
+fixed number of sub-messages on very concrete executions. Because of that, you
+can hardcode most of those ids while sending (preferably using some constant).</p>
+<p>To easily create submessages, instead of setting all the fields separately,
+you would typically use helper constructors: <code>SubMsg::reply_on_success</code>,
+<code>SubMsg::reply_on_error</code> and <code>SubMsg::reply_always</code>.</p>
+<h2 id="cosmosmsg"><a class="header" href="#cosmosmsg">CosmosMsg</a></h2>
+<p>If you took a look at the <code>CosmosMsg</code> type, you could be very surprised - there
+are so many variants of them, and it is not obvious how they relate to
+communication with other contracts.</p>
+<p>The message you are looking for is the <code>WasmMsg</code> (<code>CosmosMsg::Wasm</code> variant).
+This one is very much similar to what we already know - it has a couple of
+variants of operation to be performed by contracts: <code>Execute</code>, but also
+<code>Instantiate</code> (so we can create new contracts in contract executions), and also
+<code>Migrate</code>, <code>UpdateAdmin</code>, and <code>ClearAdmin</code> - those are used to manage
+migrations (will tell a bit about them at the end of this chapter).</p>
+<p>Another interesting message is the <code>BankMsg</code> (<code>CosmosMsg::Bank</code>). This one
+allows a contract to transfer native tokens to other contracts (or burn them -
+equivalent to transferring them to some black whole contract). I like to think
+about it as sending a message to a very special contract responsible for handling
+native tokens - this is not a true contract, as it is handled by the blockchain
+itself, but at least to me it simplifies things.</p>
+<p>Other variants of <code>CosmosMsg</code> are not very interesting for now. The <code>Custom</code>
+one is there to allow other CosmWasm-based blockchains to add some
+blockchain-handled variant of the message. This is a reason why most
+message-related types in CosmWasm are generic over some <code>T</code> - this is just a
+blockchain-specific type of message. We will never use it in the <code>wasmd</code>. All
+other messages are related to advanced CosmWasm features, and I will not
+describe them here.</p>
+<h2 id="reply-handling"><a class="header" href="#reply-handling">Reply handling</a></h2>
+<p>So now that we know how to send a submessage, it is time to talk about
+handling the reply. When sub-message processing is finished, and it is
+requested to reply, the contract is called with an entry point:</p>
+<pre><pre class="playground"><code class="language-rust edition2021">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[cfg_attr(not(feature = &quot;library&quot;), entry_point)]
+pub fn reply(deps: DepsMut, env: Env, msg: Reply) -&gt; Result&lt;Response, ContractError&gt; {
+    // ...
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>The <code>DepsMut</code>, and <code>Env</code> arguments are already familiar, but there is a new
+one, substituting the typical message argument: the <code>cosmwasm_std::Reply</code>.</p>
+<p>This is a type representing the execution status of the sub-message. It is
+slightly processed <code>cosmwasm_std::Response</code>. The first important thing it contains
+is an <code>id</code> - the same, which you set sending sub-message, so now you can
+identify your response. The other one is the <code>ContractResult</code>, which is very
+similar to the Rust <code>Result&lt;T, String&gt;</code> type, except it is there for
+serialization purposes. You can easily convert it into a <code>Result</code> with an
+<code>into_result</code> function.</p>
+<p>In the error case of <code>ContracResult</code>, there is a string - as I mentioned
+before, errors are converted to strings right after execution. The <code>Ok</code> case
+contains <code>SubMsgExecutionResponse</code> with two fields: <code>events</code> emitted by
+sub-call, and the <code>data</code> field embedded on response.</p>
+<p>As said before, you never need to worry about forwarding events - CosmWasm
+would do it anyway. The <code>data</code> however, is another story. As mentioned before,
+every call would return only a single data object. In the case of sending
+sub-messages and not capturing a reply, it would always be whatever is returned
+by the top-level message. But it is not the case when <code>reply</code> is called. If a
+a reply is called, then it is a function deciding about the final <code>data</code>. It can
+decide to either forward the data from the sub-message (by returning <code>None</code>) or
+to overwrite it. It cannot choose, to return data from the original execution
+processing - if the contract sends sub-messages waiting for replies, it is
+supposed to not return any data, unless replies are called.</p>
+<p>But what happens if multiple sub-messages are sent? What would the final
+<code>data</code> contain? The rule is - the last non-None. All sub-messages are always
+called in the order of adding them to the <code>Response</code>. As the order is
+deterministic and well defined, it is always easy to predict which reply would
+be used.</p>
+<h2 id="migrations"><a class="header" href="#migrations">Migrations</a></h2>
+<p>I mentioned migrations earlier when describing the <code>WasmMsg</code>. So, migration
+is another action possible to be performed by contracts, which is kind
+of similar to instantiate. In software engineering, it is a common thing to
+release an updated version of applications. It is also a case in the blockchain -
+SmartContract can be updated with some new features. In such cases, a new
+code is uploaded, and the contract is migrated - so it knows that from
+this point, its messages are handled by another, updated contract code.</p>
+<p>However, it may be that the contract state used by the older version of the
+contract differs from the new one. It is not a problem if some info was
+added (for example some additional map - it would be just empty right
+after migration). But the problem is, when the state changes,
+for example, the field is renamed. In such a case, every contract execution
+would fail because of (de)serialization problems. Or even more subtle
+cases, like adding a map, but one which should be synchronized with the whole
+contract state, not empty.</p>
+<p>This is the purpose of the <code>migration</code> entry point. It looks like this:</p>
+<pre><pre class="playground"><code class="language-rust edition2021">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[cfg_attr(not(feature = &quot;library&quot;), entry_point)]
+pub fn migrate(deps: DepsMut, env: Env, msg: MigrateMsg) -&gt; Result&lt;Response&lt;T&gt;, ContracError&gt; {
+    // ..
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p><code>MigrateMsg</code> is the type defined by the contract in <code>msg.rs</code>.
+The <code>migrate</code> entry point would be called at the moment of performing
+the migration, and it is responsible for making sure the state is correct
+after the migration. It is very similar to schema migrations in traditional
+database applications. And it is also kind of difficult, because of version
+management involved - you can never assume, that you are migrating a contract
+from the previous version - it can be migrated from any version, released
+anytime - even later than that version we are migrating to!</p>
+<p>It is worth bringing back one issue from the past - the contract admin. Do you
+remember the <code>--no-admin</code> flag we set previously on every contract
+instantiation? It made our contract unmigrateable. Migrations can be performed
+only by contract admin. To be able to use it, you should pass <code>--admin address</code>
+flag instead, with the <code>address</code> being the address that would be able to
+perform migrations.</p>
+<h2 id="sudo"><a class="header" href="#sudo">Sudo</a></h2>
+<p>Sudo is the last basic entry point in <code>CosmWasm</code>, and it is the one we would
+never use in <code>wasmd</code>. It is equivalent to <code>CosmosMsg::Custom</code>, but instead of
+being a special blockchain-specific message to be sent and handled by a
+blockchain itself, it is now a special blockchain-specific message sent by the
+blockchain to contract in some conditions. There are many uses for those, but I
+will not cover them, because would not be related to <code>CosmWasm</code> itself. The
+signature of <code>sudo</code> looks like this:</p>
+<pre><pre class="playground"><code class="language-rust edition2021">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[cfg_attr(not(feature = &quot;library&quot;), entry_point)]
+pub fn sudo(deps: DepsMut, env: Env, msg: SudoMsg) -&gt; Result&lt;Response, ContractError&gt; {
+    // ..
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>The important difference is that because <code>sudo</code> messages are blockchain
+specific, the <code>SudoMsg</code> type is typically defined by some blockchain helper
+crate, not the contract itself.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../actor-model/actors-in-blockchain.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="../cross-contract.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../actor-model/actors-in-blockchain.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="../cross-contract.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+    </body>
+</html>

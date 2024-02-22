@@ -1,0 +1,468 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Creating a query - CosmWasm book</title>
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Guide to building CosmWasm smart contracts">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">Getting started</li><li class="chapter-item expanded "><a href="../setting-up-env.html"><strong aria-hidden="true">1.</strong> Setting up the environment</a></li><li class="chapter-item expanded "><a href="../wasmd-quick-start.html"><strong aria-hidden="true">2.</strong> Quick start with wasmd</a></li><li class="chapter-item expanded affix "><li class="part-title">Smart contracts</li><li class="chapter-item expanded "><a href="../basics.html"><strong aria-hidden="true">3.</strong> Basics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../basics/rust-project.html"><strong aria-hidden="true">3.1.</strong> Create a Rust project</a></li><li class="chapter-item expanded "><a href="../basics/entry-points.html"><strong aria-hidden="true">3.2.</strong> Entry points</a></li><li class="chapter-item expanded "><a href="../basics/building-contract.html"><strong aria-hidden="true">3.3.</strong> Building the contract</a></li><li class="chapter-item expanded "><a href="../basics/query.html" class="active"><strong aria-hidden="true">3.4.</strong> Creating a query</a></li><li class="chapter-item expanded "><a href="../basics/query-testing.html"><strong aria-hidden="true">3.5.</strong> Testing a query</a></li><li class="chapter-item expanded "><a href="../basics/multitest-intro.html"><strong aria-hidden="true">3.6.</strong> Introducing multitest</a></li><li class="chapter-item expanded "><a href="../basics/state.html"><strong aria-hidden="true">3.7.</strong> Contract state</a></li><li class="chapter-item expanded "><a href="../basics/execute.html"><strong aria-hidden="true">3.8.</strong> Execution messages</a></li><li class="chapter-item expanded "><a href="../basics/events.html"><strong aria-hidden="true">3.9.</strong> Events, attributes and data</a></li><li class="chapter-item expanded "><a href="../basics/funds.html"><strong aria-hidden="true">3.10.</strong> Dealing with funds</a></li><li class="chapter-item expanded "><a href="../basics/good-practices.html"><strong aria-hidden="true">3.11.</strong> Good practices</a></li><li class="chapter-item expanded "><a href="../basics/fp-types.html"><strong aria-hidden="true">3.12.</strong> Floating point types</a></li></ol></li><li class="chapter-item expanded "><a href="../actor-model.html"><strong aria-hidden="true">4.</strong> The Actor Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../actor-model/idea.html"><strong aria-hidden="true">4.1.</strong> The idea</a></li><li class="chapter-item expanded "><a href="../actor-model/actors-in-blockchain.html"><strong aria-hidden="true">4.2.</strong> Actors in the blockchain</a></li><li class="chapter-item expanded "><a href="../actor-model/contract-as-actor.html"><strong aria-hidden="true">4.3.</strong> Contract as an actor</a></li></ol></li><li class="chapter-item expanded "><a href="../cross-contract.html"><strong aria-hidden="true">5.</strong> Cross contract communication</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cross-contract/design.html"><strong aria-hidden="true">5.1.</strong> Design</a></li><li class="chapter-item expanded "><a href="../cross-contract/fixing-admin.html"><strong aria-hidden="true">5.2.</strong> Fixing admin contract</a></li><li class="chapter-item expanded "><a href="../cross-contract/map-storage.html"><strong aria-hidden="true">5.3.</strong> Map storage</a></li><li class="chapter-item expanded "><a href="../cross-contract/working-with-time.html"><strong aria-hidden="true">5.4.</strong> Working with time</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> Inter-blockchain communication</div></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../impressum.html">Legal Information</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">CosmWasm book</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="creating-a-query"><a class="header" href="#creating-a-query">Creating a query</a></h1>
+<p>We have already created a simple contract reacting to an empty instantiate message. Unfortunately, it
+is not very useful. Let's make it a bit reactive.</p>
+<p>First, we need to add <a href="https://crates.io/crates/serde"><code>serde</code></a> crate to our dependencies. It would help us with the serialization and
+deserialization of query messages. Update the <code>Cargo.toml</code>:</p>
+<pre><code class="language-toml">[package]
+name = &quot;contract&quot;
+version = &quot;0.1.0&quot;
+edition = &quot;2021&quot;
+
+[lib]
+crate-type = [&quot;cdylib&quot;]
+
+[dependencies]
+cosmwasm-std = { version = &quot;1.0.0-beta8&quot;, features = [&quot;staking&quot;] }
+serde = { version = &quot;1.0.103&quot;, default-features = false, features = [&quot;derive&quot;] }
+
+[dev-dependencies]
+cw-multi-test = &quot;0.13.4&quot;
+</code></pre>
+<p>Now go to your <code>src/lib.rs</code> file, and add a new query entry point:</p>
+<pre><code class="language-rust noplayground">use cosmwasm_std::{
+    entry_point, to_binary, Binary, Deps, DepsMut, Empty, Env, MessageInfo,
+    Response, StdResult,
+};
+use serde::{Deserialize, Serialize};
+
+#[derive(Serialize, Deserialize)]
+struct QueryResp {
+    message: String,
+}
+
+<span class="boring">#[entry_point]
+</span><span class="boring">pub fn instantiate(
+</span><span class="boring">    _deps: DepsMut,
+</span><span class="boring">    _env: Env,
+</span><span class="boring">    _info: MessageInfo,
+</span><span class="boring">    _msg: Empty,
+</span><span class="boring">) -&gt; StdResult&lt;Response&gt; {
+</span><span class="boring">    Ok(Response::new())
+</span><span class="boring">}
+</span><span class="boring">
+</span>#[entry_point]
+pub fn query(_deps: Deps, _env: Env, _msg: Empty) -&gt; StdResult&lt;Binary&gt; {
+    let resp = QueryResp {
+        message: &quot;Hello World&quot;.to_owned(),
+    };
+
+    to_binary(&amp;resp)
+}
+</code></pre>
+<p>Note that I omitted the previously created instantiate endpoint for simplicity -
+not to overload you with code, I will always only show lines that changed in the code.</p>
+<p>We first need a structure we will return from our query. We always want to return something
+which is serializable. We are just deriving the
+<a href="https://docs.serde.rs/serde/trait.Serialize.html"><code>Serialize</code></a> and
+<a href="https://docs.serde.rs/serde/trait.Deserialize.html"><code>Deserialize</code></a> traits from <code>serde</code> crate.</p>
+<p>Then we need to implement our entry point. It is very similar to the <code>instantiate</code> one. The
+first significant difference is a type of <code>deps</code> argument. For <code>instantiate</code>, it was a <code>DepMut</code>,
+but here we went with a <a href="https://docs.rs/cosmwasm-std/1.0.0/cosmwasm_std/struct.Deps.html"><code>Deps</code></a>
+object. That is because the query can never alter the smart
+contract's internal state. It can only read the state. It comes with some consequences - for example,
+it is impossible to implement caching for future queries (as it would require some data cache to write
+to).</p>
+<p>The other difference is the lack of the <code>info</code> argument. The reason here is that the entry point which
+performs actions (like instantiation or execution) can differ how an action is performed based on the
+message metadata - for example, they can limit who can perform an action (and do so by checking the
+message <code>sender</code>). It is not a case for queries. Queries are supposed just purely to return some
+transformed contract state. It can be calculated based on some chain metadata (so the state can
+&quot;automatically&quot; change after some time), but not on message info.</p>
+<p>Note that our entry point still has the same <code>Empty</code> type for its <code>msg</code> argument - it means that the
+query message we would send to the contract is still an empty JSON: <code>{}</code></p>
+<p>The last thing that changed is the return type. Instead of returning the <code>Response</code> type on the success
+case, we return an arbitrary serializable object. This is because queries are not using a typical actor
+model message flow - they cannot trigger any actions nor communicate with other contracts in ways different
+than querying them (which is handled by the <code>deps</code> argument). The query always returns plain data, which
+should be presented directly to the querier.</p>
+<p>Now take a look at the implementation. Nothing complicated happens there - we create an object we want
+to return and encode it to the <a href="https://docs.rs/cosmwasm-std/1.0.0/cosmwasm_std/struct.Binary.html"><code>Binary</code></a>
+type using the <a href="https://docs.rs/cosmwasm-std/1.0.0/cosmwasm_std/fn.to_binary.html"><code>to_binary</code></a> function.</p>
+<h2 id="improving-the-message"><a class="header" href="#improving-the-message">Improving the message</a></h2>
+<p>We have a query, but there is a problem with the query message. It is always an empty JSON. It is terrible -
+if we would like to add another query in the future, it would be difficult to have any reasonable distinction
+between query variants.</p>
+<p>In practice, we address this by using a non-empty query message type. Improve our contract:</p>
+<pre><code class="language-rust noplayground"><span class="boring">use cosmwasm_std::{
+</span><span class="boring">    entry_point, to_binary, Binary, Deps, DepsMut, Empty, Env, MessageInfo, Response, StdResult,
+</span><span class="boring">};
+</span><span class="boring">use serde::{Deserialize, Serialize};
+</span><span class="boring">
+</span><span class="boring">#[derive(Serialize, Deserialize)]
+</span><span class="boring">struct QueryResp {
+</span><span class="boring">    message: String,
+</span><span class="boring">}
+</span><span class="boring">
+</span>#[derive(Serialize, Deserialize)]
+pub enum QueryMsg {
+    Greet {},
+}
+
+<span class="boring">#[entry_point]
+</span><span class="boring">pub fn instantiate(
+</span><span class="boring">    _deps: DepsMut,
+</span><span class="boring">    _env: Env,
+</span><span class="boring">    _info: MessageInfo,
+</span><span class="boring">    _msg: Empty,
+</span><span class="boring">) -&gt; StdResult&lt;Response&gt; {
+</span><span class="boring">    Ok(Response::new())
+</span><span class="boring">}
+</span><span class="boring">
+</span>#[entry_point]
+pub fn query(_deps: Deps, _env: Env, msg: QueryMsg) -&gt; StdResult&lt;Binary&gt; {
+    use QueryMsg::*;
+
+    match msg {
+        Greet {} =&gt; {
+            let resp = QueryResp {
+                message: &quot;Hello World&quot;.to_owned(),
+            };
+
+            to_binary(&amp;resp)
+        }
+    }
+}
+</code></pre>
+<p>Now we introduced a proper message type for the query message. It is an
+<a href="https://doc.rust-lang.org/book/ch06-01-defining-an-enum.html">enum</a>, and by
+default, it would serialize to a JSON with a single field - the name of the field
+will be an enum variant (in our case - always &quot;greet&quot; - at least for now), and the
+value of this field would be an object assigned to this enum variant.</p>
+<p>Note that our enum has no type assigned to the only <code>Greet</code> variant. Typically
+in Rust, we create such variants without additional <code>{}</code> after the variant name. Here the
+curly braces have a purpose - without them, the variant would serialize to just a string
+type - so instead of <code>{ &quot;greet&quot;: {} }</code>, the JSON representation of this variant would be
+<code>&quot;greet&quot;</code>. This behavior brings inconsistency in the message schema. It is, generally,
+a good habit to always add the <code>{}</code> to serde serializable empty enum variants - for better
+JSON representation.</p>
+<p>But now, we can still improve the code further. Right now, the <code>query</code> function has two
+responsibilities. The first is obvious - handling the query itself. It was the first
+assumption, and it is still there. But there is a new thing happening there - the query
+message dispatching. It may not be obvious, as there is a single variant, but the query
+function is an excellent way to become a massive unreadable <code>match</code> statement. To make
+the code more <a href="https://en.wikipedia.org/wiki/SOLID">SOLID</a>, we will refactor it and
+take out handling the <code>greet</code> message to a
+separate function.</p>
+<pre><code class="language-rust noplayground"><span class="boring">use cosmwasm_std::{
+</span><span class="boring">    entry_point, to_binary, Binary, Deps, DepsMut, Empty, Env, MessageInfo, Response, StdResult,
+</span><span class="boring">};
+</span><span class="boring">use serde::{Deserialize, Serialize};
+</span><span class="boring">
+</span>#[derive(Serialize, Deserialize)]
+pub struct GreetResp {
+    message: String,
+}
+
+<span class="boring">#[derive(Serialize, Deserialize)]
+</span><span class="boring">pub enum QueryMsg {
+</span><span class="boring">    Greet {},
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">#[entry_point]
+</span><span class="boring">pub fn instantiate(
+</span><span class="boring">    _deps: DepsMut,
+</span><span class="boring">    _env: Env,
+</span><span class="boring">    _info: MessageInfo,
+</span><span class="boring">    _msg: Empty,
+</span><span class="boring">) -&gt; StdResult&lt;Response&gt; {
+</span><span class="boring">    Ok(Response::new())
+</span><span class="boring">}
+</span><span class="boring">
+</span>#[entry_point]
+pub fn query(_deps: Deps, _env: Env, msg: QueryMsg) -&gt; StdResult&lt;Binary&gt; {
+    use QueryMsg::*;
+
+    match msg {
+        Greet {} =&gt; to_binary(&amp;query::greet()?),
+    }
+}
+
+mod query {
+    use super::*;
+
+    pub fn greet() -&gt; StdResult&lt;GreetResp&gt; {
+        let resp = GreetResp {
+            message: &quot;Hello World&quot;.to_owned(),
+        };
+
+        Ok(resp)
+    }
+}
+</code></pre>
+<p>Now it looks much better. Note there are a couple of additional improvements. I
+renamed the query-response type <code>GreetResp</code> as I may have different responses
+for different queries. I want the name to relate only to the variant, not the
+whole message.</p>
+<p>Next is enclosing my new function in the module <code>query</code>. It makes it easier to
+avoid name collisions - I can have the same variant for queries and execution
+messages in the future, and their handlers would lie in separate namespaces.</p>
+<p>A questionable decision may be returning <code>StdResult</code> instead of <code>GreetResp</code>
+from <code>greet</code> function, as it would never return an error. It is a matter of
+style, but I prefer consistency over the message handler, and the majority of
+them would have failure cases - e.g. when reading the state.</p>
+<p>Also, you might pass <code>deps</code> and <code>env</code> arguments to all your query handlers for
+consistency. I'm not too fond of this, as it introduces unnecessary boilerplate
+which doesn't read well, but I also agree with the consistency argument - I
+leave it to your judgment.</p>
+<h2 id="structuring-the-contract"><a class="header" href="#structuring-the-contract">Structuring the contract</a></h2>
+<p>You can see that our contract is becoming a bit bigger now. About 50 lines are maybe
+not so much, but there are many different entities in a single file, and I think we
+can do better. I can already distinguish three different types of entities in the code:
+entry points, messages, and handlers. In most contracts, we would divide them across
+three files. Start with extracting all the messages to <code>src/msg.rs</code>:</p>
+<pre><code class="language-rust noplayground">use serde::{Deserialize, Serialize};
+
+#[derive(Serialize, Deserialize)]
+pub struct GreetResp {
+    pub message: String,
+}
+
+#[derive(Serialize, Deserialize)]
+pub enum QueryMsg {
+    Greet {},
+}
+</code></pre>
+<p>You probably noticed that I made my <code>GreetResp</code> fields public. It is because they have
+to be now accessed from a different module. Now move forward to the <code>src/contract.rs</code> file:</p>
+<pre><code class="language-rust noplayground">use crate::msg::{GreetResp, QueryMsg};
+use cosmwasm_std::{
+    to_binary, Binary, Deps, DepsMut, Empty, Env, MessageInfo, Response, StdResult,
+};
+
+pub fn instantiate(
+    _deps: DepsMut,
+    _env: Env,
+    _info: MessageInfo,
+    _msg: Empty,
+) -&gt; StdResult&lt;Response&gt; {
+    Ok(Response::new())
+}
+
+pub fn query(_deps: Deps, _env: Env, msg: QueryMsg) -&gt; StdResult&lt;Binary&gt; {
+    use QueryMsg::*;
+
+    match msg {
+        Greet {} =&gt; to_binary(&amp;query::greet()?),
+    }
+}
+
+mod query {
+    use super::*;
+
+    pub fn greet() -&gt; StdResult&lt;GreetResp&gt; {
+        let resp = GreetResp {
+            message: &quot;Hello World&quot;.to_owned(),
+        };
+
+        Ok(resp)
+    }
+}
+</code></pre>
+<p>I moved most of the logic here, so my <code>src/lib.rs</code> is just a very thin library entry with nothing
+else but module definitions and entry points definition. I removed the <code>#[entry_point]</code> attribute
+from my <code>query</code> function in <code>src/contract.rs</code>. I will have a function with this attribute.
+Still, I wanted to split functions' responsibility further - not the <code>contract::query</code> function is
+the top-level query handler responsible for dispatching the query message. The <code>query</code> function on
+crate-level is only an entry point. It is a subtle distinction, but it will make sense in the future
+when we would like not to generate the entry points but to keep the dispatching functions. I introduced
+the split now to show you the typical contract structure.</p>
+<p>Now the last part, the <code>src/lib.rs</code> file:</p>
+<pre><code class="language-rust noplayground">use cosmwasm_std::{
+    entry_point, Binary, Deps, DepsMut, Empty, Env, MessageInfo, Response, StdResult,
+};
+
+mod contract;
+mod msg;
+
+#[entry_point]
+pub fn instantiate(deps: DepsMut, env: Env, info: MessageInfo, msg: Empty)
+  -&gt; StdResult&lt;Response&gt;
+{
+    contract::instantiate(deps, env, info, msg)
+}
+
+#[entry_point]
+pub fn query(deps: Deps, env: Env, msg: msg::QueryMsg)
+  -&gt; StdResult&lt;Binary&gt;
+{
+    contract::query(deps, env, msg)
+}
+</code></pre>
+<p>Straightforward top-level module. Definition of submodules and entry points, nothing more.</p>
+<p>Now, when we have the contract ready to do something, let's go and test it.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../basics/building-contract.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="../basics/query-testing.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../basics/building-contract.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="../basics/query-testing.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+    </body>
+</html>
