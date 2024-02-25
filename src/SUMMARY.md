@@ -1,4 +1,4 @@
-# Summary 
+# SUMMARY 
 
 # Introduction
 
@@ -20,7 +20,7 @@
     - [Events,Attributes, and Data](advanced/event-attribute-data.md)
     - [Dealing with Funds](advanced/dealing-w-funds.md)
 
-  - [Best Practices](best-practices/)
+  - [Best Practices](best-practices/README.md)
     - [Good Practices](best-practices/good-practices.md)
     - [Floating Types](best-practices/floating-point-types.md)
 
