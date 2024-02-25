@@ -20,7 +20,7 @@
     - [Events,Attributes, and Data](advanced/event-attribute-data.md)
     - [Dealing with Funds](advanced/dealing-w-funds.md)
 
-  - [Best Practices](best-practices/README.md)
+  - [Best Practices](best-practices/)
     - [Good Practices](best-practices/good-practices.md)
     - [Floating Types](best-practices/floating-point-types.md)
 
