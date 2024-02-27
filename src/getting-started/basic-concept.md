@@ -155,7 +155,6 @@ pub fn execute(deps: DepsMut, _env: Env, info: MessageInfo, msg: ExecuteMsg) -> 
     Ok(res)
 }
 ```
-
 ```mermaid
 sequenceDiagram
     participant C1 as Contract 1
