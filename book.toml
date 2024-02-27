@@ -12,3 +12,5 @@ edition = "2021"
 [preprocessor.plantuml]
 plantuml-cmd = "plantuml"
 
+[preprocessor.mermaid]
+command = "mdbook-mermaid"
