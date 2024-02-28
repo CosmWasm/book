@@ -1,27 +1,35 @@
-# The CosmWasm Smart Contracts Book
+# Introduction
 
-The book about writing Smart Contracts for CosmWasm using Rust
+This book is a guide for creating CosmWasm smart contracts. It will lead you
+step by step, and explain relevant topics from the easiest to the trickier
+ones.
 
-## About
+The idea of the book is not only to tell you about smart contracts API but also
+to show you how to do it in a clean and maintainable way. We will show you
+patterns that CosmWasm creators established and encouraged you to use.
 
-This repo contains source code for [The CosmWasm Book](https://cosmwasm.github.io/book/).
+## Prerequirements
 
-## Building
+This book explores CosmWasm smart contracts. It is not a Rust tutorial, and it
+assumes basic Rust knowledge. As you will probably learn it alongside this
+book, I strongly recommend grasping the language itself first. You can find
+great resources to start with Rust on [Learn
+Rust](https://www.rust-lang.org/learn) page.
 
-The book is build using [mdbook](https://github.com/rust-lang/mdBook).
+## CosmWasm API documentation
 
-To build it, you need to install [Rust](https://www.rust-lang.org/tools/install) first.
+This is the guide-like documentation. If you are looking for the API
+documentation, you may be interested in checking one of the following:
 
-Then install `mdbook` using cargo:
+- [cosmwasm-std](https://crates.io/crates/cosmwasm-std)
+- [cw-storage-plus](https://crates.io/crates/cw-storage-plus)
+- [cw-multi-test](https://crates.io/crates/cw-multi-test)
+- [cw-utils](https://crates.io/crates/cw-utils)
+- [sylvia framework](https://crates.io/crates/sylvia)
 
-```bash
-$ cargo install mdbook
-```
+## Contributing to the book
 
-and build the book from this directory:
-
-```bash
-mdbook build
-```
-
-For more info about using mdbook read its own [book](https://rust-lang.github.io/mdBook/index.html).
+This book is maintained on [Github](https://github.com/CosmWasm/book) and auto
+deployed from there. Please create an
+[issue](https://github.com/CosmWasm/book/issues) or pull request if you find
+any mistakes, bugs, or ambiguities.

@@ -1,0 +1,56 @@
+## Creating a Custom Query
+After setting up the basic structure and understanding entry points, the next step is to enrich the smart contract with the ability to respond to specific queries. This requires defining a query message type and corresponding handler within the contract.
+
+## Define the Query Message Type
+First, define the types of queries your contract should respond to. This involves creating enums or structs that represent different query requests. Here's an example using `serde` for serialization:
+```rust
+use serde::{Serialize, Deserialize};
+
+#[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
+pub enum QueryMsg {
+    // Fetches a greeting message
+    GetGreeting {},
+}
+```
+## Implement the Query Handler
+Next, implement the query handler to process incoming query messages and return the appropriate response. The response must be serialized into a `Binary` format, as per the CosmWasm standard.
+```rust
+#[entry_point]
+pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
+    match msg {
+        QueryMsg::GetGreeting {} => to_json_binary(&"Hello, CosmWasm!"),
+    }
+}
+```
+This simple handler matches on the `QueryMsg` type and returns a static greeting message. For more complex queries, you might access and manipulate the contract's state using `deps.storage`.
+
+# Creating a Custom Query in CosmWasm
+
+Creating a custom query in CosmWasm allows smart contracts to respond to specific inquiries, enhancing the contract's interaction capabilities. This section covers the step-by-step process of defining and implementing custom queries within your CosmWasm contract.
+
+## Define the Query Message Type
+
+The first step is defining the types of queries your contract should respond to. This involves creating enums or structs that encapsulate different query requests.
+```rust
+use serde::{Serialize, Deserialize};
+
+#[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
+pub enum QueryMsg {
+    // Fetches a greeting message
+    GetGreeting {},
+}
+```
+## Implement the Query Handler
+
+Next, implement a handler function to process incoming query messages and return the appropriate response. The response must be serialized into a Binary format.
+```rust
+#[entry_point]
+pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
+    match msg {
+        QueryMsg::GetGreeting {} => to_binary(&"Hello, CosmWasm!"),
+    }
+}
+```
+## Code Example: Custom Query Implementation
+
+Here, we match on the QueryMsg type and return a greeting message. This example demonstrates handling a simple query. For more complex queries, accessing and manipulating the contract's state using deps.storage might be necessary
