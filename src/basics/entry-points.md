@@ -6,9 +6,9 @@ In CosmWasm, the concept of an entry point is fundamental to the operation of sm
 
 Entry points in CosmWasm smart contracts are defined functions the blockchain calls in response to various actions, such as a contract's deployment, message execution, or information requests. The primary entry points are:
 
-1. **[Instantiate](https://chat.openai.com/c/dcbf6b7b-aadb-452d-9e1d-cae2b89df3bd#instantiate)**
-2. **[Execute](https://chat.openai.com/c/dcbf6b7b-aadb-452d-9e1d-cae2b89df3bd#execute)**
-3. **[Query](https://chat.openai.com/c/dcbf6b7b-aadb-452d-9e1d-cae2b89df3bd#query)**
+1. **[Instantiate]**
+2. **[Execute]**
+3. **[Query]**
 
 Each entry point serves a specific purpose in the contract's lifecycle and interaction with the blockchain.
 
