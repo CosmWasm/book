@@ -1,12 +1,3 @@
-# Quick start with `wasmd`
-
-In the past, we suggested playing with contracts on the `malaga` testnet using `wasmd`.
-Now `malaga` is no longer operative, and the best way to test the contract in the
-real environment is to use one of the big CosmWasm chains testnets - Osmosis, Juno,
-Terra, or other ones.
-[Here](https://docs.osmosis.zone/cosmwasm/testnet/cosmwasm-deployment/) is the
-recommended introduction on how to start with the Osmosis testnet.
-
 # Getting Started with wasmd
 
 Welcome to the world of CosmWasm development! If you want to dive into smart contract development on the Cosmos network, starting with wasmd is a fantastic choice. wasmd is the backbone for deploying and managing CosmWasm smart contracts on various Cosmos SDK-based blockchains. This guide will walk you through the initial steps of getting started with wasmd, focusing on using the Osmosis testnet as your playground for deploying and testing your contracts.
